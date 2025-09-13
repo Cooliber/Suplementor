@@ -56,6 +56,13 @@ const config = tseslint.config(
         project: 'tsconfig.eslint.json'
       }
     },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: 'tsconfig.json'
+        }
+      }
+    },
     rules: {
       'arrow-body-style': ['error', 'as-needed'],
       'func-style': 'error',
