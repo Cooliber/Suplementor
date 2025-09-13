@@ -13,6 +13,7 @@ Przykładowo, hipokamp współpracuje z korą mózgową poprzez pętlę perforan
 Sugestia wizualizacji: Diagram interaktywny w InteractiveDiagram.tsx pokazujący połączenia między regionami, z animacjami neuralnymi szlakami.
 
 ### Źródła
+
 1. National Institute of Neurological Disorders and Stroke (NINDS), NIH: "Brain Basics: Know Your Brain" (2023).
 2. Mayo Clinic: "Brain Anatomy" (2022).
 3. Purves, D. et al. Neuroscience (Sinauer Associates, 2018).
@@ -36,6 +37,7 @@ Kluczowe hormony to kortyzol regulujący stres, a enzymy jak MAO (monoamine oxid
 Sugestia wizualizacji: Animacja w Three.js pokazująca transmisję synaptyczną z overlayami Html dla opisów po polsku.
 
 ### Źródła
+
 1. NIH: "Neuronal Signaling" (2023).
 2. Mayo Clinic: "How the Brain Works" (2022).
 3. Nature Neuroscience: "Synaptic Transmission" (Südhof, 2013).
@@ -57,6 +59,7 @@ Omega-3 (z ryb) poprawiają plastyczność synaptyczną, redukując ryzyko demen
 Sugestia wizualizacji: Quiz w QuizEngine.tsx testujący wiedzę o zaburzeniach i suplementach.
 
 ### Źródła
+
 1. Alzheimer's Association & NIH: "Alzheimer's Disease Facts" (2023).
 2. Mayo Clinic: "Alzheimer's Disease" (2022).
 3. The Lancet Neurology: "Nutrition and Brain Health" (Gómez-Pinilla, 2008).
@@ -78,6 +81,7 @@ Przykładowo, badania pokazują, że medytacja zwiększa grubość kory przedczo
 Sugestia wizualizacji: Tab w NeuroplasticityTab.tsx z animacjami zmian synaptycznych.
 
 ### Źródła
+
 1. NIH: "Brain Evolution" (2023).
 2. Nature Reviews Neuroscience: "Human Neocortex Expansion" (Rakic, 2009).
 3. Science: "Neuroplasticity Mechanisms" (Holtmaat & Svoboda, 2009).

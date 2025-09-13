@@ -1,35 +1,47 @@
-'use client';
+'use client'
 
-import { Brain, BarChart3, Bell, Lightbulb, Settings, TrendingUp } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { useState, Suspense } from 'react';
+import { Brain, BarChart3, Bell, Lightbulb, Settings, TrendingUp } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { useState, Suspense } from 'react'
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { SupplementItem } from '@/components/dashboard/OptimizedDashboard';
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import type { SupplementItem } from '@/components/dashboard/OptimizedDashboard'
 
 // Dynamically import heavy components for better performance
-const OptimizedDashboard = dynamic(() => import('@/components/dashboard/OptimizedDashboard'), {
-  loading: () => <DashboardSkeleton />,
-  ssr: false
-});
+const OptimizedDashboard = dynamic(
+  () => import('@/components/dashboard/OptimizedDashboard'),
+  {
+    loading: () => <DashboardSkeleton />,
+    ssr: false
+  }
+)
 
-const AdvancedAnalytics = dynamic(() => import('@/components/dashboard/AdvancedAnalytics'), {
-  loading: () => <AnalyticsSkeleton />,
-  ssr: false
-});
+const AdvancedAnalytics = dynamic(
+  () => import('@/components/dashboard/AdvancedAnalytics'),
+  {
+    loading: () => <AnalyticsSkeleton />,
+    ssr: false
+  }
+)
 
-const SmartNotifications = dynamic(() => import('@/components/dashboard/SmartNotifications'), {
-  loading: () => <NotificationsSkeleton />,
-  ssr: false
-});
+const SmartNotifications = dynamic(
+  () => import('@/components/dashboard/SmartNotifications'),
+  {
+    loading: () => <NotificationsSkeleton />,
+    ssr: false
+  }
+)
 
-const PersonalizedRecommendations = dynamic(() => import('@/components/dashboard/PersonalizedRecommendations'), {
-  loading: () => <RecommendationsSkeleton />,
-  ssr: false
-});
+const PersonalizedRecommendations = dynamic(
+  () => import('@/components/dashboard/PersonalizedRecommendations'),
+  {
+    loading: () => <RecommendationsSkeleton />,
+    ssr: false
+  }
+)
 
 // Mock data - in real app this would come from API/database
 const mockStats = {
@@ -45,7 +57,7 @@ const mockStats = {
     memory: 68,
     energy: 85
   }
-};
+}
 
 const mockSupplements: SupplementItem[] = [
   {
@@ -58,7 +70,7 @@ const mockSupplements: SupplementItem[] = [
   },
   {
     id: '2',
-    name: 'Lion\'s Mane',
+    name: "Lion's Mane",
     dosage: '500mg',
     timeScheduled: '9:00',
     status: 'taken',
@@ -80,115 +92,124 @@ const mockSupplements: SupplementItem[] = [
     status: 'pending',
     description: 'Koncentracja bez nerwowości'
   }
-];
+]
 
 /**
  *
  */
-const DashboardSkeleton = () => <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[...Array(4)].map((_, i) => (
-          <Card key={i}>
-            <CardHeader className="pb-2">
-              <Skeleton className="h-4 w-24" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-8 w-16 mb-2" />
-              <Skeleton className="h-3 w-32" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Skeleton className="h-96" />
-        <Skeleton className="h-96" />
-      </div>
-    </div>;
-
-/**
- *
- */
-const AnalyticsSkeleton = () => <div className="space-y-6">
-      <Skeleton className="h-64" />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Skeleton className="h-48" />
-        <Skeleton className="h-48" />
-      </div>
-    </div>;
-
-/**
- *
- */
-const NotificationsSkeleton = () => <Card>
-      <CardHeader>
-        <Skeleton className="h-6 w-48" />
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="p-4 border rounded-lg">
-            <Skeleton className="h-4 w-32 mb-2" />
-            <Skeleton className="h-3 w-48" />
-          </div>
-        ))}
-      </CardContent>
-    </Card>;
-
-/**
- *
- */
-const RecommendationsSkeleton = () => <Card>
-      <CardHeader>
-        <Skeleton className="h-6 w-56" />
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="border rounded-lg p-4">
-            <Skeleton className="h-5 w-40 mb-2" />
-            <Skeleton className="h-4 w-full mb-2" />
+const DashboardSkeleton = () => (
+  <div className="space-y-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {[...Array(4)].map((_, i) => (
+        <Card key={i}>
+          <CardHeader className="pb-2">
+            <Skeleton className="h-4 w-24" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="mb-2 h-8 w-16" />
             <Skeleton className="h-3 w-32" />
-          </div>
-        ))}
-      </CardContent>
-    </Card>;
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <Skeleton className="h-96" />
+      <Skeleton className="h-96" />
+    </div>
+  </div>
+)
+
+/**
+ *
+ */
+const AnalyticsSkeleton = () => (
+  <div className="space-y-6">
+    <Skeleton className="h-64" />
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <Skeleton className="h-48" />
+      <Skeleton className="h-48" />
+    </div>
+  </div>
+)
+
+/**
+ *
+ */
+const NotificationsSkeleton = () => (
+  <Card>
+    <CardHeader>
+      <Skeleton className="h-6 w-48" />
+    </CardHeader>
+    <CardContent className="space-y-3">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="rounded-lg border p-4">
+          <Skeleton className="mb-2 h-4 w-32" />
+          <Skeleton className="h-3 w-48" />
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+)
+
+/**
+ *
+ */
+const RecommendationsSkeleton = () => (
+  <Card>
+    <CardHeader>
+      <Skeleton className="h-6 w-56" />
+    </CardHeader>
+    <CardContent className="space-y-4">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="rounded-lg border p-4">
+          <Skeleton className="mb-2 h-5 w-40" />
+          <Skeleton className="mb-2 h-4 w-full" />
+          <Skeleton className="h-3 w-32" />
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+)
 
 /**
  *
  */
 export default function EnhancedDashboardPage() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [supplements, setSupplements] = useState(mockSupplements);
+  const [activeTab, setActiveTab] = useState('dashboard')
+  const [supplements, setSupplements] = useState(mockSupplements)
 
-  const handleSupplementUpdate = (id: string, status: 'taken' | 'pending' | 'skipped') => {
-    setSupplements(prev =>
-      prev.map(supplement =>
-        supplement.id === id
-          ? { ...supplement, status }
-          : supplement
+  const handleSupplementUpdate = (
+    id: string,
+    status: 'taken' | 'pending' | 'skipped'
+  ) => {
+    setSupplements((prev) =>
+      prev.map((supplement) =>
+        supplement.id === id ? { ...supplement, status } : supplement
       )
-    );
-  };
+    )
+  }
 
   const handleSupplementTaken = (id: string) => {
-    handleSupplementUpdate(id, 'taken');
-  };
+    handleSupplementUpdate(id, 'taken')
+  }
 
   const handleAddNote = () => {
     // TODO: Implement add note functionality
-    console.log('Add note clicked');
-  };
+    console.log('Add note clicked')
+  }
 
   const handleUpdateWellbeing = () => {
     // TODO: Implement update wellbeing functionality
-    console.log('Update wellbeing clicked');
-  };
+    console.log('Update wellbeing clicked')
+  }
 
   const stats = {
     ...mockStats,
     supplementsToday: {
-      taken: supplements.filter(s => s.status === 'taken').length,
+      taken: supplements.filter((s) => s.status === 'taken').length,
       total: supplements.length
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -197,7 +218,7 @@ export default function EnhancedDashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="mb-2 text-3xl font-bold text-gray-900">
                 Zaawansowany Dashboard Neuroregulacji
               </h1>
               <p className="text-gray-600">
@@ -206,11 +227,11 @@ export default function EnhancedDashboardPage() {
             </div>
             <div className="flex items-center space-x-2">
               <Button variant="outline" size="sm">
-                <Settings className="h-4 w-4 mr-2" />
+                <Settings className="mr-2 h-4 w-4" />
                 Ustawienia
               </Button>
               <Button size="sm">
-                <TrendingUp className="h-4 w-4 mr-2" />
+                <TrendingUp className="mr-2 h-4 w-4" />
                 Eksportuj raport
               </Button>
             </div>
@@ -219,21 +240,21 @@ export default function EnhancedDashboardPage() {
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="mb-8 grid w-full grid-cols-4">
             <TabsTrigger value="dashboard" className="flex items-center">
-              <Brain className="h-4 w-4 mr-2" />
+              <Brain className="mr-2 h-4 w-4" />
               Dashboard
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center">
-              <BarChart3 className="h-4 w-4 mr-2" />
+              <BarChart3 className="mr-2 h-4 w-4" />
               Analityka
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center">
-              <Bell className="h-4 w-4 mr-2" />
+              <Bell className="mr-2 h-4 w-4" />
               Powiadomienia
             </TabsTrigger>
             <TabsTrigger value="recommendations" className="flex items-center">
-              <Lightbulb className="h-4 w-4 mr-2" />
+              <Lightbulb className="mr-2 h-4 w-4" />
               Rekomendacje
             </TabsTrigger>
           </TabsList>
@@ -254,17 +275,14 @@ export default function EnhancedDashboardPage() {
           {/* Analytics Tab */}
           <TabsContent value="analytics">
             <Suspense fallback={<AnalyticsSkeleton />}>
-              <AdvancedAnalytics 
-                stats={stats}
-                supplements={supplements}
-              />
+              <AdvancedAnalytics stats={stats} supplements={supplements} />
             </Suspense>
           </TabsContent>
 
           {/* Notifications Tab */}
           <TabsContent value="notifications">
             <Suspense fallback={<NotificationsSkeleton />}>
-              <SmartNotifications 
+              <SmartNotifications
                 supplements={supplements}
                 onSupplementTaken={handleSupplementTaken}
               />
@@ -274,7 +292,7 @@ export default function EnhancedDashboardPage() {
           {/* Recommendations Tab */}
           <TabsContent value="recommendations">
             <Suspense fallback={<RecommendationsSkeleton />}>
-              <PersonalizedRecommendations 
+              <PersonalizedRecommendations
                 stats={stats}
                 supplements={supplements}
                 userProfile={{
@@ -290,7 +308,7 @@ export default function EnhancedDashboardPage() {
         </Tabs>
 
         {/* Footer */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="mt-12 border-t border-gray-200 pt-8">
           <div className="flex items-center justify-between text-sm text-gray-500">
             <div>
               <p>Ostatnia aktualizacja: {new Date().toLocaleString('pl-PL')}</p>
@@ -304,5 +322,5 @@ export default function EnhancedDashboardPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

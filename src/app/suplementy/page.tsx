@@ -1,486 +1,519 @@
-'use client';
+'use client'
 
-import { Brain, Leaf, Heart, Zap, Shield, Search, ArrowLeft, Package, Clock, DollarSign } from 'lucide-react';
-import Link from 'next/link';
-import { useState, useMemo } from 'react';
+import {
+  Brain,
+  Leaf,
+  Heart,
+  Zap,
+  Shield,
+  Search,
+  ArrowLeft,
+  Package,
+  Clock,
+  DollarSign
+} from 'lucide-react'
+import Link from 'next/link'
+import { useState, useMemo } from 'react'
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
 
 interface Supplement {
-  id: string;
-  name: string;
-  polishName: string;
-  category: string;
-  description: string;
-  benefits: string[];
-  dosage: string;
-  timing: string;
-  price: string;
+  id: string
+  name: string
+  polishName: string
+  category: string
+  description: string
+  benefits: string[]
+  dosage: string
+  timing: string
+  price: string
   sklad: {
-    activeIngredient: string;
-    concentration: string;
-    form: string;
-    additional: string[];
-  };
-  neuroEffects: string[];
-  warnings: string[];
+    activeIngredient: string
+    concentration: string
+    form: string
+    additional: string[]
+  }
+  neuroEffects: string[]
+  warnings: string[]
 }
 
 const supplements: Supplement[] = [
   {
-    id: "l-lysine-pharmalysine",
-    name: "L-lysine | PharmaLysineTM",
-    polishName: "L-lizyna | PharmaLysineTM",
-    category: "Aminokwasy",
-    description: "Esencjalny aminokwas niezbędny do syntezy białek, wzrostu i regeneracji tkanek. Wspiera zdrowie kości, stawów i mięśni.",
+    id: 'l-lysine-pharmalysine',
+    name: 'L-lysine | PharmaLysineTM',
+    polishName: 'L-lizyna | PharmaLysineTM',
+    category: 'Aminokwasy',
+    description:
+      'Esencjalny aminokwas niezbędny do syntezy białek, wzrostu i regeneracji tkanek. Wspiera zdrowie kości, stawów i mięśni.',
     benefits: [
-      "Wspiera zdrowie mięśni, kości i stawów",
-      "Promuje syntezę kolagenu",
-      "Wspomaga odporność",
-      "Poprawia wchłanianie wapnia"
+      'Wspiera zdrowie mięśni, kości i stawów',
+      'Promuje syntezę kolagenu',
+      'Wspomaga odporność',
+      'Poprawia wchłanianie wapnia'
     ],
-    dosage: "500-2000mg dziennie",
-    timing: "Na czczo lub między posiłkami",
-    price: "od 3,99 €",
+    dosage: '500-2000mg dziennie',
+    timing: 'Na czczo lub między posiłkami',
+    price: 'od 3,99 €',
     sklad: {
-      activeIngredient: "L-lizyna HCl",
-      concentration: "99%",
-      form: "Proszek krystaliczny",
-      additional: ["Wolny od dodatków", "Wegetariański", "Bez GMO"]
+      activeIngredient: 'L-lizyna HCl',
+      concentration: '99%',
+      form: 'Proszek krystaliczny',
+      additional: ['Wolny od dodatków', 'Wegetariański', 'Bez GMO']
     },
     neuroEffects: [
-      "Wspomaga produkcję neuroprzekaźników",
-      "Poprawia koncentrację i nastrój"
+      'Wspomaga produkcję neuroprzekaźników',
+      'Poprawia koncentrację i nastrój'
     ],
     warnings: [
-      "Nie przekraczać zalecanej dawki",
-      "Konsultacja z lekarzem w przypadku ciąży"
+      'Nie przekraczać zalecanej dawki',
+      'Konsultacja z lekarzem w przypadku ciąży'
     ]
   },
   {
-    id: "dha-extract-20-vegetarian",
-    name: "DHA extract 20% | Vegetarian Omega-3",
-    polishName: "Ekstrakt DHA 20% | Wegetariański Omega-3",
-    category: "Kwasy tłuszczowe",
-    description: "Docosahexaenoic acid (DHA) - główny składnik neuronów i mózgu. Wersja wegańska z alg.",
+    id: 'dha-extract-20-vegetarian',
+    name: 'DHA extract 20% | Vegetarian Omega-3',
+    polishName: 'Ekstrakt DHA 20% | Wegetariański Omega-3',
+    category: 'Kwasy tłuszczowe',
+    description:
+      'Docosahexaenoic acid (DHA) - główny składnik neuronów i mózgu. Wersja wegańska z alg.',
     benefits: [
-      "Główny składnik neuronów i mózgu",
-      "Wspiera zdrowie układu nerwowego",
-      "Poprawia pamięć i funkcje poznawcze",
-      "Wegańska formuła"
+      'Główny składnik neuronów i mózgu',
+      'Wspiera zdrowie układu nerwowego',
+      'Poprawia pamięć i funkcje poznawcze',
+      'Wegańska formuła'
     ],
-    dosage: "250-1000mg DHA dziennie",
-    timing: "Z posiłkiem zawierającym tłuszcz",
-    price: "od 7,49 €",
+    dosage: '250-1000mg DHA dziennie',
+    timing: 'Z posiłkiem zawierającym tłuszcz',
+    price: 'od 7,49 €',
     sklad: {
-      activeIngredient: "DHA (kwas dokozaheksaenowy)",
-      concentration: "20%",
-      form: "Olej z alg",
-      additional: ["Wegetariański", "Bez ryb", "Czysty olej DHA"]
+      activeIngredient: 'DHA (kwas dokozaheksaenowy)',
+      concentration: '20%',
+      form: 'Olej z alg',
+      additional: ['Wegetariański', 'Bez ryb', 'Czysty olej DHA']
     },
     neuroEffects: [
-      "Budulec neuronów",
-      "Poprawa plastyczności synaptycznej",
-      "Wsparcie neurogenezy"
+      'Budulec neuronów',
+      'Poprawa plastyczności synaptycznej',
+      'Wsparcie neurogenezy'
+    ],
+    warnings: ['Przechowywać w chłodnym miejscu', 'Chronić przed światłem']
+  },
+  {
+    id: 'dmpea-extract-99-eria-jarensis',
+    name: 'DMPEA extract 99% | Eria jarensis',
+    polishName: 'Ekstrakt DMPEA 99% | Eria jarensis',
+    category: 'Stymulanty',
+    description:
+      'Silny ekstrakt z Eria jarensis wspierający wydolność fizyczną i psychiczną. Zwiększa produkcję dopaminy.',
+    benefits: [
+      'Silne wsparcie dla wydolności fizycznej',
+      'Zwiększa energię i motywację',
+      'Poprawia nastrój',
+      'Wspomaga koncentrację'
+    ],
+    dosage: '100-300mg dziennie',
+    timing: 'Rano na czczo',
+    price: 'od 11,49 €',
+    sklad: {
+      activeIngredient: 'N-dimetylofenetyloamina (DMPEA)',
+      concentration: '99%',
+      form: 'Proszek krystaliczny',
+      additional: ['Wolny od dodatków', 'Czysta forma']
+    },
+    neuroEffects: [
+      'Zwiększa poziom dopaminy',
+      'Poprawia funkcje poznawcze',
+      'Wspomaga nastrój'
+    ],
+    warnings: ['Nie stosować wieczorem', 'Może wpływać na sen', 'Konsultacja z lekarzem']
+  },
+  {
+    id: 'huperzine-a-1-huperzia-serrata',
+    name: 'Huperzine A 1% | Huperzia serrata',
+    polishName: 'Huperzyna A 1% | Huperzia serrata',
+    category: 'Nootropy',
+    description:
+      'Skuteczne wsparcie dla zdolności intelektualnych i neurogenezy. Inhibitor acetylocholinesterazy poprawiający pamięć.',
+    benefits: [
+      'Skuteczne wsparcie dla zdolności intelektualnych',
+      'Wspomaga neurogenezę',
+      'Poprawia pamięć i naukę',
+      'Zwiększa poziom acetylocholiny'
+    ],
+    dosage: '50-200mcg dziennie',
+    timing: 'Rano na czczo',
+    price: 'od 13,99 €',
+    sklad: {
+      activeIngredient: 'Huperzyna A',
+      concentration: '1%',
+      form: 'Proszek',
+      additional: ['Z Huperzia serrata', 'Standardyzowany ekstrakt']
+    },
+    neuroEffects: [
+      'Inhibitor acetylocholinesterazy',
+      'Zwiększa poziom acetylocholiny',
+      'Poprawa pamięci długotrwałej',
+      'Wspomaga procesy uczenia się'
     ],
     warnings: [
-      "Przechowywać w chłodnym miejscu",
-      "Chronić przed światłem"
+      'Nie stosować codziennie długotrwale',
+      'Cykle 5 dni stosowania, 2 dni przerwy',
+      'Konsultacja z lekarzem'
     ]
   },
   {
-    id: "dmpea-extract-99-eria-jarensis",
-    name: "DMPEA extract 99% | Eria jarensis",
-    polishName: "Ekstrakt DMPEA 99% | Eria jarensis",
-    category: "Stymulanty",
-    description: "Silny ekstrakt z Eria jarensis wspierający wydolność fizyczną i psychiczną. Zwiększa produkcję dopaminy.",
+    id: 'magnesium-l-threonate',
+    name: 'Magnesium | Magnesium L-threonate',
+    polishName: 'Magnez | Magnez L-treonian',
+    category: 'Minerały',
+    description:
+      'Skuteczne funkcjonowanie mózgu i mięśni. Wysoce biodostępna forma magnezu przekraczająca barierę krew-mózg.',
     benefits: [
-      "Silne wsparcie dla wydolności fizycznej",
-      "Zwiększa energię i motywację",
-      "Poprawia nastrój",
-      "Wspomaga koncentrację"
+      'Efektywne funkcjonowanie mózgu i mięśni',
+      'Przekracza barierę krew-mózg',
+      'Poprawia pamięć i nastrój',
+      'Redukuje stres'
     ],
-    dosage: "100-300mg dziennie",
-    timing: "Rano na czczo",
-    price: "od 11,49 €",
+    dosage: '1000-2000mg dziennie',
+    timing: 'Wieczorem przed snem',
+    price: 'od 7,49 €',
     sklad: {
-      activeIngredient: "N-dimetylofenetyloamina (DMPEA)",
-      concentration: "99%",
-      form: "Proszek krystaliczny",
-      additional: ["Wolny od dodatków", "Czysta forma"]
+      activeIngredient: 'Magnez L-treonian',
+      concentration: '100%',
+      form: 'Proszek',
+      additional: ['Wysoka biodostępność', 'Przekracza BBB']
     },
     neuroEffects: [
-      "Zwiększa poziom dopaminy",
-      "Poprawia funkcje poznawcze",
-      "Wspomaga nastrój"
+      'Przekracza barierę krew-mózg',
+      'Wspomaga neuroplastyczność',
+      'Poprawia pamięć i uczenie się',
+      'Redukuje lęk i stres'
     ],
     warnings: [
-      "Nie stosować wieczorem",
-      "Może wpływać na sen",
-      "Konsultacja z lekarzem"
+      'Może wywołać efekt uspokajający',
+      'Nie stosować przed prowadzeniem pojazdów'
     ]
   },
   {
-    id: "huperzine-a-1-huperzia-serrata",
-    name: "Huperzine A 1% | Huperzia serrata",
-    polishName: "Huperzyna A 1% | Huperzia serrata",
-    category: "Nootropy",
-    description: "Skuteczne wsparcie dla zdolności intelektualnych i neurogenezy. Inhibitor acetylocholinesterazy poprawiający pamięć.",
+    id: 'alpha-gpc-50',
+    name: 'Alpha-GPC 50%',
+    polishName: 'Alfa-GPC 50%',
+    category: 'Cholina',
+    description:
+      'Źródło choliny o wysokiej biodostępności. Prekursor acetylocholiny wspierający pamięć i koncentrację.',
     benefits: [
-      "Skuteczne wsparcie dla zdolności intelektualnych",
-      "Wspomaga neurogenezę",
-      "Poprawia pamięć i naukę",
-      "Zwiększa poziom acetylocholiny"
+      'Źródło choliny o wysokiej biodostępności',
+      'Prekursor acetylocholiny',
+      'Poprawia pamięć i koncentrację',
+      'Wspomaga wydolność fizyczną'
     ],
-    dosage: "50-200mcg dziennie",
-    timing: "Rano na czczo",
-    price: "od 13,99 €",
+    dosage: '250-600mg dziennie',
+    timing: 'Rano lub przed treningiem',
+    price: 'od 12,99 €',
     sklad: {
-      activeIngredient: "Huperzyna A",
-      concentration: "1%",
-      form: "Proszek",
-      additional: ["Z Huperzia serrata", "Standardyzowany ekstrakt"]
+      activeIngredient: 'L-alfa-glicerylofosforylocholina',
+      concentration: '50%',
+      form: 'Proszek',
+      additional: ['Wysoka biodostępność', 'Czysta forma']
     },
     neuroEffects: [
-      "Inhibitor acetylocholinesterazy",
-      "Zwiększa poziom acetylocholiny",
-      "Poprawa pamięci długotrwałej",
-      "Wspomaga procesy uczenia się"
+      'Zwiększa poziom acetylocholiny',
+      'Poprawa pamięci roboczej',
+      'Wspomaga koncentrację',
+      'Neuroprotekcyjne działanie'
+    ],
+    warnings: ['Może wywołać bóle głowy u niektórych osób', 'Rozpocząć od niższej dawki']
+  },
+  {
+    id: 'l-theanine',
+    name: 'L-Theanine',
+    polishName: 'L-teanina',
+    category: 'Aminokwasy',
+    description:
+      'Aminokwas występujący naturalnie w herbacie. Promuje relaksację bez senności i poprawia koncentrację.',
+    benefits: [
+      'Promuje relaksację bez senności',
+      'Poprawia koncentrację i skupienie',
+      'Redukuje stres i lęk',
+      'Wspomaga jakość snu'
+    ],
+    dosage: '100-400mg dziennie',
+    timing: 'Rano lub przed snem',
+    price: 'od 8,99 €',
+    sklad: {
+      activeIngredient: 'L-teanina',
+      concentration: '99%',
+      form: 'Proszek',
+      additional: ['Naturalny ekstrakt', 'Bez dodatków']
+    },
+    neuroEffects: [
+      'Zwiększa fale alfa w mózgu',
+      'Promuje stan spokojnego skupienia',
+      'Moduluje GABA i dopaminę',
+      'Redukuje stres'
+    ],
+    warnings: ['Może wzmacniać działanie leków uspokajających', 'Konsultacja z lekarzem']
+  },
+  {
+    id: 'rhodiola-rosea-3-rosavins',
+    name: 'Rhodiola Rosea 3% Rosavins',
+    polishName: 'Różeniec górski 3% rozawin',
+    category: 'Adaptogeny',
+    description:
+      'Adaptogen wspierający odporność na stres. Poprawia wydolność fizyczną i psychiczną oraz redukuje zmęczenie.',
+    benefits: [
+      'Adaptogen wspierający odporność na stres',
+      'Poprawia wydolność fizyczną i psychiczną',
+      'Redukuje zmęczenie',
+      'Poprawia nastrój'
+    ],
+    dosage: '200-600mg dziennie',
+    timing: 'Rano na czczo',
+    price: 'od 9,99 €',
+    sklad: {
+      activeIngredient: 'Ekstrakt z Rhodiola rosea',
+      concentration: '3% rozawin, 1% salidrozydu',
+      form: 'Proszek',
+      additional: ['Standardyzowany ekstrakt', 'Root extract']
+    },
+    neuroEffects: [
+      'Moduluje układ HPA',
+      'Redukuje kortyzol',
+      'Poprawia odporność na stres',
+      'Neuroprotekcyjne działanie'
+    ],
+    warnings: ['Może wywołać pobudzenie u niektórych osób', 'Nie stosować przed snem']
+  },
+  {
+    id: 'bacopa-monnieri-50-bacosides',
+    name: 'Bacopa Monnieri 50% Bacosides',
+    polishName: 'Bakopa drobnolistna 50% bakozydów',
+    category: 'Nootropy',
+    description:
+      'Tradycyjny ajurwedyjski nootrop. Poprawia pamięć, uczenie się i funkcje poznawcze. Wspomaga zdrowie mózgu.',
+    benefits: [
+      'Tradycyjny nootrop z Ajurwedy',
+      'Poprawia pamięć i uczenie się',
+      'Wspomaga funkcje poznawcze',
+      'Neuroprotekcyjne działanie'
+    ],
+    dosage: '300-600mg dziennie',
+    timing: 'Z posiłkiem',
+    price: 'od 11,99 €',
+    sklad: {
+      activeIngredient: 'Bakozydy A i B',
+      concentration: '50%',
+      form: 'Proszek',
+      additional: ['Standardyzowany ekstrakt', 'Cała roślina']
+    },
+    neuroEffects: [
+      'Zwiększa czynniki neurotroficzne',
+      'Poprawa pamięci długotrwałej',
+      'Wspomaga neuroplastyczność',
+      'Antyoksydacyjne działanie'
     ],
     warnings: [
-      "Nie stosować codziennie długotrwale",
-      "Cykle 5 dni stosowania, 2 dni przerwy",
-      "Konsultacja z lekarzem"
+      'Wymaga długotrwałego stosowania (4-8 tygodni)',
+      'Może powodować łagodne problemy żołądkowe'
     ]
   },
   {
-    id: "magnesium-l-threonate",
-    name: "Magnesium | Magnesium L-threonate",
-    polishName: "Magnez | Magnez L-treonian",
-    category: "Minerały",
-    description: "Skuteczne funkcjonowanie mózgu i mięśni. Wysoce biodostępna forma magnezu przekraczająca barierę krew-mózg.",
-    benefits: [
-      "Efektywne funkcjonowanie mózgu i mięśni",
-      "Przekracza barierę krew-mózg",
-      "Poprawia pamięć i nastrój",
-      "Redukuje stres"
-    ],
-    dosage: "1000-2000mg dziennie",
-    timing: "Wieczorem przed snem",
-    price: "od 7,49 €",
-    sklad: {
-      activeIngredient: "Magnez L-treonian",
-      concentration: "100%",
-      form: "Proszek",
-      additional: ["Wysoka biodostępność", "Przekracza BBB"]
-    },
-    neuroEffects: [
-      "Przekracza barierę krew-mózg",
-      "Wspomaga neuroplastyczność",
-      "Poprawia pamięć i uczenie się",
-      "Redukuje lęk i stres"
-    ],
-    warnings: [
-      "Może wywołać efekt uspokajający",
-      "Nie stosować przed prowadzeniem pojazdów"
-    ]
-  },
-  {
-    id: "alpha-gpc-50",
-    name: "Alpha-GPC 50%",
-    polishName: "Alfa-GPC 50%",
-    category: "Cholina",
-    description: "Źródło choliny o wysokiej biodostępności. Prekursor acetylocholiny wspierający pamięć i koncentrację.",
-    benefits: [
-      "Źródło choliny o wysokiej biodostępności",
-      "Prekursor acetylocholiny",
-      "Poprawia pamięć i koncentrację",
-      "Wspomaga wydolność fizyczną"
-    ],
-    dosage: "250-600mg dziennie",
-    timing: "Rano lub przed treningiem",
-    price: "od 12,99 €",
-    sklad: {
-      activeIngredient: "L-alfa-glicerylofosforylocholina",
-      concentration: "50%",
-      form: "Proszek",
-      additional: ["Wysoka biodostępność", "Czysta forma"]
-    },
-    neuroEffects: [
-      "Zwiększa poziom acetylocholiny",
-      "Poprawa pamięci roboczej",
-      "Wspomaga koncentrację",
-      "Neuroprotekcyjne działanie"
-    ],
-    warnings: [
-      "Może wywołać bóle głowy u niektórych osób",
-      "Rozpocząć od niższej dawki"
-    ]
-  },
-  {
-    id: "l-theanine",
-    name: "L-Theanine",
-    polishName: "L-teanina",
-    category: "Aminokwasy",
-    description: "Aminokwas występujący naturalnie w herbacie. Promuje relaksację bez senności i poprawia koncentrację.",
-    benefits: [
-      "Promuje relaksację bez senności",
-      "Poprawia koncentrację i skupienie",
-      "Redukuje stres i lęk",
-      "Wspomaga jakość snu"
-    ],
-    dosage: "100-400mg dziennie",
-    timing: "Rano lub przed snem",
-    price: "od 8,99 €",
-    sklad: {
-      activeIngredient: "L-teanina",
-      concentration: "99%",
-      form: "Proszek",
-      additional: ["Naturalny ekstrakt", "Bez dodatków"]
-    },
-    neuroEffects: [
-      "Zwiększa fale alfa w mózgu",
-      "Promuje stan spokojnego skupienia",
-      "Moduluje GABA i dopaminę",
-      "Redukuje stres"
-    ],
-    warnings: [
-      "Może wzmacniać działanie leków uspokajających",
-      "Konsultacja z lekarzem"
-    ]
-  },
-  {
-    id: "rhodiola-rosea-3-rosavins",
-    name: "Rhodiola Rosea 3% Rosavins",
-    polishName: "Różeniec górski 3% rozawin",
-    category: "Adaptogeny",
-    description: "Adaptogen wspierający odporność na stres. Poprawia wydolność fizyczną i psychiczną oraz redukuje zmęczenie.",
-    benefits: [
-      "Adaptogen wspierający odporność na stres",
-      "Poprawia wydolność fizyczną i psychiczną",
-      "Redukuje zmęczenie",
-      "Poprawia nastrój"
-    ],
-    dosage: "200-600mg dziennie",
-    timing: "Rano na czczo",
-    price: "od 9,99 €",
-    sklad: {
-      activeIngredient: "Ekstrakt z Rhodiola rosea",
-      concentration: "3% rozawin, 1% salidrozydu",
-      form: "Proszek",
-      additional: ["Standardyzowany ekstrakt", "Root extract"]
-    },
-    neuroEffects: [
-      "Moduluje układ HPA",
-      "Redukuje kortyzol",
-      "Poprawia odporność na stres",
-      "Neuroprotekcyjne działanie"
-    ],
-    warnings: [
-      "Może wywołać pobudzenie u niektórych osób",
-      "Nie stosować przed snem"
-    ]
-  },
-  {
-    id: "bacopa-monnieri-50-bacosides",
-    name: "Bacopa Monnieri 50% Bacosides",
-    polishName: "Bakopa drobnolistna 50% bakozydów",
-    category: "Nootropy",
-    description: "Tradycyjny ajurwedyjski nootrop. Poprawia pamięć, uczenie się i funkcje poznawcze. Wspomaga zdrowie mózgu.",
-    benefits: [
-      "Tradycyjny nootrop z Ajurwedy",
-      "Poprawia pamięć i uczenie się",
-      "Wspomaga funkcje poznawcze",
-      "Neuroprotekcyjne działanie"
-    ],
-    dosage: "300-600mg dziennie",
-    timing: "Z posiłkiem",
-    price: "od 11,99 €",
-    sklad: {
-      activeIngredient: "Bakozydy A i B",
-      concentration: "50%",
-      form: "Proszek",
-      additional: ["Standardyzowany ekstrakt", "Cała roślina"]
-    },
-    neuroEffects: [
-      "Zwiększa czynniki neurotroficzne",
-      "Poprawa pamięci długotrwałej",
-      "Wspomaga neuroplastyczność",
-      "Antyoksydacyjne działanie"
-    ],
-    warnings: [
-      "Wymaga długotrwałego stosowania (4-8 tygodni)",
-      "Może powodować łagodne problemy żołądkowe"
-    ]
-  },
-  {
-    id: "lion-mane-extract-20-1",
+    id: 'lion-mane-extract-20-1',
     name: "Lion's Mane extract 20:1 | Hericium erinaceus",
-    polishName: "Ekstrakt z grzyba lwa 20:1 | Hericium erinaceus",
-    category: "Grzyby lecznicze",
-    description: "Grzyb nootropowy wspierający neurogenezę i regenerację nerwów. Promuje wzrost czynników neurotroficznych.",
+    polishName: 'Ekstrakt z grzyba lwa 20:1 | Hericium erinaceus',
+    category: 'Grzyby lecznicze',
+    description:
+      'Grzyb nootropowy wspierający neurogenezę i regenerację nerwów. Promuje wzrost czynników neurotroficznych.',
     benefits: [
-      "Wspiera neurogenezę i regenerację nerwów",
-      "Promuje wzrost NGF",
-      "Poprawia pamięć i koncentrację",
-      "Neuroprotekcyjne działanie"
+      'Wspiera neurogenezę i regenerację nerwów',
+      'Promuje wzrost NGF',
+      'Poprawia pamięć i koncentrację',
+      'Neuroprotekcyjne działanie'
     ],
-    dosage: "500-1000mg dziennie",
-    timing: "Rano z posiłkiem",
-    price: "od 14,99 €",
+    dosage: '500-1000mg dziennie',
+    timing: 'Rano z posiłkiem',
+    price: 'od 14,99 €',
     sklad: {
-      activeIngredient: "Polisacharydy i hericenony",
-      concentration: "20:1 ekstrakt",
-      form: "Proszek",
-      additional: ["Cały owocnik", "Standardyzowany ekstrakt"]
+      activeIngredient: 'Polisacharydy i hericenony',
+      concentration: '20:1 ekstrakt',
+      form: 'Proszek',
+      additional: ['Cały owocnik', 'Standardyzowany ekstrakt']
     },
     neuroEffects: [
-      "Stymuluje produkcję NGF",
-      "Wspomaga neurogenezę",
-      "Poprawa myelinyzacji",
-      "Neuroregeneracyjne działanie"
+      'Stymuluje produkcję NGF',
+      'Wspomaga neurogenezę',
+      'Poprawa myelinyzacji',
+      'Neuroregeneracyjne działanie'
     ],
     warnings: [
-      "Może wywołać reakcje alergiczne u osób uczulonych na grzyby",
-      "Konsultacja z lekarzem"
+      'Może wywołać reakcje alergiczne u osób uczulonych na grzyby',
+      'Konsultacja z lekarzem'
     ]
   },
   {
-    id: "n-acetyl-l-tyrosine",
-    name: "N-Acetyl L-Tyrosine",
-    polishName: "N-acetylo-L-tyrozyna",
-    category: "Aminokwasy",
-    description: "Wysoko biodostępna forma tyrozyny. Prekursor dopaminy i noradrenaliny wspierający nastrój i koncentrację.",
+    id: 'n-acetyl-l-tyrosine',
+    name: 'N-Acetyl L-Tyrosine',
+    polishName: 'N-acetylo-L-tyrozyna',
+    category: 'Aminokwasy',
+    description:
+      'Wysoko biodostępna forma tyrozyny. Prekursor dopaminy i noradrenaliny wspierający nastrój i koncentrację.',
     benefits: [
-      "Wysoko biodostępna forma tyrozyny",
-      "Prekursor dopaminy i noradrenaliny",
-      "Poprawia nastrój i koncentrację",
-      "Wspomaga odporność na stres"
+      'Wysoko biodostępna forma tyrozyny',
+      'Prekursor dopaminy i noradrenaliny',
+      'Poprawia nastrój i koncentrację',
+      'Wspomaga odporność na stres'
     ],
-    dosage: "350-700mg dziennie",
-    timing: "Na czczo lub przed stresem",
-    price: "od 12,99 €",
+    dosage: '350-700mg dziennie',
+    timing: 'Na czczo lub przed stresem',
+    price: 'od 12,99 €',
     sklad: {
-      activeIngredient: "N-acetylo-L-tyrozyna",
-      concentration: "99%",
-      form: "Proszek krystaliczny",
-      additional: ["Wysoka biodostępność", "Przekracza BBB"]
+      activeIngredient: 'N-acetylo-L-tyrozyna',
+      concentration: '99%',
+      form: 'Proszek krystaliczny',
+      additional: ['Wysoka biodostępność', 'Przekracza BBB']
     },
     neuroEffects: [
-      "Zwiększa dopaminę i noradrenalinę",
-      "Poprawia koncentrację pod stresem",
-      "Wspomaga funkcje wykonawcze",
-      "Redukuje zmęczenie psychiczne"
+      'Zwiększa dopaminę i noradrenalinę',
+      'Poprawia koncentrację pod stresem',
+      'Wspomaga funkcje wykonawcze',
+      'Redukuje zmęczenie psychiczne'
     ],
     warnings: [
-      "Może wchodzić w interakcje z lekami przeciwdepresyjnymi",
-      "Unikać przy nadciśnieniu"
+      'Może wchodzić w interakcje z lekami przeciwdepresyjnymi',
+      'Unikać przy nadciśnieniu'
     ]
   },
   {
-    id: "ashwagandha-ksm-66",
-    name: "Ashwagandha KSM-66",
-    polishName: "Ashwagandha KSM-66",
-    category: "Adaptogeny",
-    description: "Najbardziej badany ekstrakt ashwagandhy. Redukuje kortyzol, stres i poprawia jakość snu oraz witalność.",
+    id: 'ashwagandha-ksm-66',
+    name: 'Ashwagandha KSM-66',
+    polishName: 'Ashwagandha KSM-66',
+    category: 'Adaptogeny',
+    description:
+      'Najbardziej badany ekstrakt ashwagandhy. Redukuje kortyzol, stres i poprawia jakość snu oraz witalność.',
     benefits: [
-      "Najbardziej badany ekstrakt ashwagandhy",
-      "Redukuje kortyzol i stres",
-      "Poprawia jakość snu",
-      "Zwiększa witalność i siłę"
+      'Najbardziej badany ekstrakt ashwagandhy',
+      'Redukuje kortyzol i stres',
+      'Poprawia jakość snu',
+      'Zwiększa witalność i siłę'
     ],
-    dosage: "300-600mg dziennie",
-    timing: "Wieczorem z posiłkiem",
-    price: "od 15,99 €",
+    dosage: '300-600mg dziennie',
+    timing: 'Wieczorem z posiłkiem',
+    price: 'od 15,99 €',
     sklad: {
-      activeIngredient: "Withanolidy",
-      concentration: "KSM-66 5% withanolidów",
-      form: "Proszek lub kapsułki",
-      additional: ["Ekstrakt korzenia", "Standardyzowany KSM-66"]
+      activeIngredient: 'Withanolidy',
+      concentration: 'KSM-66 5% withanolidów',
+      form: 'Proszek lub kapsułki',
+      additional: ['Ekstrakt korzenia', 'Standardyzowany KSM-66']
     },
     neuroEffects: [
-      "Moduluje układ HPA",
-      "Redukuje kortyzol",
-      "Poprawia odporność na stres",
-      "Neuroprotekcyjne działanie"
+      'Moduluje układ HPA',
+      'Redukuje kortyzol',
+      'Poprawia odporność na stres',
+      'Neuroprotekcyjne działanie'
     ],
-    warnings: [
-      "Może nasilać działanie leków nasennych",
-      "Konsultacja z lekarzem"
-    ]
+    warnings: ['Może nasilać działanie leków nasennych', 'Konsultacja z lekarzem']
   }
-];
+]
 
-const categories = ["Wszystkie", "Nootropy", "Adaptogeny", "Aminokwasy", "Antyoksydanty", "Minerały", "Grzyby lecznicze", "Kwasy tłuszczowe", "Cholina", "Stymulanty"];
+const categories = [
+  'Wszystkie',
+  'Nootropy',
+  'Adaptogeny',
+  'Aminokwasy',
+  'Antyoksydanty',
+  'Minerały',
+  'Grzyby lecznicze',
+  'Kwasy tłuszczowe',
+  'Cholina',
+  'Stymulanty'
+]
 
 const categoryColors: Record<string, string> = {
-  "Nootropy": "bg-purple-100 text-purple-800",
-  "Adaptogeny": "bg-green-100 text-green-800",
-  "Aminokwasy": "bg-blue-100 text-blue-800",
-  "Antyoksydanty": "bg-orange-100 text-orange-800",
-  "Minerały": "bg-indigo-100 text-indigo-800",
-  "Grzyby lecznicze": "bg-amber-100 text-amber-800",
-  "Kwasy tłuszczowe": "bg-cyan-100 text-cyan-800",
-  "Cholina": "bg-pink-100 text-pink-800",
-  "Stymulanty": "bg-red-100 text-red-800"
-};
+  Nootropy: 'bg-purple-100 text-purple-800',
+  Adaptogeny: 'bg-green-100 text-green-800',
+  Aminokwasy: 'bg-blue-100 text-blue-800',
+  Antyoksydanty: 'bg-orange-100 text-orange-800',
+  Minerały: 'bg-indigo-100 text-indigo-800',
+  'Grzyby lecznicze': 'bg-amber-100 text-amber-800',
+  'Kwasy tłuszczowe': 'bg-cyan-100 text-cyan-800',
+  Cholina: 'bg-pink-100 text-pink-800',
+  Stymulanty: 'bg-red-100 text-red-800'
+}
 
 /**
  *
  */
 export default function SupplementsPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Wszystkie");
-  const [selectedSupplement, setSelectedSupplement] = useState<Supplement | null>(null);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('Wszystkie')
+  const [selectedSupplement, setSelectedSupplement] = useState<Supplement | null>(null)
 
-  const filteredSupplements = useMemo(() => supplements.filter(supplement => {
-      const matchesSearch = supplement.polishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          supplement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          supplement.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          supplement.benefits.some(benefit => benefit.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      const matchesCategory = selectedCategory === "Wszystkie" || supplement.category === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    }), [searchTerm, selectedCategory]);
+  const filteredSupplements = useMemo(
+    () =>
+      supplements.filter((supplement) => {
+        const matchesSearch =
+          supplement.polishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          supplement.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          supplement.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          supplement.benefits.some((benefit) =>
+            benefit.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+
+        const matchesCategory =
+          selectedCategory === 'Wszystkie' || supplement.category === selectedCategory
+
+        return matchesSearch && matchesCategory
+      }),
+    [searchTerm, selectedCategory]
+  )
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "Nootropy": return <Brain className="h-4 w-4" />;
-      case "Adaptogeny": return <Shield className="h-4 w-4" />;
-      case "Aminokwasy": return <Leaf className="h-4 w-4" />;
-      case "Minerały": return <Zap className="h-4 w-4" />;
-      case "Grzyby lecznicze": return <Package className="h-4 w-4" />;
-      default: return <Heart className="h-4 w-4" />;
+      case 'Nootropy':
+        return <Brain className="h-4 w-4" />
+      case 'Adaptogeny':
+        return <Shield className="h-4 w-4" />
+      case 'Aminokwasy':
+        return <Leaf className="h-4 w-4" />
+      case 'Minerały':
+        return <Zap className="h-4 w-4" />
+      case 'Grzyby lecznicze':
+        return <Package className="h-4 w-4" />
+      default:
+        return <Heart className="h-4 w-4" />
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
+          <Link
+            href="/"
+            className="mb-4 inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
             Powrót do strony głównej
           </Link>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Baza Suplementów</h1>
+          <h1 className="mb-2 text-4xl font-bold text-gray-900">Baza Suplementów</h1>
           <p className="text-lg text-gray-600">
-            Kompletna baza suplementów z Swiss Herbal EU z dokładnym składem i wskazówkami stosowania
+            Kompletna baza suplementów z Swiss Herbal EU z dokładnym składem i wskazówkami
+            stosowania
           </p>
         </div>
 
         {/* Search and Filters */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
             <input
               type="text"
               placeholder="Wyszukaj suplementy..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full rounded-lg border border-gray-300 py-3 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -489,10 +522,10 @@ export default function SupplementsPage() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   selectedCategory === category
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                    ? 'bg-blue-600 text-white'
+                    : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 {category}
@@ -509,18 +542,18 @@ export default function SupplementsPage() {
         </div>
 
         {/* Supplements Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredSupplements.map((supplement) => (
             <Card
               key={supplement.id}
-              className="cursor-pointer hover:shadow-lg transition-shadow"
+              className="cursor-pointer transition-shadow hover:shadow-lg"
               onClick={() => setSelectedSupplement(supplement)}
             >
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
+                <div className="mb-4 flex items-start justify-between">
                   <div>
                     <CardTitle className="text-lg">{supplement.polishName}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{supplement.name}</p>
+                    <p className="text-muted-foreground text-sm">{supplement.name}</p>
                   </div>
                   <Badge variant="secondary" className="flex items-center">
                     {getCategoryIcon(supplement.category)}
@@ -528,19 +561,21 @@ export default function SupplementsPage() {
                   </Badge>
                 </div>
 
-                <CardDescription className="mb-4 line-clamp-3">{supplement.description}</CardDescription>
+                <CardDescription className="mb-4 line-clamp-3">
+                  {supplement.description}
+                </CardDescription>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4 mr-1" />
+                <div className="mb-4 space-y-2">
+                  <div className="text-muted-foreground flex items-center text-sm">
+                    <Clock className="mr-1 h-4 w-4" />
                     <span>{supplement.dosage}</span>
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Package className="h-4 w-4 mr-1" />
+                  <div className="text-muted-foreground flex items-center text-sm">
+                    <Package className="mr-1 h-4 w-4" />
                     <span>{supplement.timing}</span>
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <DollarSign className="h-4 w-4 mr-1" />
+                  <div className="text-muted-foreground flex items-center text-sm">
+                    <DollarSign className="mr-1 h-4 w-4" />
                     <span>{supplement.price}</span>
                   </div>
                 </div>
@@ -552,7 +587,9 @@ export default function SupplementsPage() {
                     </Badge>
                   ))}
                   {supplement.benefits.length > 3 && (
-                    <span className="text-xs text-muted-foreground">+{supplement.benefits.length - 3} więcej</span>
+                    <span className="text-muted-foreground text-xs">
+                      +{supplement.benefits.length - 3} więcej
+                    </span>
                   )}
                 </div>
               </CardContent>
@@ -562,43 +599,59 @@ export default function SupplementsPage() {
 
         {/* Empty State */}
         {filteredSupplements.length === 0 && (
-          <div className="text-center py-12">
-            <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Brak wyników</h3>
-            <p className="text-gray-600">Nie znaleziono suplementów spełniających kryteria wyszukiwania.</p>
+          <div className="py-12 text-center">
+            <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+            <h3 className="mb-2 text-lg font-medium text-gray-900">Brak wyników</h3>
+            <p className="text-gray-600">
+              Nie znaleziono suplementów spełniających kryteria wyszukiwania.
+            </p>
           </div>
         )}
       </div>
 
       {/* Supplement Detail Modal */}
       {selectedSupplement && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black p-4">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white">
             <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
+              <div className="mb-4 flex items-start justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedSupplement.polishName}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {selectedSupplement.polishName}
+                  </h2>
                   <p className="text-sm text-gray-500">{selectedSupplement.name}</p>
                 </div>
                 <button
                   onClick={() => setSelectedSupplement(null)}
                   className="text-gray-400 hover:text-gray-600"
                 >
-                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Opis</h3>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Opis</h3>
                   <p className="text-gray-600">{selectedSupplement.description}</p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Skład (Składniki aktywne)</h3>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                    Skład (Składniki aktywne)
+                  </h3>
+                  <div className="rounded-lg bg-gray-50 p-4">
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span className="font-medium">Składnik aktywny:</span>
@@ -626,28 +679,36 @@ export default function SupplementsPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Zalecane dawkowanie</h3>
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="font-medium text-blue-900">{selectedSupplement.dosage}</p>
-                      <p className="text-sm text-blue-700 mt-1">{selectedSupplement.timing}</p>
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                      Zalecane dawkowanie
+                    </h3>
+                    <div className="rounded-lg bg-blue-50 p-4">
+                      <p className="font-medium text-blue-900">
+                        {selectedSupplement.dosage}
+                      </p>
+                      <p className="mt-1 text-sm text-blue-700">
+                        {selectedSupplement.timing}
+                      </p>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Cena</h3>
-                    <div className="bg-green-50 p-4 rounded-lg">
-                      <p className="font-medium text-green-900">{selectedSupplement.price}</p>
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">Cena</h3>
+                    <div className="rounded-lg bg-green-50 p-4">
+                      <p className="font-medium text-green-900">
+                        {selectedSupplement.price}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Korzyści</h3>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Korzyści</h3>
                   <ul className="space-y-1">
                     {selectedSupplement.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-green-500 mr-2">•</span>
+                        <span className="mr-2 text-green-500">•</span>
                         <span className="text-gray-600">{benefit}</span>
                       </li>
                     ))}
@@ -655,11 +716,13 @@ export default function SupplementsPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Efekty neuroregulacyjne</h3>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                    Efekty neuroregulacyjne
+                  </h3>
                   <ul className="space-y-1">
                     {selectedSupplement.neuroEffects.map((effect, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-purple-500 mr-2">•</span>
+                        <span className="mr-2 text-purple-500">•</span>
                         <span className="text-gray-600">{effect}</span>
                       </li>
                     ))}
@@ -667,21 +730,23 @@ export default function SupplementsPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Ostrzeżenia</h3>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                    Ostrzeżenia
+                  </h3>
                   <ul className="space-y-1">
                     {selectedSupplement.warnings.map((warning, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-red-500 mr-2">⚠</span>
+                        <span className="mr-2 text-red-500">⚠</span>
                         <span className="text-gray-600">{warning}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="flex justify-end space-x-3 pt-4 border-t">
+                <div className="flex justify-end space-x-3 border-t pt-4">
                   <button
                     onClick={() => setSelectedSupplement(null)}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    className="rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200"
                   >
                     Zamknij
                   </button>
@@ -692,5 +757,5 @@ export default function SupplementsPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

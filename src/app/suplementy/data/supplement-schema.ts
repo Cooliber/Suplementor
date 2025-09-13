@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const SupplementSchema = z.object({
   id: z.string().min(1),
@@ -14,11 +14,11 @@ export const SupplementSchema = z.object({
     activeIngredient: z.string().min(1),
     concentration: z.string().min(1),
     form: z.string().min(1),
-    additional: z.array(z.string()),
+    additional: z.array(z.string())
   }),
   neuroEffects: z.array(z.string()).min(1),
   warnings: z.array(z.string()),
-  source: z.string().min(1),
-});
+  source: z.string().min(1)
+})
 
-export type Supplement = z.infer<typeof SupplementSchema>;
+export type Supplement = z.infer<typeof SupplementSchema>

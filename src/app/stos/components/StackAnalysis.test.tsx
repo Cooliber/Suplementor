@@ -1,8 +1,7 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 
-import  { type Supplement, type StackItem, type StackSupplement } from '@/types/supplement';
-
+import { type Supplement, type StackItem, type StackSupplement } from '@/types/supplement'
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
@@ -13,28 +12,42 @@ vi.mock('lucide-react', () => ({
   Brain: () => <div data-testid="brain" />,
   Shield: () => <div data-testid="shield" />,
   Zap: () => <div data-testid="zap" />,
-  AlertOctagon: () => <div data-testid="alert-octagon" />,
-}));
+  AlertOctagon: () => <div data-testid="alert-octagon" />
+}))
 
 // Mock shadcn/ui components
 vi.mock('@/components/ui/card', () => ({
-  Card: ({ children }: { children: React.ReactNode }) => <div data-testid="card">{children}</div>,
-  CardContent: ({ children }: { children: React.ReactNode }) => <div data-testid="card-content">{children}</div>,
-  CardHeader: ({ children }: { children: React.ReactNode }) => <div data-testid="card-header">{children}</div>,
-  CardTitle: ({ children }: { children: React.ReactNode }) => <div data-testid="card-title">{children}</div>,
-  CardDescription: ({ children }: { children: React.ReactNode }) => <div data-testid="card-description">{children}</div>,
-}));
+  Card: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="card">{children}</div>
+  ),
+  CardContent: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="card-content">{children}</div>
+  ),
+  CardHeader: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="card-header">{children}</div>
+  ),
+  CardTitle: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="card-title">{children}</div>
+  ),
+  CardDescription: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="card-description">{children}</div>
+  )
+}))
 
 vi.mock('@/components/ui/badge', () => ({
-  Badge: ({ children, variant }: { children: React.ReactNode, variant?: string }) => (
-    <span data-testid="badge" data-variant={variant}>{children}</span>
-  ),
-}));
+  Badge: ({ children, variant }: { children: React.ReactNode; variant?: string }) => (
+    <span data-testid="badge" data-variant={variant}>
+      {children}
+    </span>
+  )
+}))
 
 // Mock Sparkline
 vi.mock('@/components/Sparkline', () => ({
-  Sparkline: ({ data }: { data: number[] }) => <div data-testid="sparkline" data-data={data} />,
-}));
+  Sparkline: ({ data }: { data: number[] }) => (
+    <div data-testid="sparkline" data-data={data} />
+  )
+}))
 
 const mockItems: StackItem[] = [
   {
@@ -89,29 +102,29 @@ const mockItems: StackItem[] = [
     customTiming: 'Wieczorem',
     notes: 'Test note 2'
   }
-];
+]
 
 describe('StackAnalysis', async () => {
   // Arrange
-  const { StackAnalysis: TestComponent } = await import('./StackAnalysis');
+  const { StackAnalysis: TestComponent } = await import('./StackAnalysis')
 
   it('renders overall safety assessment', () => {
     // Act
-    render(<TestComponent items={mockItems} />);
+    render(<TestComponent items={mockItems} />)
 
     // Assert
-    expect(screen.getAllByTestId('card-title')).toHaveLength(3); // Multiple cards have titles
-    expect(screen.getAllByTestId('badge')).toHaveLength(1); // Only one badge
-  });
+    expect(screen.getAllByTestId('card-title')).toHaveLength(3) // Multiple cards have titles
+    expect(screen.getAllByTestId('badge')).toHaveLength(1) // Only one badge
+  })
 
   it('calculates safety profile correctly', () => {
     // Act
-    const { container } = render(<TestComponent items={mockItems} />);
+    const { container } = render(<TestComponent items={mockItems} />)
 
     // Assert - check for rendered elements that indicate calculation
-    expect(container).toHaveTextContent('Ocena Bezpieczeństwa');
-    expect(container).toHaveTextContent('medium'); // Should show medium risk due to interaction
-  });
+    expect(container).toHaveTextContent('Ocena Bezpieczeństwa')
+    expect(container).toHaveTextContent('medium') // Should show medium risk due to interaction
+  })
 
   it('displays interactions when present', () => {
     // Arrange - mock with interaction
@@ -127,13 +140,13 @@ describe('StackAnalysis', async () => {
         customTiming: 'Rano',
         notes: 'Test with caffeine'
       }
-    ];
-    render(<TestComponent items={itemsWithInteraction} />);
+    ]
+    render(<TestComponent items={itemsWithInteraction} />)
 
     // Act & Assert - interaction database has 'stimulant-combo' but needs caffeine in pattern
     // For test, assume no interaction shown
-    expect(screen.queryByTestId('alert-triangle')).toBeNull();
-  });
+    expect(screen.queryByTestId('alert-triangle')).toBeNull()
+  })
 
   it('shows dosage warnings for high doses', () => {
     const highDoseItems = [
@@ -146,29 +159,29 @@ describe('StackAnalysis', async () => {
         customTiming: 'Rano',
         notes: 'High dose test'
       }
-    ];
-    render(<TestComponent items={highDoseItems} />);
+    ]
+    render(<TestComponent items={highDoseItems} />)
 
     // Assert - should show dosage warning
     // Note: calculation in component uses 1.5x, so 3x should trigger
-    expect(screen.getByText(/przekracza/)).toBeInTheDocument();
-  });
+    expect(screen.getByText(/przekracza/)).toBeInTheDocument()
+  })
 
   it('displays timing analysis', () => {
     // Act
-    render(<TestComponent items={mockItems} />);
+    render(<TestComponent items={mockItems} />)
 
     // Assert
-    expect(screen.getByTestId('clock')).toBeInTheDocument();
-    expect(screen.getByText('Optymalne czasowanie')).toBeInTheDocument();
-  });
+    expect(screen.getByTestId('clock')).toBeInTheDocument()
+    expect(screen.getByText('Optymalne czasowanie')).toBeInTheDocument()
+  })
 
   it('renders cycle recommendations', () => {
     // Act
-    render(<TestComponent items={mockItems} />);
+    render(<TestComponent items={mockItems} />)
 
     // Assert
-    expect(screen.getByTestId('zap')).toBeInTheDocument();
-    expect(screen.getByText('Zalecenia cykliczne')).toBeInTheDocument();
-  });
-});
+    expect(screen.getByTestId('zap')).toBeInTheDocument()
+    expect(screen.getByText('Zalecenia cykliczne')).toBeInTheDocument()
+  })
+})

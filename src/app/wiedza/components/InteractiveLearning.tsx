@@ -1,65 +1,67 @@
-'use client';
+'use client'
 
-import { 
-  RotateCcw, 
-  CheckCircle, 
-  XCircle, 
-  Award, 
-  Brain, 
+import {
+  RotateCcw,
+  CheckCircle,
+  XCircle,
+  Award,
+  Brain,
   Clock,
   ArrowRight,
   BookOpen,
   Target
-} from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
+} from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 // Note: Zustand store for brain state can be created in src/lib/stores/useBrainStore.ts for full integration
 // For now, using local state to avoid editing other files
 
 interface QuizQuestion {
-  id: string;
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: string;
-  points: number;
+  id: string
+  question: string
+  options: string[]
+  correctAnswer: number
+  explanation: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  category: string
+  points: number
 }
 
 interface LearningLesson {
-  id: string;
-  title: string;
-  content: string;
-  duration: number; // in minutes
-  keyPoints: string[];
-  quiz: string[];
-  nextLesson?: string | undefined;
+  id: string
+  title: string
+  content: string
+  duration: number // in minutes
+  keyPoints: string[]
+  quiz: string[]
+  nextLesson?: string | undefined
 }
 
 interface UserProgress {
-  lessonId: string;
-  completed: boolean;
-  score: number;
-  timeSpent: number;
-  attempts: number;
-  lastAccessed: string;
+  lessonId: string
+  completed: boolean
+  score: number
+  timeSpent: number
+  attempts: number
+  lastAccessed: string
 }
 
 interface Section {
-  title: string;
-  content: string;
+  title: string
+  content: string
 }
 
 const quizQuestions: QuizQuestion[] = [
   {
     id: 'q1',
-    question: 'Który neuroprzekaźnik jest głównie odpowiedzialny za motywację i system nagrody?',
+    question:
+      'Który neuroprzekaźnik jest głównie odpowiedzialny za motywację i system nagrody?',
     options: ['Serotonina', 'Dopamina', 'GABA', 'Acetylocholina'],
     correctAnswer: 1,
-    explanation: 'Dopamina jest kluczowym neuroprzekaźnikiem w systemie nagrody mózgu, odpowiedzialnym za motywację, przyjemność i uczenie się przez wzmocnienie.',
+    explanation:
+      'Dopamina jest kluczowym neuroprzekaźnikiem w systemie nagrody mózgu, odpowiedzialnym za motywację, przyjemność i uczenie się przez wzmocnienie.',
     difficulty: 'easy',
     category: 'Neurobiologia',
     points: 10
@@ -74,7 +76,8 @@ const quizQuestions: QuizQuestion[] = [
       'Aktywuje receptory GABA'
     ],
     correctAnswer: 1,
-    explanation: 'L-teanina działa jako antagonista receptorów AMPA i kainowych, jednocześnie modulując aktywność fal alfa (8-12 Hz), co prowadzi do stanu relaksacji bez sedacji.',
+    explanation:
+      'L-teanina działa jako antagonista receptorów AMPA i kainowych, jednocześnie modulując aktywność fal alfa (8-12 Hz), co prowadzi do stanu relaksacji bez sedacji.',
     difficulty: 'medium',
     category: 'Farmakologia',
     points: 15
@@ -82,9 +85,15 @@ const quizQuestions: QuizQuestion[] = [
   {
     id: 'q3',
     question: 'Która forma magnezu najlepiej przekracza barierę krew-mózg?',
-    options: ['Magnez cytrynian', 'Magnez L-treonian', 'Magnez glicynat', 'Magnez tlenek'],
+    options: [
+      'Magnez cytrynian',
+      'Magnez L-treonian',
+      'Magnez glicynat',
+      'Magnez tlenek'
+    ],
     correctAnswer: 1,
-    explanation: 'Magnez L-treonian został specjalnie zaprojektowany do przekraczania bariery krew-mózg dzięki transportowi przez MCT (monocarboxylate transporter).',
+    explanation:
+      'Magnez L-treonian został specjalnie zaprojektowany do przekraczania bariery krew-mózg dzięki transportowi przez MCT (monocarboxylate transporter).',
     difficulty: 'medium',
     category: 'Farmakologia',
     points: 15
@@ -99,7 +108,8 @@ const quizQuestions: QuizQuestion[] = [
       'Regulacja temperatury'
     ],
     correctAnswer: 2,
-    explanation: 'Oś HPA (podwzgórze-przysadka-nadnercza) jest głównym systemem neuroendokrynnym odpowiedzialnym za reakcję organizmu na stres i produkcję kortyzolu.',
+    explanation:
+      'Oś HPA (podwzgórze-przysadka-nadnercza) jest głównym systemem neuroendokrynnym odpowiedzialnym za reakcję organizmu na stres i produkcję kortyzolu.',
     difficulty: 'easy',
     category: 'Endokrynologia',
     points: 10
@@ -109,7 +119,8 @@ const quizQuestions: QuizQuestion[] = [
     question: 'Który adaptogen najskuteczniej redukuje poziom kortyzolu?',
     options: ['Rhodiola rosea', 'Ashwagandha KSM-66', 'Ginseng', 'Schisandra'],
     correctAnswer: 1,
-    explanation: 'Ashwagandha KSM-66 wykazuje najsilniejsze działanie w redukcji kortyzolu, z badaniami pokazującymi redukcję do 27.9% w ciągu 8 tygodni.',
+    explanation:
+      'Ashwagandha KSM-66 wykazuje najsilniejsze działanie w redukcji kortyzolu, z badaniami pokazującymi redukcję do 27.9% w ciągu 8 tygodni.',
     difficulty: 'medium',
     category: 'Farmakologia',
     points: 15
@@ -124,7 +135,8 @@ const quizQuestions: QuizQuestion[] = [
       'Szybkość przewodzenia impulsów nerwowych'
     ],
     correctAnswer: 1,
-    explanation: 'Neuroplastyczność to zdolność mózgu do reorganizacji, tworzenia nowych połączeń neuronalnych i adaptacji przez całe życie.',
+    explanation:
+      'Neuroplastyczność to zdolność mózgu do reorganizacji, tworzenia nowych połączeń neuronalnych i adaptacji przez całe życie.',
     difficulty: 'easy',
     category: 'Neurobiologia',
     points: 10
@@ -134,7 +146,8 @@ const quizQuestions: QuizQuestion[] = [
     question: 'Który czynnik najsilniej stymuluje neurogenezę?',
     options: ['Ćwiczenia fizyczne', 'Dieta ketogeniczna', 'Suplementacja', 'Sen'],
     correctAnswer: 0,
-    explanation: 'Ćwiczenia fizyczne są najsilniejszym naturalnym stymulatorem neurogenezy, zwiększając poziom BDNF i promując tworzenie nowych neuronów.',
+    explanation:
+      'Ćwiczenia fizyczne są najsilniejszym naturalnym stymulatorem neurogenezy, zwiększając poziom BDNF i promując tworzenie nowych neuronów.',
     difficulty: 'medium',
     category: 'Neurobiologia',
     points: 15
@@ -149,12 +162,13 @@ const quizQuestions: QuizQuestion[] = [
       'Niski rano, wzrost po południu'
     ],
     correctAnswer: 2,
-    explanation: 'Zdrowy rytm kortyzolu charakteryzuje się szczytem rano (6-8), który pomaga w przebudzeniu, a następnie stopniowym spadkiem do minimum w nocy.',
+    explanation:
+      'Zdrowy rytm kortyzolu charakteryzuje się szczytem rano (6-8), który pomaga w przebudzeniu, a następnie stopniowym spadkiem do minimum w nocy.',
     difficulty: 'medium',
     category: 'Endokrynologia',
     points: 15
   }
-];
+]
 
 const brainMDContent = `# Wstęp do Anatomii i Fizjologii Mózgu
 
@@ -244,7 +258,7 @@ Sugestia wizualizacji: Tab w NeuroplasticityTab.tsx z animacjami zmian synaptycz
 
 ## Referencje Ogólne
 
-Ten dokument opiera się na wiarygodnych źródłach, z cytacjami powyżej. Dla dalszych badań, polecamy PubMed i NIH.gov. Treść wspiera komponenty edukacyjne app, jak InteractiveLearning.tsx, integrując z danymi suplementów w supplements-database.ts dla neuroefektów.`;
+Ten dokument opiera się na wiarygodnych źródłach, z cytacjami powyżej. Dla dalszych badań, polecamy PubMed i NIH.gov. Treść wspiera komponenty edukacyjne app, jak InteractiveLearning.tsx, integrując z danymi suplementów w supplements-database.ts dla neuroefektów.`
 
 const learningLessons: LearningLesson[] = [
   {
@@ -484,88 +498,93 @@ Główny system neuroendokrynny odpowiedzialny za reakcję na stres.
     quiz: ['q1', 'q6', 'q7'],
     nextLesson: undefined as any
   }
-];
+]
 
 /**
  *
  * @param md
  */
 const parseMDSections = (md: string): Section[] => {
-  const sections: Section[] = [];
-  let currentSection: Section = { title: '', content: '' };
-  const lines = md.split('\n');
-  let inSection = false;
+  const sections: Section[] = []
+  let currentSection: Section = { title: '', content: '' }
+  const lines = md.split('\n')
+  let inSection = false
 
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]?.trim() ?? '';
+    const line = lines[i]?.trim() ?? ''
     if (line !== '') {
       if (line.startsWith('# ')) {
         // Main title
         if (currentSection.title) {
-          currentSection.content = currentSection.content.trim();
-          sections.push(currentSection);
+          currentSection.content = currentSection.content.trim()
+          sections.push(currentSection)
         }
-        currentSection = { title: line.substring(2).trim(), content: '' };
-        inSection = true;
+        currentSection = { title: line.substring(2).trim(), content: '' }
+        inSection = true
       } else if (line.startsWith('## ')) {
         if (currentSection.title && currentSection.content) {
-          currentSection.content = currentSection.content.trim();
-          sections.push(currentSection);
+          currentSection.content = currentSection.content.trim()
+          sections.push(currentSection)
         }
-        currentSection = { title: line.substring(3).trim(), content: '' };
-        inSection = true;
+        currentSection = { title: line.substring(3).trim(), content: '' }
+        inSection = true
       } else if (inSection) {
-        currentSection.content += lines[i] + '\n';
+        currentSection.content += lines[i] + '\n'
       }
     }
   }
   if (currentSection.title && currentSection.content) {
-    sections.push(currentSection);
+    sections.push(currentSection)
   }
-  return sections;
-};
+  return sections
+}
 
 interface InteractiveLearningProps {
-  moduleId: string;
+  moduleId: string
 }
 
 /**
  *
  */
 export default function InteractiveLearning({ moduleId }: InteractiveLearningProps) {
-  const [currentLesson, setCurrentLesson] = useState<LearningLesson | null>(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [score, setScore] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-  const [lessonStartTime, setLessonStartTime] = useState<Date | null>(null);
-  const [progress, setProgress] = useState<UserProgress[]>([]);
-  const [activeTab, setActiveTab] = useState<'lesson' | 'quiz'>('lesson');
-  const [selectedRegion, setSelectedRegion] = useState<string>(''); // Local state for Brain3D integration; can be replaced with Zustand
+  const [currentLesson, setCurrentLesson] = useState<LearningLesson | null>(null)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [showExplanation, setShowExplanation] = useState(false)
+  const [score, setScore] = useState(0)
+  const [quizCompleted, setQuizCompleted] = useState(false)
+  const [lessonStartTime, setLessonStartTime] = useState<Date | null>(null)
+  const [progress, setProgress] = useState<UserProgress[]>([])
+  const [activeTab, setActiveTab] = useState<'lesson' | 'quiz'>('lesson')
+  const [selectedRegion, setSelectedRegion] = useState<string>('') // Local state for Brain3D integration; can be replaced with Zustand
 
   useEffect(() => {
     // Load first lesson
     if (learningLessons.length > 0 && learningLessons[0]) {
-      setCurrentLesson(learningLessons[0]);
-      setLessonStartTime(new Date());
+      setCurrentLesson(learningLessons[0])
+      setLessonStartTime(new Date())
     }
-    
+
     // Load progress from localStorage
-    const savedProgress = localStorage.getItem('learning-progress');
+    const savedProgress = localStorage.getItem('learning-progress')
     if (savedProgress) {
       try {
-        const parsed = JSON.parse(savedProgress) as unknown as UserProgress[];
+        const parsed = JSON.parse(savedProgress) as unknown as UserProgress[]
         if (Array.isArray(parsed)) {
-          setProgress(parsed);
+          setProgress(parsed)
         }
       } catch (error) {
-        console.error('Failed to parse saved progress:', error);
+        console.error('Failed to parse saved progress:', error)
       }
     }
-  }, []);
+  }, [])
 
-  const saveProgress = (lessonId: string, completed: boolean, score: number, timeSpent: number) => {
+  const saveProgress = (
+    lessonId: string,
+    completed: boolean,
+    score: number,
+    timeSpent: number
+  ) => {
     const newProgress: UserProgress = {
       lessonId,
       completed,
@@ -573,82 +592,91 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
       timeSpent,
       attempts: 1,
       lastAccessed: new Date().toISOString()
-    };
-    
-    const updatedProgress = [...progress.filter(p => p.lessonId !== lessonId), newProgress];
-    setProgress(updatedProgress);
-    localStorage.setItem('learning-progress', JSON.stringify(updatedProgress));
-  };
+    }
+
+    const updatedProgress = [
+      ...progress.filter((p) => p.lessonId !== lessonId),
+      newProgress
+    ]
+    setProgress(updatedProgress)
+    localStorage.setItem('learning-progress', JSON.stringify(updatedProgress))
+  }
 
   const handleAnswerSelect = (answerIndex: number) => {
-    setSelectedAnswer(answerIndex);
-  };
+    setSelectedAnswer(answerIndex)
+  }
 
   const handleAnswerSubmit = () => {
-    if (selectedAnswer === null || !currentLesson) return;
-    
-    const questions = getCurrentQuestions();
-    const currentQuestion = questions[currentQuestionIndex];
-    if (!currentQuestion) return;
-    
-    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
-    
+    if (selectedAnswer === null || !currentLesson) return
+
+    const questions = getCurrentQuestions()
+    const currentQuestion = questions[currentQuestionIndex]
+    if (!currentQuestion) return
+
+    const isCorrect = selectedAnswer === currentQuestion.correctAnswer
+
     if (isCorrect) {
-      setScore(score + currentQuestion.points);
+      setScore(score + currentQuestion.points)
     }
-    
-    setShowExplanation(true);
-  };
+
+    setShowExplanation(true)
+  }
 
   const handleNextQuestion = () => {
-    const questions = getCurrentQuestions();
-    
+    const questions = getCurrentQuestions()
+
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
+      setCurrentQuestionIndex(currentQuestionIndex + 1)
+      setSelectedAnswer(null)
+      setShowExplanation(false)
     } else {
-      setQuizCompleted(true);
+      setQuizCompleted(true)
       if (currentLesson && lessonStartTime) {
-        const timeSpent = Math.round((new Date().getTime() - lessonStartTime.getTime()) / 60000);
-        saveProgress(currentLesson.id, true, score, timeSpent);
+        const timeSpent = Math.round(
+          (new Date().getTime() - lessonStartTime.getTime()) / 60000
+        )
+        saveProgress(currentLesson.id, true, score, timeSpent)
       }
     }
-  };
+  }
 
   const getCurrentQuestions = (): QuizQuestion[] => {
-    if (!currentLesson) return [];
-    return quizQuestions.filter(q => currentLesson.quiz.includes(q.id));
-  };
+    if (!currentLesson) return []
+    return quizQuestions.filter((q) => currentLesson.quiz.includes(q.id))
+  }
 
   const resetQuiz = () => {
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setShowExplanation(false);
-    setScore(0);
-    setQuizCompleted(false);
-  };
+    setCurrentQuestionIndex(0)
+    setSelectedAnswer(null)
+    setShowExplanation(false)
+    setScore(0)
+    setQuizCompleted(false)
+  }
 
   const goToNextLesson = () => {
-    if (!currentLesson?.nextLesson) return;
-    
-    const nextLesson = learningLessons.find(l => l.id === currentLesson.nextLesson);
+    if (!currentLesson?.nextLesson) return
+
+    const nextLesson = learningLessons.find((l) => l.id === currentLesson.nextLesson)
     if (nextLesson) {
-      setCurrentLesson(nextLesson);
-      setActiveTab('lesson');
-      resetQuiz();
-      setLessonStartTime(new Date());
+      setCurrentLesson(nextLesson)
+      setActiveTab('lesson')
+      resetQuiz()
+      setLessonStartTime(new Date())
     }
-  };
+  }
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'bg-green-100 text-green-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'hard': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'easy':
+        return 'bg-green-100 text-green-800'
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'hard':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   const handleSectionSelect = (value: string) => {
     // Map section to brain region for Brain3D integration (local state; can be Zustand)
@@ -656,99 +684,123 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
       'Anatomia Mózgu': 'frontal-lobe', // Example mapping; adjust based on Brain3D regions
       'Fizjologia Mózgu': 'hippocampus',
       'Zaburzenia, Odżywianie i Wpływ Suplementów': 'substantia-nigra',
-      'Aspekty Ewolucyjne i Nowe Badania': 'neocortex',
+      'Aspekty Ewolucyjne i Nowe Badania': 'neocortex'
       // Add more mappings as needed
-    };
-    setSelectedRegion(regionMap[value] || 'default');
-  };
+    }
+    setSelectedRegion(regionMap[value] || 'default')
+  }
 
   if (!currentLesson) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <Brain className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+          <Brain className="mx-auto mb-4 h-12 w-12 text-blue-500" />
           <p className="text-gray-600">Ładowanie modułu nauki...</p>
         </div>
       </div>
-    );
+    )
   }
 
-  const questions = getCurrentQuestions();
-  const currentQuestion = questions[currentQuestionIndex];
+  const questions = getCurrentQuestions()
+  const currentQuestion = questions[currentQuestionIndex]
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       {/* Progress Bar */}
       <div className="mb-6">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
+        <div className="mb-2 flex justify-between text-sm text-gray-600">
           <span>Postęp lekcji</span>
-          <span>{Math.round(((currentQuestionIndex + (quizCompleted ? 1 : 0)) / (questions.length + 1)) * 100)}%</span>
+          <span>
+            {Math.round(
+              ((currentQuestionIndex + (quizCompleted ? 1 : 0)) /
+                (questions.length + 1)) *
+                100
+            )}
+            %
+          </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentQuestionIndex + (quizCompleted ? 1 : 0)) / (questions.length + 1)) * 100}%` }}
+        <div className="h-2 w-full rounded-full bg-gray-200">
+          <div
+            className="h-2 rounded-full bg-blue-500 transition-all duration-300"
+            style={{
+              width: `${((currentQuestionIndex + (quizCompleted ? 1 : 0)) / (questions.length + 1)) * 100}%`
+            }}
           ></div>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex mb-6 bg-white rounded-lg p-1 shadow-sm">
+      <div className="mb-6 flex rounded-lg bg-white p-1 shadow-sm">
         <button
           onClick={() => setActiveTab('lesson')}
-          className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
+          className={`flex-1 rounded-md px-4 py-2 font-medium transition-colors ${
             activeTab === 'lesson'
               ? 'bg-blue-500 text-white'
               : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
-          <BookOpen className="h-4 w-4 inline mr-2" />
+          <BookOpen className="mr-2 inline h-4 w-4" />
           Lekcja
         </button>
         <button
           onClick={() => setActiveTab('quiz')}
-          className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
+          className={`flex-1 rounded-md px-4 py-2 font-medium transition-colors ${
             activeTab === 'quiz'
               ? 'bg-blue-500 text-white'
               : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
-          <Target className="h-4 w-4 inline mr-2" />
+          <Target className="mr-2 inline h-4 w-4" />
           Quiz
         </button>
       </div>
 
       {/* Lesson Content */}
       {activeTab === 'lesson' && (
-        <div className="bg-white rounded-lg shadow-sm p-8">
+        <div className="rounded-lg bg-white p-8 shadow-sm">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">{currentLesson.title}</h1>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900">
+              {currentLesson.title}
+            </h1>
             <div className="flex items-center text-sm text-gray-600">
-              <Clock className="h-4 w-4 mr-1" />
+              <Clock className="mr-1 h-4 w-4" />
               <span>{currentLesson.duration} min</span>
             </div>
           </div>
-          
+
           {currentLesson.id === 'brain-anatomy' ? (
             <>
-              <div className="prose max-w-none mb-8">
+              <div className="prose mb-8 max-w-none">
                 <ReactMarkdown>{currentLesson.content}</ReactMarkdown>
               </div>
               {parseMDSections(currentLesson.content).length > 1 && (
-                <Tabs defaultValue={parseMDSections(currentLesson.content)[0]?.title ?? 'Wstęp do Anatomii i Fizjologii Mózgu'} onValueChange={handleSectionSelect} className="w-full">
+                <Tabs
+                  defaultValue={
+                    parseMDSections(currentLesson.content)[0]?.title ??
+                    'Wstęp do Anatomii i Fizjologii Mózgu'
+                  }
+                  onValueChange={handleSectionSelect}
+                  className="w-full"
+                >
                   <TabsList className="grid w-full grid-cols-2">
                     {parseMDSections(currentLesson.content).map((section) => (
-                      <TabsTrigger key={section.title} value={section.title} className="max-w-xs truncate">
+                      <TabsTrigger
+                        key={section.title}
+                        value={section.title}
+                        className="max-w-xs truncate"
+                      >
                         {section.title}
                       </TabsTrigger>
                     ))}
                   </TabsList>
                   {parseMDSections(currentLesson.content).map((section) => (
-                    <TabsContent key={section.title} value={section.title} className="mt-4">
-                      <div className="prose max-w-none prose-headings:text-lg prose-p:leading-relaxed">
-                        <ReactMarkdown>
-                          {section.content}
-                        </ReactMarkdown>
+                    <TabsContent
+                      key={section.title}
+                      value={section.title}
+                      className="mt-4"
+                    >
+                      <div className="prose prose-headings:text-lg prose-p:leading-relaxed max-w-none">
+                        <ReactMarkdown>{section.content}</ReactMarkdown>
                       </div>
                     </TabsContent>
                   ))}
@@ -757,31 +809,35 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
             </>
           ) : (
             <>
-              <div className="prose max-w-none mb-8">
-                <div dangerouslySetInnerHTML={{ __html: currentLesson.content.replace(/\n/g, '<br>') }} />
+              <div className="prose mb-8 max-w-none">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: currentLesson.content.replace(/\n/g, '<br>')
+                  }}
+                />
               </div>
             </>
           )}
-          
-          <div className="bg-blue-50 rounded-lg p-6 mb-6">
-            <h3 className="font-semibold text-blue-900 mb-3">Kluczowe punkty:</h3>
+
+          <div className="mb-6 rounded-lg bg-blue-50 p-6">
+            <h3 className="mb-3 font-semibold text-blue-900">Kluczowe punkty:</h3>
             <ul className="space-y-2">
               {currentLesson.keyPoints.map((point, index) => (
                 <li key={index} className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="mt-0.5 mr-2 h-5 w-5 flex-shrink-0 text-blue-600" />
                   <span className="text-blue-800">{point}</span>
                 </li>
               ))}
             </ul>
           </div>
-          
+
           <div className="flex justify-between">
             <button
               onClick={() => setActiveTab('quiz')}
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+              className="flex items-center rounded-lg bg-blue-500 px-6 py-2 text-white transition-colors hover:bg-blue-600"
             >
               Przejdź do quizu
-              <ArrowRight className="h-4 w-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </button>
           </div>
         </div>
@@ -789,11 +845,11 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
 
       {/* Quiz Content */}
       {activeTab === 'quiz' && (
-        <div className="bg-white rounded-lg shadow-sm p-8">
+        <div className="rounded-lg bg-white p-8 shadow-sm">
           {!quizCompleted ? (
             <div>
               <div className="mb-6">
-                <div className="flex justify-between items-center mb-4">
+                <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Quiz - {currentLesson.title}</h2>
                   <div className="flex items-center space-x-4">
                     <span className="text-sm text-gray-600">
@@ -804,83 +860,101 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
                     </span>
                   </div>
                 </div>
-                
+
                 {currentQuestion && (
                   <div>
-                    <div className="flex items-center mb-4">
-                      <span className={`px-2 py-1 rounded text-xs font-medium mr-3 ${getDifficultyColor(currentQuestion.difficulty)}`}>
-                        {currentQuestion.difficulty === 'easy' ? 'Łatwe' : 
-                         currentQuestion.difficulty === 'medium' ? 'Średnie' : 'Trudne'}
+                    <div className="mb-4 flex items-center">
+                      <span
+                        className={`mr-3 rounded px-2 py-1 text-xs font-medium ${getDifficultyColor(currentQuestion.difficulty)}`}
+                      >
+                        {currentQuestion.difficulty === 'easy'
+                          ? 'Łatwe'
+                          : currentQuestion.difficulty === 'medium'
+                            ? 'Średnie'
+                            : 'Trudne'}
                       </span>
-                      <span className="text-sm text-gray-600">{currentQuestion.category}</span>
-                      <span className="text-sm text-blue-600 ml-auto">{currentQuestion.points} pkt</span>
+                      <span className="text-sm text-gray-600">
+                        {currentQuestion.category}
+                      </span>
+                      <span className="ml-auto text-sm text-blue-600">
+                        {currentQuestion.points} pkt
+                      </span>
                     </div>
-                    
-                    <h3 className="text-lg font-medium mb-6">{currentQuestion.question}</h3>
-                    
-                    <div className="space-y-3 mb-6">
+
+                    <h3 className="mb-6 text-lg font-medium">
+                      {currentQuestion.question}
+                    </h3>
+
+                    <div className="mb-6 space-y-3">
                       {currentQuestion.options.map((option, index) => (
                         <button
                           key={index}
                           onClick={() => handleAnswerSelect(index)}
                           disabled={showExplanation}
-                          className={`w-full text-left p-4 rounded-lg border transition-colors ${
+                          className={`w-full rounded-lg border p-4 text-left transition-colors ${
                             selectedAnswer === index
                               ? showExplanation
                                 ? index === currentQuestion.correctAnswer
-                                  ? 'bg-green-100 border-green-500 text-green-800'
-                                  : 'bg-red-100 border-red-500 text-red-800'
-                                : 'bg-blue-100 border-blue-500 text-blue-800'
+                                  ? 'border-green-500 bg-green-100 text-green-800'
+                                  : 'border-red-500 bg-red-100 text-red-800'
+                                : 'border-blue-500 bg-blue-100 text-blue-800'
                               : showExplanation && index === currentQuestion.correctAnswer
-                                ? 'bg-green-100 border-green-500 text-green-800'
-                                : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                                ? 'border-green-500 bg-green-100 text-green-800'
+                                : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
                           }`}
                         >
                           <div className="flex items-center">
-                            <span className="font-medium mr-3">{String.fromCharCode(65 + index)}.</span>
+                            <span className="mr-3 font-medium">
+                              {String.fromCharCode(65 + index)}.
+                            </span>
                             <span>{option}</span>
-                            {showExplanation && index === currentQuestion.correctAnswer && (
-                              <CheckCircle className="h-5 w-5 text-green-600 ml-auto" />
-                            )}
-                            {showExplanation && selectedAnswer === index && index !== currentQuestion.correctAnswer && (
-                              <XCircle className="h-5 w-5 text-red-600 ml-auto" />
-                            )}
+                            {showExplanation &&
+                              index === currentQuestion.correctAnswer && (
+                                <CheckCircle className="ml-auto h-5 w-5 text-green-600" />
+                              )}
+                            {showExplanation &&
+                              selectedAnswer === index &&
+                              index !== currentQuestion.correctAnswer && (
+                                <XCircle className="ml-auto h-5 w-5 text-red-600" />
+                              )}
                           </div>
                         </button>
                       ))}
                     </div>
-                    
+
                     {showExplanation && (
-                      <div className="bg-blue-50 rounded-lg p-4 mb-6">
-                        <h4 className="font-semibold text-blue-900 mb-2">Wyjaśnienie:</h4>
+                      <div className="mb-6 rounded-lg bg-blue-50 p-4">
+                        <h4 className="mb-2 font-semibold text-blue-900">Wyjaśnienie:</h4>
                         <p className="text-blue-800">{currentQuestion.explanation}</p>
                       </div>
                     )}
-                    
+
                     <div className="flex justify-between">
                       <button
                         onClick={resetQuiz}
                         className="flex items-center text-gray-600 hover:text-gray-800"
                       >
-                        <RotateCcw className="h-4 w-4 mr-2" />
+                        <RotateCcw className="mr-2 h-4 w-4" />
                         Zacznij od nowa
                       </button>
-                      
+
                       {!showExplanation ? (
                         <button
                           onClick={handleAnswerSubmit}
                           disabled={selectedAnswer === null}
-                          className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="rounded-lg bg-blue-500 px-6 py-2 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           Sprawdź odpowiedź
                         </button>
                       ) : (
                         <button
                           onClick={handleNextQuestion}
-                          className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+                          className="flex items-center rounded-lg bg-blue-500 px-6 py-2 text-white transition-colors hover:bg-blue-600"
                         >
-                          {currentQuestionIndex < questions.length - 1 ? 'Następne pytanie' : 'Zakończ quiz'}
-                          <ArrowRight className="h-4 w-4 ml-2" />
+                          {currentQuestionIndex < questions.length - 1
+                            ? 'Następne pytanie'
+                            : 'Zakończ quiz'}
+                          <ArrowRight className="ml-2 h-4 w-4" />
                         </button>
                       )}
                     </div>
@@ -890,10 +964,10 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
             </div>
           ) : (
             <div className="text-center">
-              <Award className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Quiz ukończony!</h2>
-              
-              <div className="bg-gray-50 rounded-lg p-6 mb-6">
+              <Award className="mx-auto mb-4 h-16 w-16 text-yellow-500" />
+              <h2 className="mb-4 text-2xl font-bold text-gray-900">Quiz ukończony!</h2>
+
+              <div className="mb-6 rounded-lg bg-gray-50 p-6">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
                     <div className="text-2xl font-bold text-blue-600">{score}</div>
@@ -901,33 +975,38 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-green-600">
-                      {Math.round((score / (questions.reduce((sum, q) => sum + q.points, 0))) * 100)}%
+                      {Math.round(
+                        (score / questions.reduce((sum, q) => sum + q.points, 0)) * 100
+                      )}
+                      %
                     </div>
                     <div className="text-sm text-gray-600">Wynik</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-purple-600">{questions.length}</div>
+                    <div className="text-2xl font-bold text-purple-600">
+                      {questions.length}
+                    </div>
                     <div className="text-sm text-gray-600">Pytania</div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex justify-center space-x-4">
                 <button
                   onClick={resetQuiz}
-                  className="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition-colors flex items-center"
+                  className="flex items-center rounded-lg bg-gray-500 px-6 py-2 text-white transition-colors hover:bg-gray-600"
                 >
-                  <RotateCcw className="h-4 w-4 mr-2" />
+                  <RotateCcw className="mr-2 h-4 w-4" />
                   Powtórz quiz
                 </button>
-                
+
                 {currentLesson.nextLesson && (
                   <button
                     onClick={goToNextLesson}
-                    className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+                    className="flex items-center rounded-lg bg-blue-500 px-6 py-2 text-white transition-colors hover:bg-blue-600"
                   >
                     Następna lekcja
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 )}
               </div>
@@ -936,5 +1015,5 @@ export default function InteractiveLearning({ moduleId }: InteractiveLearningPro
         </div>
       )}
     </div>
-  );
+  )
 }

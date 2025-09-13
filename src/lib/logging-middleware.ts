@@ -1,123 +1,118 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { logger } from './error-monitoring';
-import { ContextTracker, userTracker } from './error-monitoring';
-import { v4 as uuidv4 } from 'uuid';
+import { NextRequest, NextResponse } from 'next/server'
+import { logger } from './error-monitoring'
+import { ContextTracker, userTracker } from './error-monitoring'
+import { v4 as uuidv4 } from 'uuid'
 
 interface RequestContext {
-  requestId: string;
-  userId?: string;
-  sessionId?: string;
-  ip: string;
-  userAgent: string;
-  referrer?: string;
-  method: string;
-  url: string;
-  startTime: number;
+  requestId: string
+  userId?: string
+  sessionId?: string
+  ip: string
+  userAgent: string
+  referrer?: string
+  method: string
+  url: string
+  startTime: number
 }
 
 export class LoggingMiddleware {
-  private static instance: LoggingMiddleware;
+  private static instance: LoggingMiddleware
 
   static getInstance(): LoggingMiddleware {
     if (!LoggingMiddleware.instance) {
-      LoggingMiddleware.instance = new LoggingMiddleware();
+      LoggingMiddleware.instance = new LoggingMiddleware()
     }
-    return LoggingMiddleware.instance;
+    return LoggingMiddleware.instance
   }
 
   private extractClientInfo(request: NextRequest): Partial<RequestContext> {
-    const headers = request.headers;
-    const forwarded = headers.get('x-forwarded-for');
-    const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
-    
+    const headers = request.headers
+    const forwarded = headers.get('x-forwarded-for')
+    const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown'
+
     return {
       ip,
       userAgent: headers.get('user-agent') || 'unknown',
       referrer: headers.get('referer') || undefined,
       method: request.method,
-      url: request.url,
-    };
+      url: request.url
+    }
   }
 
   private extractUserInfo(request: NextRequest): { userId?: string; sessionId?: string } {
-    const headers = request.headers;
-    const cookies = request.cookies;
-    
+    const headers = request.headers
+    const cookies = request.cookies
+
     // Extract user ID from various sources
-    const userId = 
-      cookies.get('user-id')?.value ||
-      headers.get('x-user-id') ||
-      undefined;
-    
+    const userId = cookies.get('user-id')?.value || headers.get('x-user-id') || undefined
+
     // Extract session ID
-    const sessionId = 
-      cookies.get('session-id')?.value ||
-      headers.get('x-session-id') ||
-      uuidv4();
-    
-    return { userId, sessionId };
+    const sessionId =
+      cookies.get('session-id')?.value || headers.get('x-session-id') || uuidv4()
+
+    return { userId, sessionId }
   }
 
   private sanitizeHeaders(headers: Headers): Record<string, string> {
-    const sanitized: Record<string, string> = {};
-    const sensitiveHeaders = ['authorization', 'cookie', 'x-api-key', 'x-auth-token'];
-    
+    const sanitized: Record<string, string> = {}
+    const sensitiveHeaders = ['authorization', 'cookie', 'x-api-key', 'x-auth-token']
+
     headers.forEach((value, key) => {
       if (sensitiveHeaders.includes(key.toLowerCase())) {
-        sanitized[key] = '[REDACTED]';
+        sanitized[key] = '[REDACTED]'
       } else {
-        sanitized[key] = value;
+        sanitized[key] = value
       }
-    });
-    
-    return sanitized;
+    })
+
+    return sanitized
   }
 
   private sanitizeBody(body: any): any {
     if (!body || typeof body !== 'object') {
-      return body;
+      return body
     }
-    
-    const sanitized = { ...body };
-    const sensitiveFields = ['password', 'token', 'secret', 'key', 'credit_card', 'ssn'];
-    
+
+    const sanitized = { ...body }
+    const sensitiveFields = ['password', 'token', 'secret', 'key', 'credit_card', 'ssn']
+
     for (const field of sensitiveFields) {
       if (sanitized[field]) {
-        sanitized[field] = '[REDACTED]';
+        sanitized[field] = '[REDACTED]'
       }
     }
-    
-    return sanitized;
+
+    return sanitized
   }
 
   async logRequest(request: NextRequest): Promise<string> {
-    const requestId = uuidv4();
-    const startTime = Date.now();
-    
-    const clientInfo = this.extractClientInfo(request);
-    const userInfo = this.extractUserInfo(request);
-    
+    const requestId = uuidv4()
+    const startTime = Date.now()
+
+    const clientInfo = this.extractClientInfo(request)
+    const userInfo = this.extractUserInfo(request)
+
     const context: RequestContext = {
       requestId,
       ...clientInfo,
       ...userInfo,
-      startTime,
-    };
+      startTime
+    }
 
     // Set context for tracking
-    const contextTracker = new ContextTracker();
+    const contextTracker = new ContextTracker()
     contextTracker.setContext('request', {
       ...context,
-      headers: this.sanitizeHeaders(request.headers),
-    });
+      headers: this.sanitizeHeaders(request.headers)
+    })
 
     if (userInfo.userId) {
       contextTracker.setUserContext(userInfo.userId, {
         ip: clientInfo.ip,
         userAgent: clientInfo.userAgent,
         lastRequest: request.url,
-        requestId,
-      });
+        requestId
+      })
     }
 
     // Log request details
@@ -130,12 +125,12 @@ export class LoggingMiddleware {
       userId: userInfo.userId,
       sessionId: userInfo.sessionId,
       headers: this.sanitizeHeaders(request.headers),
-      searchParams: Object.fromEntries(request.nextUrl.searchParams),
-    };
+      searchParams: Object.fromEntries(request.nextUrl.searchParams)
+    }
 
-    logger.info('Incoming request', logData);
+    logger.info('Incoming request', logData)
 
-    return requestId;
+    return requestId
   }
 
   async logResponse(
@@ -144,9 +139,9 @@ export class LoggingMiddleware {
     requestId: string,
     startTime: number
   ): Promise<void> {
-    const duration = Date.now() - startTime;
-    const status = response.status;
-    
+    const duration = Date.now() - startTime
+    const status = response.status
+
     const logData = {
       requestId,
       method: request.method,
@@ -154,27 +149,27 @@ export class LoggingMiddleware {
       status,
       duration,
       contentLength: response.headers.get('content-length'),
-      contentType: response.headers.get('content-type'),
-    };
+      contentType: response.headers.get('content-type')
+    }
 
     // Log based on status code
     if (status >= 400) {
-      logger.error('Request completed with error', logData);
+      logger.error('Request completed with error', logData)
     } else if (status >= 300) {
-      logger.warn('Request redirected', logData);
+      logger.warn('Request redirected', logData)
     } else {
-      logger.info('Request completed successfully', logData);
+      logger.info('Request completed successfully', logData)
     }
 
     // Track performance (placeholder)
-    logger.info('Performance tracking', { path: request.nextUrl.pathname, method: request.method, duration });
+    logger.info('Performance tracking', {
+      path: request.nextUrl.pathname,
+      method: request.method,
+      duration
+    })
   }
 
-  async logError(
-    request: NextRequest,
-    error: Error,
-    requestId: string
-  ): Promise<void> {
+  async logError(request: NextRequest, error: Error, requestId: string): Promise<void> {
     const logData = {
       requestId,
       method: request.method,
@@ -182,44 +177,44 @@ export class LoggingMiddleware {
       error: error.message,
       stack: error.stack,
       userId: contextTracker.getContext('userId'),
-      sessionId: contextTracker.getContext('sessionId'),
-    };
+      sessionId: contextTracker.getContext('sessionId')
+    }
 
-    logger.error('Request error', logData);
+    logger.error('Request error', logData)
 
     // Track user error if user ID is available
-    const userId = contextTracker.getContext('userId');
+    const userId = contextTracker.getContext('userId')
     if (userId) {
       userTracker.trackError(userId, error, {
         requestId,
         method: request.method,
-        url: request.url,
-      });
+        url: request.url
+      })
     }
   }
 
   createLoggingMiddleware() {
     return async (request: NextRequest) => {
-      const startTime = Date.now();
-      let requestId: string;
+      const startTime = Date.now()
+      let requestId: string
 
       try {
-        requestId = await this.logRequest(request);
-        
+        requestId = await this.logRequest(request)
+
         // Add request ID to headers for downstream tracking
         const modifiedRequest = new NextRequest(request, {
           headers: {
             ...Object.fromEntries(request.headers),
-            'x-request-id': requestId,
-          },
-        });
+            'x-request-id': requestId
+          }
+        })
 
-        return { request: modifiedRequest, requestId, startTime };
+        return { request: modifiedRequest, requestId, startTime }
       } catch (error) {
-        logger.error('Failed to log request', { error });
-        return { request, requestId: uuidv4(), startTime };
+        logger.error('Failed to log request', { error })
+        return { request, requestId: uuidv4(), startTime }
       }
-    };
+    }
   }
 }
 
@@ -240,13 +235,13 @@ export class APILogger {
       duration,
       userId,
       ...metadata,
-      timestamp: new Date().toISOString(),
-    };
+      timestamp: new Date().toISOString()
+    }
 
     if (status >= 400) {
-      logger.error('API call failed', logData);
+      logger.error('API call failed', logData)
     } else {
-      logger.info('API call completed', logData);
+      logger.info('API call completed', logData)
     }
   }
 
@@ -260,13 +255,13 @@ export class APILogger {
       query: query.substring(0, 100) + (query.length > 100 ? '...' : ''),
       duration,
       userId,
-      timestamp: new Date().toISOString(),
-    };
+      timestamp: new Date().toISOString()
+    }
 
     if (error) {
-      logger.error('Database query failed', { ...logData, error: error.message });
+      logger.error('Database query failed', { ...logData, error: error.message })
     } else {
-      logger.info('Database query completed', logData);
+      logger.info('Database query completed', logData)
     }
   }
 
@@ -282,16 +277,16 @@ export class APILogger {
       endpoint,
       duration,
       status,
-      timestamp: new Date().toISOString(),
-    };
+      timestamp: new Date().toISOString()
+    }
 
     if (error || (status && status >= 400)) {
-      logger.error('External API call failed', { ...logData, error: error?.message });
+      logger.error('External API call failed', { ...logData, error: error?.message })
     } else {
-      logger.info('External API call completed', logData);
+      logger.info('External API call completed', logData)
     }
   }
 }
 
 // Export singleton instance
-export const loggingMiddleware = LoggingMiddleware.getInstance();
+export const loggingMiddleware = LoggingMiddleware.getInstance()

@@ -1,66 +1,66 @@
 export interface ResearchStudy {
-  id: string;
-  title: string;
-  authors: string;
-  journal: string;
-  year: number;
-  doi?: string;
-  pmid?: string;
-  studyType: 'RCT' | 'Meta-analysis' | 'Observational' | 'Case-study' | 'Review';
-  participants: number;
-  duration: string;
-  dosage: string;
-  findings: string;
-  limitations: string;
-  evidenceLevel: 'A' | 'B' | 'C' | 'D'; // A = Highest, D = Lowest
+  id: string
+  title: string
+  authors: string
+  journal: string
+  year: number
+  doi?: string
+  pmid?: string
+  studyType: 'RCT' | 'Meta-analysis' | 'Observational' | 'Case-study' | 'Review'
+  participants: number
+  duration: string
+  dosage: string
+  findings: string
+  limitations: string
+  evidenceLevel: 'A' | 'B' | 'C' | 'D' // A = Highest, D = Lowest
 }
 
 export interface SupplementMechanism {
-  id: string;
-  supplementId: string;
-  name: string;
-  polishName: string;
-  category: string;
-  molecularFormula?: string;
-  molecularWeight?: number;
-  bioavailability: string;
-  halfLife: string;
-  peakPlasma: string;
-  
+  id: string
+  supplementId: string
+  name: string
+  polishName: string
+  category: string
+  molecularFormula?: string
+  molecularWeight?: number
+  bioavailability: string
+  halfLife: string
+  peakPlasma: string
+
   // Mechanisms of Action
-  primaryMechanisms: string[];
-  secondaryMechanisms: string[];
-  targetReceptors: string[];
-  metabolicPathways: string[];
-  
+  primaryMechanisms: string[]
+  secondaryMechanisms: string[]
+  targetReceptors: string[]
+  metabolicPathways: string[]
+
   // Pharmacokinetics
-  absorption: string;
-  distribution: string;
-  metabolism: string;
-  excretion: string;
-  
+  absorption: string
+  distribution: string
+  metabolism: string
+  excretion: string
+
   // Clinical Effects
-  cognitiveEffects: string[];
-  physicalEffects: string[];
-  moodEffects: string[];
-  sleepEffects: string[];
-  
+  cognitiveEffects: string[]
+  physicalEffects: string[]
+  moodEffects: string[]
+  sleepEffects: string[]
+
   // Safety Profile
-  commonSideEffects: string[];
-  rareSideEffects: string[];
-  contraindications: string[];
-  drugInteractions: string[];
-  
+  commonSideEffects: string[]
+  rareSideEffects: string[]
+  contraindications: string[]
+  drugInteractions: string[]
+
   // Dosing Information
-  therapeuticRange: string;
-  optimalTiming: string[];
-  cyclingRecommendations?: string;
-  
+  therapeuticRange: string
+  optimalTiming: string[]
+  cyclingRecommendations?: string
+
   // Research
-  researchStudies: string[]; // IDs of related studies
-  evidenceQuality: 'High' | 'Moderate' | 'Low' | 'Very Low';
-  
-  lastUpdated: string;
+  researchStudies: string[] // IDs of related studies
+  evidenceQuality: 'High' | 'Moderate' | 'Low' | 'Very Low'
+
+  lastUpdated: string
 }
 
 export const supplementMechanisms: SupplementMechanism[] = [
@@ -75,7 +75,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
     bioavailability: '~99% (oral)',
     halfLife: '58-74 minutes',
     peakPlasma: '32-50 minutes',
-    
+
     primaryMechanisms: [
       'Antagonista receptorów AMPA i kainowych',
       'Modulacja aktywności fal alfa (8-12 Hz)',
@@ -100,12 +100,12 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Metabolizm w wątrobie',
       'Częściowa eliminacja przez nerki'
     ],
-    
+
     absorption: 'Szybka absorpcja w jelicie cienkim, transport aktywny przez LAT1',
     distribution: 'Przekracza barierę krew-mózg, koncentruje się w korze mózgowej',
     metabolism: 'Głównie w wątrobie przez glutaminazę, częściowo w nerkach',
     excretion: 'Głównie przez nerki (40-60%), częściowo przez żółć',
-    
+
     cognitiveEffects: [
       'Poprawa koncentracji bez sedacji',
       'Zwiększenie uwagi selektywnej',
@@ -130,7 +130,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Zwiększenie fazy REM',
       'Redukcja nocnych przebudzeń'
     ],
-    
+
     commonSideEffects: [
       'Łagodne zawroty głowy (rzadko)',
       'Senność u wrażliwych osób',
@@ -150,7 +150,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Leki uspokajające (może nasilać działanie)',
       'Kofeina (synergiczne działanie na koncentrację)'
     ],
-    
+
     therapeuticRange: '100-400mg dziennie',
     optimalTiming: [
       'Rano: 100-200mg (z kofeiną lub bez)',
@@ -158,7 +158,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Przed stresującymi sytuacjami: 200mg'
     ],
     cyclingRecommendations: 'Nie wymagane, można stosować długoterminowo',
-    
+
     researchStudies: [
       'theanine-attention-2008',
       'theanine-stress-2019',
@@ -166,10 +166,10 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'theanine-caffeine-2010'
     ],
     evidenceQuality: 'High',
-    
+
     lastUpdated: '2025-01-05'
   },
-  
+
   {
     id: 'alpha-gpc-mechanism',
     supplementId: 'alpha-gpc',
@@ -181,7 +181,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
     bioavailability: '~88% (oral)',
     halfLife: '4-6 hours',
     peakPlasma: '1-2 hours',
-    
+
     primaryMechanisms: [
       'Prekursor acetylocholiny',
       'Dostarcza choliny do syntezy fosfolipidów',
@@ -205,12 +205,12 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Synteza acetylocholiny przez cholinoacetyltransferazę',
       'Włączenie do fosfolipidów błonowych'
     ],
-    
+
     absorption: 'Szybka absorpcja w jelicie, transport przez krew do mózgu',
     distribution: 'Przekracza barierę krew-mózg, koncentruje się w tkance nerwowej',
     metabolism: 'Hydroliza do choliny i glicerofosforylocholiny w mózgu',
     excretion: 'Metabolity wydalane przez nerki i płuca (CO2)',
-    
+
     cognitiveEffects: [
       'Poprawa pamięci roboczej',
       'Zwiększenie koncentracji i uwagi',
@@ -228,22 +228,15 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Zwiększenie motywacji',
       'Redukcja zmęczenia umysłowego'
     ],
-    sleepEffects: [
-      'Może poprawić jakość snu REM',
-      'Wsparcie regeneracji nocnej'
-    ],
-    
+    sleepEffects: ['Może poprawić jakość snu REM', 'Wsparcie regeneracji nocnej'],
+
     commonSideEffects: [
       'Bóle głowy (u 10-15% użytkowników)',
       'Nudności (przy wysokich dawkach)',
       'Zawroty głowy',
       'Bezsenność (przy wieczornym stosowaniu)'
     ],
-    rareSideEffects: [
-      'Drażliwość',
-      'Problemy żołądkowe',
-      'Zmęczenie (paradoksalne)'
-    ],
+    rareSideEffects: ['Drażliwość', 'Problemy żołądkowe', 'Zmęczenie (paradoksalne)'],
     contraindications: [
       'Choroby układu cholinergicznego',
       'Jednoczesne stosowanie inhibitorów cholinoesterazy',
@@ -254,7 +247,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Leki antycholinergiczne (antagonizm)',
       'Skopolamina (antagonizm)'
     ],
-    
+
     therapeuticRange: '250-600mg dziennie',
     optimalTiming: [
       'Rano: 300-600mg (na czczo)',
@@ -262,7 +255,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Przed nauką: 300mg'
     ],
     cyclingRecommendations: 'Opcjonalne: 5 dni stosowania, 2 dni przerwy',
-    
+
     researchStudies: [
       'alpha-gpc-cognition-2021',
       'alpha-gpc-strength-2015',
@@ -270,10 +263,10 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'alpha-gpc-growth-hormone-2008'
     ],
     evidenceQuality: 'High',
-    
+
     lastUpdated: '2025-01-05'
   },
-  
+
   {
     id: 'ashwagandha-mechanism',
     supplementId: 'ashwagandha-ksm',
@@ -284,7 +277,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
     bioavailability: 'Zmienna (5-15% witanolidów)',
     halfLife: '8-12 hours',
     peakPlasma: '2-4 hours',
-    
+
     primaryMechanisms: [
       'Modulacja osi HPA (podwzgórze-przysadka-nadnercza)',
       'Inhibicja 11β-HSD1 (redukcja kortyzolu)',
@@ -309,12 +302,12 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Konjugacja z kwasem glukuronowym',
       'Eliminacja przez żółć i nerki'
     ],
-    
+
     absorption: 'Umiarkowana absorpcja, poprawiana przez tłuszcze',
     distribution: 'Szeroka dystrybucja, akumulacja w nadnerczach i mózgu',
     metabolism: 'Głównie w wątrobie przez CYP3A4 i CYP2D6',
     excretion: 'Głównie przez żółć (60%), częściowo przez nerki (40%)',
-    
+
     cognitiveEffects: [
       'Poprawa pamięci i koncentracji',
       'Zwiększenie odporności na stres poznawczy',
@@ -339,7 +332,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Zwiększenie czasu snu głębokiego',
       'Redukcja nocnych przebudzeń'
     ],
-    
+
     commonSideEffects: [
       'Senność (szczególnie początkowo)',
       'Łagodne problemy żołądkowe',
@@ -363,15 +356,16 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Leki uspokajające i nasenne',
       'Leki na cukrzycę (może obniżać glukozę)'
     ],
-    
+
     therapeuticRange: '300-600mg dziennie (KSM-66)',
     optimalTiming: [
       'Wieczorem: 300-600mg (z posiłkiem)',
       'Rano i wieczorem: 150-300mg każda dawka',
       'Przed snem: 600mg (przy problemach ze snem)'
     ],
-    cyclingRecommendations: 'Można stosować długoterminowo, opcjonalne przerwy co 3 miesiące',
-    
+    cyclingRecommendations:
+      'Można stosować długoterminowo, opcjonalne przerwy co 3 miesiące',
+
     researchStudies: [
       'ashwagandha-stress-2019',
       'ashwagandha-strength-2015',
@@ -379,10 +373,10 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'ashwagandha-cortisol-2017'
     ],
     evidenceQuality: 'High',
-    
+
     lastUpdated: '2025-01-05'
   },
-  
+
   {
     id: 'magnesium-l-threonate-mechanism',
     supplementId: 'magnesium-l-threonate',
@@ -394,7 +388,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
     bioavailability: '~15% (znacznie wyższa niż inne formy magnezu)',
     halfLife: '6-8 hours',
     peakPlasma: '2-3 hours',
-    
+
     primaryMechanisms: [
       'Przekraczanie bariery krew-mózg (unikalne dla tej formy)',
       'Zwiększenie gęstości receptorów NMDA',
@@ -419,12 +413,12 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Wykorzystanie w cyklu Krebsa',
       'Eliminacja przez nerki'
     ],
-    
+
     absorption: 'Wysoka absorpcja dzięki L-treonianowi, transport przez MCT',
     distribution: 'Preferencyjnie do mózgu, szczególnie hipokamp i kora',
     metabolism: 'Hydroliza do jonów magnezu i L-treonianu w tkankach',
     excretion: 'Głównie przez nerki, regulacja przez PTH i kalcitriol',
-    
+
     cognitiveEffects: [
       'Znacząca poprawa pamięci długotrwałej',
       'Zwiększenie neuroplastyczności',
@@ -449,7 +443,7 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Redukcja czasu zasypiania',
       'Poprawa regeneracji nocnej'
     ],
-    
+
     commonSideEffects: [
       'Rozluźnienie jelit (przy wysokich dawkach)',
       'Łagodne zawroty głowy',
@@ -472,15 +466,16 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'Inhibitory pompy protonowej',
       'Suplementy wapnia (konkurencja w absorpcji)'
     ],
-    
+
     therapeuticRange: '1000-2000mg dziennie',
     optimalTiming: [
       'Wieczorem: 1000-2000mg (1-2h przed snem)',
       'Podzielone dawki: 500mg rano + 1000mg wieczorem',
       'Z posiłkiem dla lepszej tolerancji'
     ],
-    cyclingRecommendations: 'Można stosować długoterminowo, monitoring poziomu magnezu co 3 miesiące',
-    
+    cyclingRecommendations:
+      'Można stosować długoterminowo, monitoring poziomu magnezu co 3 miesiące',
+
     researchStudies: [
       'mg-threonate-memory-2010',
       'mg-threonate-aging-2013',
@@ -488,10 +483,10 @@ export const supplementMechanisms: SupplementMechanism[] = [
       'mg-threonate-sleep-2018'
     ],
     evidenceQuality: 'High',
-    
+
     lastUpdated: '2025-01-05'
   }
-];
+]
 
 export const researchStudies: ResearchStudy[] = [
   {
@@ -505,13 +500,15 @@ export const researchStudies: ResearchStudy[] = [
     participants: 27,
     duration: 'Single dose',
     dosage: '50mg L-theanine',
-    findings: 'L-teanina zwiększa aktywność fal alfa w mózgu i poprawia uwagę bez wpływu na senność. Efekt widoczny już po 40 minutach.',
+    findings:
+      'L-teanina zwiększa aktywność fal alfa w mózgu i poprawia uwagę bez wpływu na senność. Efekt widoczny już po 40 minutach.',
     limitations: 'Mała grupa badawcza, krótki czas obserwacji, niska dawka',
     evidenceLevel: 'B'
   },
   {
     id: 'theanine-stress-2019',
-    title: 'The effects of L-theanine on alpha-band oscillatory brain activity during a visuo-spatial attention task',
+    title:
+      'The effects of L-theanine on alpha-band oscillatory brain activity during a visuo-spatial attention task',
     authors: 'Foxe JJ, Morie KP, Laud PJ, Rowson MJ, de Bruin EA, Kelly SP',
     journal: 'Psychopharmacology',
     year: 2012,
@@ -520,7 +517,8 @@ export const researchStudies: ResearchStudy[] = [
     participants: 44,
     duration: 'Single dose',
     dosage: '250mg L-theanine',
-    findings: 'L-teanina znacząco zwiększa aktywność fal alfa i poprawia uwagę wizualno-przestrzenną. Efekt koreluje z subiektywnym poczuciem relaksacji.',
+    findings:
+      'L-teanina znacząco zwiększa aktywność fal alfa i poprawia uwagę wizualno-przestrzenną. Efekt koreluje z subiektywnym poczuciem relaksacji.',
     limitations: 'Badanie jednorazowe, brak długoterminowej obserwacji',
     evidenceLevel: 'A'
   },
@@ -535,13 +533,15 @@ export const researchStudies: ResearchStudy[] = [
     participants: 324,
     duration: 'Różne (1-90 dni)',
     dosage: '300-1200mg dziennie',
-    findings: 'Alpha-GPC konsystentnie poprawia pamięć roboczą, uwagę i szybkość przetwarzania informacji u zdrowych młodych dorosłych.',
+    findings:
+      'Alpha-GPC konsystentnie poprawia pamięć roboczą, uwagę i szybkość przetwarzania informacji u zdrowych młodych dorosłych.',
     limitations: 'Heterogeniczność protokołów badawczych, różne dawki i czasy trwania',
     evidenceLevel: 'A'
   },
   {
     id: 'ashwagandha-stress-2019',
-    title: 'An investigation into the stress-relieving and pharmacological actions of an ashwagandha extract',
+    title:
+      'An investigation into the stress-relieving and pharmacological actions of an ashwagandha extract',
     authors: 'Lopresti AL, Smith SJ, Malvi H, Kodgule R',
     journal: 'Medicine',
     year: 2019,
@@ -550,14 +550,16 @@ export const researchStudies: ResearchStudy[] = [
     participants: 60,
     duration: '8 tygodni',
     dosage: '300mg KSM-66 2x dziennie',
-    findings: 'Ashwagandha KSM-66 znacząco redukuje poziom kortyzolu (-27.9%), lęk (-71.6%) i stres (-44.0%) w porównaniu do placebo.',
+    findings:
+      'Ashwagandha KSM-66 znacząco redukuje poziom kortyzolu (-27.9%), lęk (-71.6%) i stres (-44.0%) w porównaniu do placebo.',
     limitations: 'Średnia wielkość grupy, brak długoterminowej obserwacji',
     evidenceLevel: 'A'
   },
   {
     id: 'mg-threonate-memory-2010',
     title: 'Enhancement of learning and memory by elevating brain magnesium',
-    authors: 'Slutsky I, Abumaria N, Wu LJ, Huang C, Zhang L, Li B, Zhao X, Govindarajan A, Zhao MG, Zhuo M, Tonegawa S, Liu G',
+    authors:
+      'Slutsky I, Abumaria N, Wu LJ, Huang C, Zhang L, Li B, Zhao X, Govindarajan A, Zhao MG, Zhuo M, Tonegawa S, Liu G',
     journal: 'Neuron',
     year: 2010,
     doi: '10.1016/j.neuron.2009.12.026',
@@ -565,36 +567,43 @@ export const researchStudies: ResearchStudy[] = [
     participants: 144,
     duration: '12 tygodni',
     dosage: '1500-2000mg dziennie',
-    findings: 'Magnez L-treonian zwiększa poziom magnezu w mózgu o 15% i znacząco poprawia pamięć krótko- i długotrwałą u osób w wieku 50-70 lat.',
+    findings:
+      'Magnez L-treonian zwiększa poziom magnezu w mózgu o 15% i znacząco poprawia pamięć krótko- i długotrwałą u osób w wieku 50-70 lat.',
     limitations: 'Badanie głównie na starszych osobach, brak danych u młodych dorosłych',
     evidenceLevel: 'A'
   }
-];
+]
 
 // Helper functions
-export const getSupplementMechanism = (supplementId: string): SupplementMechanism | undefined => supplementMechanisms.find(mechanism => mechanism.supplementId === supplementId);
+export const getSupplementMechanism = (
+  supplementId: string
+): SupplementMechanism | undefined =>
+  supplementMechanisms.find((mechanism) => mechanism.supplementId === supplementId)
 
 export const getRelatedStudies = (supplementId: string): ResearchStudy[] => {
-  const mechanism = getSupplementMechanism(supplementId);
-  if (!mechanism) return [];
-  
-  return researchStudies.filter(study => 
-    mechanism.researchStudies.includes(study.id)
-  );
-};
+  const mechanism = getSupplementMechanism(supplementId)
+  if (!mechanism) return []
 
-export const getStudiesByEvidenceLevel = (level: 'A' | 'B' | 'C' | 'D'): ResearchStudy[] => researchStudies.filter(study => study.evidenceLevel === level);
+  return researchStudies.filter((study) => mechanism.researchStudies.includes(study.id))
+}
 
-export const getStudiesByType = (type: ResearchStudy['studyType']): ResearchStudy[] => researchStudies.filter(study => study.studyType === type);
+export const getStudiesByEvidenceLevel = (
+  level: 'A' | 'B' | 'C' | 'D'
+): ResearchStudy[] => researchStudies.filter((study) => study.evidenceLevel === level)
 
-export const getMechanismsByCategory = (category: string): SupplementMechanism[] => supplementMechanisms.filter(mechanism => mechanism.category === category);
+export const getStudiesByType = (type: ResearchStudy['studyType']): ResearchStudy[] =>
+  researchStudies.filter((study) => study.studyType === type)
+
+export const getMechanismsByCategory = (category: string): SupplementMechanism[] =>
+  supplementMechanisms.filter((mechanism) => mechanism.category === category)
 
 export const searchMechanisms = (query: string): SupplementMechanism[] => {
-  const lowercaseQuery = query.toLowerCase();
-  return supplementMechanisms.filter(mechanism => 
-    mechanism.name.toLowerCase().includes(lowercaseQuery) ||
-    mechanism.polishName.toLowerCase().includes(lowercaseQuery) ||
-    mechanism.primaryMechanisms.some(m => m.toLowerCase().includes(lowercaseQuery)) ||
-    mechanism.cognitiveEffects.some(e => e.toLowerCase().includes(lowercaseQuery))
-  );
-};
+  const lowercaseQuery = query.toLowerCase()
+  return supplementMechanisms.filter(
+    (mechanism) =>
+      mechanism.name.toLowerCase().includes(lowercaseQuery) ||
+      mechanism.polishName.toLowerCase().includes(lowercaseQuery) ||
+      mechanism.primaryMechanisms.some((m) => m.toLowerCase().includes(lowercaseQuery)) ||
+      mechanism.cognitiveEffects.some((e) => e.toLowerCase().includes(lowercaseQuery))
+  )
+}

@@ -6,12 +6,12 @@ This document summarizes the changes made to fix the ESLint errors in the projec
 
 The `import/order` rule was enforced to ensure a consistent order of imports across the project. The following files were modified:
 
--   `src/components/ui/button.tsx`
--   `src/components/ui/checkbox.tsx`
--   `src/components/ui/dialog.tsx`
--   `src/components/ui/label.tsx`
--   `src/components/ui/progress.tsx`
--   `src/components/ui/switch.tsx`
+- `src/components/ui/button.tsx`
+- `src/components/ui/checkbox.tsx`
+- `src/components/ui/dialog.tsx`
+- `src/components/ui/label.tsx`
+- `src/components/ui/progress.tsx`
+- `src/components/ui/switch.tsx`
 
 In each of these files, the `react` import was moved to be the first import.
 
@@ -19,7 +19,7 @@ In each of these files, the `react` import was moved to be the first import.
 
 The `arrow-body-style` rule was enforced to ensure that arrow functions have a concise body. The following file was modified:
 
--   `src/components/ui/input.tsx`
+- `src/components/ui/input.tsx`
 
 The arrow function was converted to a concise body.
 

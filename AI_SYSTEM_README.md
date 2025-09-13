@@ -5,6 +5,7 @@ A comprehensive AI-powered supplement knowledge and recommendation system built 
 ## 🚀 Features
 
 ### 1. Interactive AI Chat
+
 - Real-time conversational AI interface
 - Context-aware responses based on user health goals
 - Streaming responses for better user experience
@@ -12,6 +13,7 @@ A comprehensive AI-powered supplement knowledge and recommendation system built 
 - Built-in tools for supplement interaction analysis and research search
 
 ### 2. AI-Powered Supplement Analysis
+
 - Comprehensive safety and efficacy ratings (0-100 scale)
 - Evidence-based recommendations
 - Personalized analysis based on user profile
@@ -20,6 +22,7 @@ A comprehensive AI-powered supplement knowledge and recommendation system built 
 - Real-time analysis of 6+ popular supplements
 
 ### 3. Advanced Knowledge Base
+
 - Complex query handling with research integration
 - Evidence-level classification (strong, moderate, weak, theoretical)
 - Practical application suggestions
@@ -27,6 +30,7 @@ A comprehensive AI-powered supplement knowledge and recommendation system built 
 - Important warnings and considerations
 
 ### 4. Personalized Health Goals
+
 - User-customizable health goals
 - Goal-based supplement recommendations
 - Progress tracking capabilities
@@ -64,12 +68,15 @@ src/
 ## 🔧 Setup Instructions
 
 ### 1. Install Dependencies
+
 ```bash
 npm install ai @ai-sdk/google zod
 ```
 
 ### 2. Environment Configuration
+
 Create `.env.local` with:
+
 ```env
 GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
 ```
@@ -77,22 +84,25 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
 Get your free API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
 ### 3. Add Component to Your App
+
 ```tsx
-import AISupplementAssistant from '@/components/AI/AISupplementAssistant';
+import AISupplementAssistant from '@/components/AI/AISupplementAssistant'
 
 export default function HomePage() {
   return (
     <div className="container mx-auto">
       <AISupplementAssistant />
     </div>
-  );
+  )
 }
 ```
 
 ## 🎯 Core Components
 
 ### AI Knowledge Engine (`ai-knowledge-engine.ts`)
+
 The heart of the system featuring:
+
 - **Singleton Pattern** - Efficient resource management
 - **Structured Output** - Consistent, validated responses
 - **Multiple Analysis Types** - Supplement analysis, stack optimization, knowledge queries
@@ -100,12 +110,14 @@ The heart of the system featuring:
 - **Tool Integration** - Built-in tools for enhanced capabilities
 
 ### API Routes
+
 - `/api/ai/analyze-supplement` - Individual supplement analysis
 - `/api/ai/optimize-stack` - Complete supplement stack optimization
 - `/api/ai/knowledge-query` - Complex knowledge queries with research
 - `/api/ai/chat` - Interactive streaming chat interface
 
 ### UI Component (`AISupplementAssistant.tsx`)
+
 - **3 Main Tabs**: Chat, Analysis, Knowledge Base
 - **Responsive Design** - Works on all devices
 - **Real-time Updates** - Streaming and live data
@@ -115,52 +127,58 @@ The heart of the system featuring:
 ## 📊 AI Response Schemas
 
 ### Supplement Analysis
+
 ```typescript
 interface SupplementAnalysis {
-  supplementName: string;
-  safetyRating: number;        // 0-100
-  efficacyRating: number;      // 0-100
-  keyBenefits: string[];
-  potentialRisks: string[];
+  supplementName: string
+  safetyRating: number // 0-100
+  efficacyRating: number // 0-100
+  keyBenefits: string[]
+  potentialRisks: string[]
   recommendedDosage: {
-    min: number;
-    max: number;
-    unit: string;
-    timing: string;
-  };
-  evidenceQuality: 'strong' | 'moderate' | 'weak' | 'insufficient';
-  reasoning: string;
+    min: number
+    max: number
+    unit: string
+    timing: string
+  }
+  evidenceQuality: 'strong' | 'moderate' | 'weak' | 'insufficient'
+  reasoning: string
 }
 ```
 
 ### Knowledge Query Response
+
 ```typescript
 interface KnowledgeQueryResult {
-  answer: string;
-  keyPoints: string[];
-  relatedSupplements: string[];
-  mechanismsInvolved: string[];
-  evidenceLevel: 'strong' | 'moderate' | 'weak' | 'theoretical';
-  practicalApplications: string[];
-  warnings: string[];
+  answer: string
+  keyPoints: string[]
+  relatedSupplements: string[]
+  mechanismsInvolved: string[]
+  evidenceLevel: 'strong' | 'moderate' | 'weak' | 'theoretical'
+  practicalApplications: string[]
+  warnings: string[]
 }
 ```
 
 ## 🔍 Advanced Features
 
 ### Smart Supplement Database
+
 Built-in knowledge of popular supplements:
+
 - Vitamin D3, Omega-3, Magnesium
 - Lion's Mane, Ashwagandha, Creatine
 - Dynamic analysis based on user context
 
 ### Evidence-Based Recommendations
+
 - Scientific research integration
 - PubMed-style evidence classification
 - Safety-first approach
 - Personalized risk assessment
 
 ### Interactive Tools
+
 - Quick question suggestions
 - Popular supplement shortcuts
 - Goal-based recommendations
@@ -169,6 +187,7 @@ Built-in knowledge of popular supplements:
 ## 🎨 UI/UX Features
 
 ### Design Elements
+
 - **Gradient Headers** - Eye-catching visual hierarchy
 - **Progress Indicators** - Visual rating displays
 - **Evidence Badges** - Clear evidence level indicators
@@ -176,6 +195,7 @@ Built-in knowledge of popular supplements:
 - **Responsive Grid** - Optimal layout on all screens
 
 ### User Experience
+
 - **Streaming Responses** - No waiting for long AI responses
 - **Error Handling** - Graceful error recovery
 - **Loading States** - Clear feedback during processing
@@ -193,18 +213,21 @@ Built-in knowledge of popular supplements:
 ## 🔮 Future Enhancements
 
 ### Research Integration
+
 - PubMed API integration
 - Real-time research updates
 - Citation tracking
 - Evidence strength scoring
 
 ### Advanced Personalization
+
 - Health condition profiles
 - Medication interaction checking
 - Biomarker tracking
 - Progress monitoring
 
 ### Enhanced Analytics
+
 - Usage pattern analysis
 - Recommendation effectiveness
 - User satisfaction tracking
@@ -230,4 +253,4 @@ Built-in knowledge of popular supplements:
 
 **Built with ❤️ using AI SDK 5 and Google Gemini Flash**
 
-*This system is for educational and informational purposes only. Always consult with healthcare professionals before making supplement decisions.*
+_This system is for educational and informational purposes only. Always consult with healthcare professionals before making supplement decisions._

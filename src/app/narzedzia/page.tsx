@@ -1,48 +1,50 @@
-'use client';
+'use client'
 
-
-
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 
 interface DosageCalculation {
-  supplement: string;
-  bodyWeight: number;
-  experience: string;
-  goal: string;
+  supplement: string
+  bodyWeight: number
+  experience: string
+  goal: string
   recommendedDose: {
-    min: number;
-    max: number;
-    unit: string;
-  };
-  timing: string;
-  notes: string[];
+    min: number
+    max: number
+    unit: string
+  }
+  timing: string
+  notes: string[]
 }
 
 interface EffectEntry {
-  id: string;
-  date: string;
-  time: string;
-  supplement: string;
-  dose: string;
-  mood: number;
-  focus: number;
-  energy: number;
-  sleep: number;
-  notes: string;
+  id: string
+  date: string
+  time: string
+  supplement: string
+  dose: string
+  mood: number
+  focus: number
+  energy: number
+  sleep: number
+  notes: string
 }
 
 interface InteractionCheck {
-  supplement1: string;
-  supplement2: string;
-  riskLevel: 'low' | 'medium' | 'high';
-  description: string;
-  recommendation: string;
+  supplement1: string
+  supplement2: string
+  riskLevel: 'low' | 'medium' | 'high'
+  description: string
+  recommendation: string
 }
 
 const supplements = [
-  'Lion\'s Mane',
+  "Lion's Mane",
   'Bacopa Monnieri',
   'Rhodiola Rosea',
   'Ashwagandha',
@@ -52,10 +54,10 @@ const supplements = [
   'L-Theanine',
   'Kofein',
   'Magnesium'
-];
+]
 
 const dosageDatabase = {
-  'Lion\'s Mane': {
+  "Lion's Mane": {
     beginner: { min: 500, max: 1000, unit: 'mg' },
     intermediate: { min: 1000, max: 2000, unit: 'mg' },
     advanced: { min: 2000, max: 3000, unit: 'mg' },
@@ -69,7 +71,7 @@ const dosageDatabase = {
     timing: 'Z jedzeniem (rano lub wieczorem)',
     notes: ['Standaryzowane na 20-50% bakozydów']
   }
-};
+}
 
 /**
  *
@@ -89,5 +91,5 @@ export default function NarzedziaPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

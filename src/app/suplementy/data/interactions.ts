@@ -1,10 +1,10 @@
 export interface InteractionEntry {
-  incompatibleWith: string[];
-  synergyWith: string[];
-  riskLevel: 'low' | 'medium' | 'high';
-  system?: string;
-  dosageNotes?: string;
-  evidenceLevel?: 'low' | 'medium' | 'high';
+  incompatibleWith: string[]
+  synergyWith: string[]
+  riskLevel: 'low' | 'medium' | 'high'
+  system?: string
+  dosageNotes?: string
+  evidenceLevel?: 'low' | 'medium' | 'high'
 }
 
 export const interactionsMatrix: Record<string, InteractionEntry> = {
@@ -13,12 +13,12 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     synergyWith: ['Caffeine'],
     riskLevel: 'low'
   },
-  'Caffeine': {
+  Caffeine: {
     incompatibleWith: ['Modafinil'],
     synergyWith: ['L-Theanine', 'Theobromine'],
     riskLevel: 'medium'
   },
-  'Creatine': {
+  Creatine: {
     incompatibleWith: [],
     synergyWith: ['Caffeine'],
     riskLevel: 'low'
@@ -28,33 +28,33 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     synergyWith: ['Alpha-GPC'],
     riskLevel: 'low'
   },
-  'Piracetam': {
+  Piracetam: {
     incompatibleWith: [],
     synergyWith: ['Choline sources', 'Magnez'],
     riskLevel: 'low',
     system: 'nervous'
   },
-  'Aniracetam': {
+  Aniracetam: {
     incompatibleWith: [],
     synergyWith: ['Alpha-GPC', 'Citicoline'],
     riskLevel: 'medium'
   },
-  'Oxiracetam': {
+  Oxiracetam: {
     incompatibleWith: [],
     synergyWith: ['Tyrosine'],
     riskLevel: 'medium'
   },
-  'Phenylpiracetam': {
+  Phenylpiracetam: {
     incompatibleWith: ['Stimulants'],
     synergyWith: ['L-Theanine'],
     riskLevel: 'high'
   },
-  'Noopept': {
+  Noopept: {
     incompatibleWith: [],
     synergyWith: ['Choline sources'],
     riskLevel: 'low'
   },
-  'Modafinil': {
+  Modafinil: {
     incompatibleWith: ['Caffeine high doses'],
     synergyWith: [],
     riskLevel: 'high'
@@ -64,7 +64,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     synergyWith: ['Vitamin B6'],
     riskLevel: 'medium'
   },
-  'Ashwagandha': {
+  Ashwagandha: {
     incompatibleWith: ['Thyroid conditions'],
     synergyWith: ['Rhodiola Rosea', 'L-teanina', 'Rhodiola'],
     riskLevel: 'low',
@@ -96,7 +96,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     synergyWith: ['Piracetam', 'Aniracetam'],
     riskLevel: 'low'
   },
-  'Citicoline': {
+  Citicoline: {
     incompatibleWith: [],
     synergyWith: ['Uridine Monophosphate'],
     riskLevel: 'low'
@@ -106,24 +106,24 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     synergyWith: [],
     riskLevel: 'medium'
   },
-  'Vinpocetine': {
+  Vinpocetine: {
     incompatibleWith: ['Blood thinners'],
     synergyWith: ['Ginkgo Biloba'],
     riskLevel: 'medium'
   },
-  'Phosphatidylserine': {
+  Phosphatidylserine: {
     incompatibleWith: [],
     synergyWith: ['Omega-3 Fatty Acids', 'Bacopa'],
     riskLevel: 'low',
     system: 'nervous'
   },
-  'Magnesium': {
+  Magnesium: {
     incompatibleWith: [],
     synergyWith: ['Vitamin B6', 'Witamina D'],
     riskLevel: 'low',
     system: 'nervous'
   },
-  'Zinc': {
+  Zinc: {
     incompatibleWith: ['High copper'],
     synergyWith: ['Magnesium', 'Biotin'],
     riskLevel: 'low',
@@ -137,13 +137,13 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '500-1000 mg/dzień z piperyną dla biodostępności',
     evidenceLevel: 'high'
   },
-  'Czosnek': {
+  Czosnek: {
     incompatibleWith: [],
     synergyWith: ['Witamina K2'],
     riskLevel: 'low',
     system: 'cardiovascular'
   },
-  'Probiotyki': {
+  Probiotyki: {
     incompatibleWith: [],
     synergyWith: ['Prebiotyki', 'Cynk'],
     riskLevel: 'low',
@@ -151,7 +151,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '10^9 CFU/dzień, różne szczepy Lactobacillus/Bifidobacterium',
     evidenceLevel: 'high'
   },
-  'Chrom': {
+  Chrom: {
     incompatibleWith: [],
     synergyWith: ['Berberyna'],
     riskLevel: 'low',
@@ -165,7 +165,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '600-2000 IU/dzień z posiłkiem zawierającym tłuszcze',
     evidenceLevel: 'high'
   },
-  'Cynk': {
+  Cynk: {
     incompatibleWith: ['High copper'],
     synergyWith: ['Magnesium', 'Biotin', 'Probiotyki', 'Witamina C', 'Kwercetyna'],
     riskLevel: 'low',
@@ -173,7 +173,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '15-30 mg/dzień, nie przekraczać 40 mg',
     evidenceLevel: 'high'
   },
-  'Maca': {
+  Maca: {
     incompatibleWith: [],
     synergyWith: ['Tongkat Ali'],
     riskLevel: 'low',
@@ -185,7 +185,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     riskLevel: 'low',
     system: 'reproductive'
   },
-  'Potassium': {
+  Potassium: {
     incompatibleWith: [],
     synergyWith: ['Magnesium'],
     riskLevel: 'low',
@@ -197,7 +197,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     riskLevel: 'low',
     system: 'urinary'
   },
-  'Lutein': {
+  Lutein: {
     incompatibleWith: [],
     synergyWith: ['Zinc'],
     riskLevel: 'low',
@@ -209,13 +209,13 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     riskLevel: 'low',
     system: 'sensory'
   },
-  'Bacopa': {
+  Bacopa: {
     incompatibleWith: ['Thyroid medications'],
     synergyWith: ['Alpha-GPC', 'Fosfatydyloseryna'],
     riskLevel: 'low',
     system: 'nervous'
   },
-  'Omega3': {
+  Omega3: {
     incompatibleWith: [],
     synergyWith: ['KoQ10', 'Witamina D', 'Kurkumina', 'Vitamin C', 'Witamina D'],
     riskLevel: 'low',
@@ -223,19 +223,19 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '1-2g/dzień EPA/DHA z posiłkiem',
     evidenceLevel: 'high'
   },
-  'KoQ10': {
+  KoQ10: {
     incompatibleWith: [],
     synergyWith: ['Omega3'],
     riskLevel: 'low',
     system: 'cardiovascular'
   },
-  'Berberyna': {
+  Berberyna: {
     incompatibleWith: [],
     synergyWith: ['Chrom'],
     riskLevel: 'low',
     system: 'endocrine'
   },
-  'Wapń': {
+  Wapń: {
     incompatibleWith: ['High iron'],
     synergyWith: ['Witamina D', 'Witamina K2'],
     riskLevel: 'low',
@@ -243,13 +243,13 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '1000-1200 mg/dzień z witaminą D',
     evidenceLevel: 'high'
   },
-  'Selen': {
+  Selen: {
     incompatibleWith: [],
     synergyWith: ['Witamina E'],
     riskLevel: 'low',
     system: 'reproductive'
   },
-  'Cranberry': {
+  Cranberry: {
     incompatibleWith: [],
     synergyWith: ['Vitamin B6'],
     riskLevel: 'low',
@@ -261,19 +261,19 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     riskLevel: 'low',
     system: 'reproductive'
   },
-  'Prebiotyki': {
+  Prebiotyki: {
     incompatibleWith: [],
     synergyWith: ['Probiotyki'],
     riskLevel: 'low',
     system: 'digestive'
   },
-  'Fosfatydyloseryna': {
+  Fosfatydyloseryna: {
     incompatibleWith: [],
     synergyWith: ['Omega-3 Fatty Acids', 'Bacopa'],
     riskLevel: 'low',
     system: 'nervous'
   },
-  'Piperyna': {
+  Piperyna: {
     incompatibleWith: [],
     synergyWith: ['Kurkumina'],
     riskLevel: 'low',
@@ -281,7 +281,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '5-10 mg/dzień z kurkuminą',
     evidenceLevel: 'high'
   },
-  'Kwercetyna': {
+  Kwercetyna: {
     incompatibleWith: [],
     synergyWith: ['Cynk', 'Bromelaina'],
     riskLevel: 'low',
@@ -289,7 +289,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '500 mg/dzień',
     evidenceLevel: 'high'
   },
-  'Bromelaina': {
+  Bromelaina: {
     incompatibleWith: [],
     synergyWith: ['Kwercetyna', 'Kurkumina'],
     riskLevel: 'low',
@@ -297,7 +297,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '500 mg/dzień na pusty żołądek',
     evidenceLevel: 'high'
   },
-  'Miedź': {
+  Miedź: {
     incompatibleWith: ['High zinc'],
     synergyWith: ['Cynk', 'Witamina C'],
     riskLevel: 'low',
@@ -313,7 +313,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '100-200 mcg/dzień MK-7',
     evidenceLevel: 'high'
   },
-  'NAC': {
+  NAC: {
     incompatibleWith: [],
     synergyWith: ['Alpha-Lipoic Acid', 'Witamina C', 'Glutation'],
     riskLevel: 'low',
@@ -321,7 +321,7 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '600-1200 mg/dzień',
     evidenceLevel: 'high'
   },
-  'Elderberry': {
+  Elderberry: {
     incompatibleWith: [],
     synergyWith: ['Witamina C'],
     riskLevel: 'low',
@@ -329,4 +329,4 @@ export const interactionsMatrix: Record<string, InteractionEntry> = {
     dosageNotes: '300-500 mg ekstraktu/dzień',
     evidenceLevel: 'high'
   }
-};
+}

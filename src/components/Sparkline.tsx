@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
 
 export interface SparklineProps {
-  data: number[];
-  width?: number;
-  height?: number;
-  strokeColor?: string;
-  strokeWidth?: number;
-  className?: string;
+  data: number[]
+  width?: number
+  height?: number
+  strokeColor?: string
+  strokeWidth?: number
+  className?: string
 }
 
 export const Sparkline: React.FC<SparklineProps> = ({
@@ -17,19 +17,21 @@ export const Sparkline: React.FC<SparklineProps> = ({
   height = 40,
   strokeColor = 'hsl(var(--primary))',
   strokeWidth = 2,
-  className,
+  className
 }) => {
-  if (data.length < 2) return null;
+  if (data.length < 2) return null
 
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = max - min;
+  const max = Math.max(...data)
+  const min = Math.min(...data)
+  const range = max - min
 
-  const points = data.map((value, index) => {
-    const x = (index / (data.length - 1)) * width;
-    const y = height - ((value - min) / range) * height;
-    return `${x},${y}`;
-  }).join(' ');
+  const points = data
+    .map((value, index) => {
+      const x = (index / (data.length - 1)) * width
+      const y = height - ((value - min) / range) * height
+      return `${x},${y}`
+    })
+    .join(' ')
 
   return (
     <svg
@@ -50,5 +52,5 @@ export const Sparkline: React.FC<SparklineProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}

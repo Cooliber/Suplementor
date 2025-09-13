@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
 'use client'
 
-import { 
-  Brain, 
-  BookOpen, 
-  Lightbulb, 
-  Target, 
+import {
+  Brain,
+  BookOpen,
+  Lightbulb,
+  Target,
   Clock,
   Search,
   Filter,
@@ -18,38 +18,44 @@ import {
   Moon,
   GraduationCap,
   FileText
-} from 'lucide-react';
-import React, { useState } from 'react';
+} from 'lucide-react'
+import React, { useState } from 'react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 
-import InteractiveLearning from './components/InteractiveLearning';
-import ProtocolGuides from './components/ProtocolGuides';
+import InteractiveLearning from './components/InteractiveLearning'
+import ProtocolGuides from './components/ProtocolGuides'
 
 interface KnowledgeArticle {
-  id: string;
-  title: string;
-  category: string;
-  difficulty: 'Podstawowy' | 'Średniozaawansowany' | 'Zaawansowany';
-  readTime: string;
-  description: string;
-  content: string;
-  tags: string[];
-  relatedSupplements: string[];
-  lastUpdated: string;
+  id: string
+  title: string
+  category: string
+  difficulty: 'Podstawowy' | 'Średniozaawansowany' | 'Zaawansowany'
+  readTime: string
+  description: string
+  content: string
+  tags: string[]
+  relatedSupplements: string[]
+  lastUpdated: string
 }
 
 interface LearningModule {
-  id: string;
-  title: string;
-  description: string;
-  lessons: number;
-  duration: string;
-  difficulty: string;
-  icon: React.ReactNode;
-  progress?: number;
+  id: string
+  title: string
+  description: string
+  lessons: number
+  duration: string
+  difficulty: string
+  icon: React.ReactNode
+  progress?: number
 }
 
 const knowledgeArticles: KnowledgeArticle[] = [
@@ -429,7 +435,7 @@ Oś podwzgórze-przysadka-nadnercza (HPA axis) to główny system neuroendokrynn
     relatedSupplements: ['ashwagandha', 'rhodiola', 'phosphatidylserine'],
     lastUpdated: '2025-01-05'
   }
-];
+]
 
 const learningModules: LearningModule[] = [
   {
@@ -492,7 +498,7 @@ const learningModules: LearningModule[] = [
     icon: <Lightbulb className="h-6 w-6" />,
     progress: 0
   }
-];
+]
 
 const categories = [
   'Wszystkie',
@@ -501,87 +507,109 @@ const categories = [
   'Endokrynologia',
   'Farmakologia',
   'Biohacking'
-];
+]
 
-const difficulties = [
-  'Wszystkie',
-  'Podstawowy',
-  'Średniozaawansowany',
-  'Zaawansowany'
-];
+const difficulties = ['Wszystkie', 'Podstawowy', 'Średniozaawansowany', 'Zaawansowany']
 
 /**
  *
  */
 export default function KnowledgePage() {
-  const [activeTab, setActiveTab] = useState<'articles' | 'modules' | 'quiz' | 'learning' | 'protocols'>('articles');
-  const [selectedCategory, setSelectedCategory] = useState('Wszystkie');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('Wszystkie');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedArticle, setSelectedArticle] = useState<KnowledgeArticle | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    'articles' | 'modules' | 'quiz' | 'learning' | 'protocols'
+  >('articles')
+  const [selectedCategory, setSelectedCategory] = useState('Wszystkie')
+  const [selectedDifficulty, setSelectedDifficulty] = useState('Wszystkie')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedArticle, setSelectedArticle] = useState<KnowledgeArticle | null>(null)
 
-  const filteredArticles = knowledgeArticles.filter(article => {
-    const matchesCategory = selectedCategory === 'Wszystkie' || article.category === selectedCategory;
-    const matchesDifficulty = selectedDifficulty === 'Wszystkie' || article.difficulty === selectedDifficulty;
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    return matchesCategory && matchesDifficulty && matchesSearch;
-  });
+  const filteredArticles = knowledgeArticles.filter((article) => {
+    const matchesCategory =
+      selectedCategory === 'Wszystkie' || article.category === selectedCategory
+    const matchesDifficulty =
+      selectedDifficulty === 'Wszystkie' || article.difficulty === selectedDifficulty
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+
+    return matchesCategory && matchesDifficulty && matchesSearch
+  })
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Podstawowy': return 'bg-green-100 text-green-800';
-      case 'Średniozaawansowany': return 'bg-yellow-100 text-yellow-800';
-      case 'Zaawansowany': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Podstawowy':
+        return 'bg-green-100 text-green-800'
+      case 'Średniozaawansowany':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'Zaawansowany':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   if (selectedArticle) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="mx-auto max-w-4xl px-4">
           <button
             onClick={() => setSelectedArticle(null)}
             className="mb-6 flex items-center text-blue-600 hover:text-blue-800"
           >
             ← Powrót do bazy wiedzy
           </button>
-          
-          <article className="bg-white rounded-lg shadow-sm p-8">
+
+          <article className="rounded-lg bg-white p-8 shadow-sm">
             <div className="mb-6">
-              <div className="flex items-center gap-4 mb-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(selectedArticle.difficulty)}`}>
+              <div className="mb-4 flex items-center gap-4">
+                <span
+                  className={`rounded-full px-3 py-1 text-sm font-medium ${getDifficultyColor(selectedArticle.difficulty)}`}
+                >
                   {selectedArticle.difficulty}
                 </span>
-                <span className="text-gray-500 text-sm">{selectedArticle.readTime}</span>
-                <span className="text-gray-500 text-sm">Zaktualizowano: {selectedArticle.lastUpdated}</span>
+                <span className="text-sm text-gray-500">{selectedArticle.readTime}</span>
+                <span className="text-sm text-gray-500">
+                  Zaktualizowano: {selectedArticle.lastUpdated}
+                </span>
               </div>
-              
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{selectedArticle.title}</h1>
-              <p className="text-lg text-gray-600 mb-6">{selectedArticle.description}</p>
-              
-              <div className="flex flex-wrap gap-2 mb-6">
-                {selectedArticle.tags.map(tag => (
-                  <span key={tag} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+
+              <h1 className="mb-4 text-3xl font-bold text-gray-900">
+                {selectedArticle.title}
+              </h1>
+              <p className="mb-6 text-lg text-gray-600">{selectedArticle.description}</p>
+
+              <div className="mb-6 flex flex-wrap gap-2">
+                {selectedArticle.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded bg-blue-100 px-2 py-1 text-sm text-blue-800"
+                  >
                     #{tag}
                   </span>
                 ))}
               </div>
             </div>
-            
+
             <div className="prose max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: selectedArticle.content.replace(/\n/g, '<br>') }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: selectedArticle.content.replace(/\n/g, '<br>')
+                }}
+              />
             </div>
-            
+
             {selectedArticle.relatedSupplements.length > 0 && (
-              <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-blue-900 mb-2">Powiązane suplementy:</h3>
+              <div className="mt-8 rounded-lg bg-blue-50 p-4">
+                <h3 className="mb-2 font-semibold text-blue-900">
+                  Powiązane suplementy:
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedArticle.relatedSupplements.map(supplement => (
-                    <span key={supplement} className="bg-blue-200 text-blue-800 px-2 py-1 rounded text-sm">
+                  {selectedArticle.relatedSupplements.map((supplement) => (
+                    <span
+                      key={supplement}
+                      className="rounded bg-blue-200 px-2 py-1 text-sm text-blue-800"
+                    >
                       {supplement}
                     </span>
                   ))}
@@ -591,76 +619,77 @@ export default function KnowledgePage() {
           </article>
         </div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Baza Wiedzy</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Kompleksowe zasoby edukacyjne o neuroregulacji, suplementach i optymalizacji zdrowia
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">Baza Wiedzy</h1>
+          <p className="mx-auto max-w-3xl text-xl text-gray-600">
+            Kompleksowe zasoby edukacyjne o neuroregulacji, suplementach i optymalizacji
+            zdrowia
           </p>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white rounded-lg p-1 shadow-sm">
+        <div className="mb-8 flex justify-center">
+          <div className="rounded-lg bg-white p-1 shadow-sm">
             <button
               onClick={() => setActiveTab('articles')}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
                 activeTab === 'articles'
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <BookOpen className="h-4 w-4 inline mr-2" />
+              <BookOpen className="mr-2 inline h-4 w-4" />
               Artykuły
             </button>
             <button
               onClick={() => setActiveTab('modules')}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
                 activeTab === 'modules'
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <Play className="h-4 w-4 inline mr-2" />
+              <Play className="mr-2 inline h-4 w-4" />
               Kursy
             </button>
             <button
               onClick={() => setActiveTab('learning')}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
                 activeTab === 'learning'
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <GraduationCap className="h-4 w-4 inline mr-2" />
+              <GraduationCap className="mr-2 inline h-4 w-4" />
               Nauka
             </button>
             <button
               onClick={() => setActiveTab('protocols')}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
                 activeTab === 'protocols'
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <FileText className="h-4 w-4 inline mr-2" />
+              <FileText className="mr-2 inline h-4 w-4" />
               Protokoły
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
-              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
                 activeTab === 'quiz'
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <Award className="h-4 w-4 inline mr-2" />
+              <Award className="mr-2 inline h-4 w-4" />
               Quiz
             </button>
           </div>
@@ -670,78 +699,94 @@ export default function KnowledgePage() {
         {activeTab === 'articles' && (
           <div>
             {/* Search and Filters */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                   <input
                     type="text"
                     placeholder="Szukaj artykułów..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                 >
-                  {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </select>
-                
+
                 <select
                   value={selectedDifficulty}
                   onChange={(e) => setSelectedDifficulty(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
                 >
-                  {difficulties.map(difficulty => (
-                    <option key={difficulty} value={difficulty}>{difficulty}</option>
+                  {difficulties.map((difficulty) => (
+                    <option key={difficulty} value={difficulty}>
+                      {difficulty}
+                    </option>
                   ))}
                 </select>
-                
-                <div className="text-sm text-gray-600 flex items-center">
-                  <Filter className="h-4 w-4 mr-2" />
+
+                <div className="flex items-center text-sm text-gray-600">
+                  <Filter className="mr-2 h-4 w-4" />
                   {filteredArticles.length} artykułów
                 </div>
               </div>
             </div>
 
             {/* Articles Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArticles.map(article => (
-                <div key={article.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredArticles.map((article) => (
+                <div
+                  key={article.id}
+                  className="rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md"
+                >
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(article.difficulty)}`}>
+                    <div className="mb-3 flex items-center justify-between">
+                      <span
+                        className={`rounded px-2 py-1 text-xs font-medium ${getDifficultyColor(article.difficulty)}`}
+                      >
                         {article.difficulty}
                       </span>
-                      <span className="text-gray-500 text-sm flex items-center">
-                        <Clock className="h-3 w-3 mr-1" />
+                      <span className="flex items-center text-sm text-gray-500">
+                        <Clock className="mr-1 h-3 w-3" />
                         {article.readTime}
                       </span>
                     </div>
-                    
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{article.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.description}</p>
-                    
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {article.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+
+                    <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                      {article.title}
+                    </h3>
+                    <p className="mb-4 line-clamp-3 text-sm text-gray-600">
+                      {article.description}
+                    </p>
+
+                    <div className="mb-4 flex flex-wrap gap-1">
+                      {article.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600"
+                        >
                           #{tag}
                         </span>
                       ))}
                     </div>
-                    
+
                     <button
                       onClick={() => setSelectedArticle(article)}
-                      className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center"
+                      className="flex w-full items-center justify-center rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
                     >
                       Czytaj więcej
-                      <ChevronRight className="h-4 w-4 ml-1" />
+                      <ChevronRight className="ml-1 h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -753,19 +798,21 @@ export default function KnowledgePage() {
         {/* Learning Modules Tab */}
         {activeTab === 'modules' && (
           <div>
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Interaktywne Kursy</h2>
-              <p className="text-gray-600">Strukturalne programy nauki z praktycznymi ćwiczeniami</p>
+            <div className="mb-8 text-center">
+              <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                Interaktywne Kursy
+              </h2>
+              <p className="text-gray-600">
+                Strukturalne programy nauki z praktycznymi ćwiczeniami
+              </p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {learningModules.map(module => (
-                <Card key={module.id} className="hover:shadow-md transition-shadow">
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {learningModules.map((module) => (
+                <Card key={module.id} className="transition-shadow hover:shadow-md">
                   <CardHeader>
-                    <div className="flex items-center mb-2">
-                      <div className="bg-blue-100 p-3 rounded-lg mr-4">
-                        {module.icon}
-                      </div>
+                    <div className="mb-2 flex items-center">
+                      <div className="mr-4 rounded-lg bg-blue-100 p-3">{module.icon}</div>
                       <div>
                         <CardTitle className="text-lg">{module.title}</CardTitle>
                         <Badge variant="secondary">{module.difficulty}</Badge>
@@ -774,29 +821,29 @@ export default function KnowledgePage() {
                     <CardDescription>{module.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex justify-between text-sm text-muted-foreground mb-4">
+                    <div className="text-muted-foreground mb-4 flex justify-between text-sm">
                       <span>{module.lessons} lekcji</span>
                       <span>{module.duration}</span>
                     </div>
-                    
+
                     {module.progress !== undefined && (
                       <div className="mb-4">
-                        <div className="flex justify-between text-sm mb-1">
+                        <div className="mb-1 flex justify-between text-sm">
                           <span>Postęp</span>
                           <span>{module.progress}%</span>
                         </div>
-                        <div className="w-full bg-muted rounded-full h-2">
-                          <div 
+                        <div className="bg-muted h-2 w-full rounded-full">
+                          <div
                             className="bg-primary h-2 rounded-full transition-all duration-300"
                             style={{ width: `${module.progress}%` }}
                           ></div>
                         </div>
                       </div>
                     )}
-                    
+
                     <Button className="w-full" variant="default">
                       {module.progress === 0 ? 'Rozpocznij kurs' : 'Kontynuuj'}
-                      <Play className="h-4 w-4 ml-2" />
+                      <Play className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -811,32 +858,30 @@ export default function KnowledgePage() {
         )}
 
         {/* Protocol Guides Tab */}
-        {activeTab === 'protocols' && (
-          <ProtocolGuides />
-        )}
+        {activeTab === 'protocols' && <ProtocolGuides />}
 
         {/* Quiz Tab */}
         {activeTab === 'quiz' && (
-          <div className="text-center py-16">
-            <Award className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Quizy i Testy</h2>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              Sprawdź swoją wiedzę z interaktywnymi quizami i otrzymaj spersonalizowane rekomendacje
+          <div className="py-16 text-center">
+            <Award className="mx-auto mb-4 h-16 w-16 text-blue-500" />
+            <h2 className="mb-4 text-2xl font-bold text-gray-900">Quizy i Testy</h2>
+            <p className="mx-auto mb-8 max-w-2xl text-gray-600">
+              Sprawdź swoją wiedzę z interaktywnymi quizami i otrzymaj spersonalizowane
+              rekomendacje
             </p>
-            <Card className="max-w-md mx-auto">
+            <Card className="mx-auto max-w-md">
               <CardContent className="p-8 text-center">
-                <h3 className="text-lg font-semibold mb-4">Wkrótce dostępne!</h3>
+                <h3 className="mb-4 text-lg font-semibold">Wkrótce dostępne!</h3>
                 <p className="text-muted-foreground mb-6">
-                  Pracujemy nad interaktywnymi quizami, które pomogą Ci sprawdzić wiedzę i otrzymać spersonalizowane rekomendacje.
+                  Pracujemy nad interaktywnymi quizami, które pomogą Ci sprawdzić wiedzę i
+                  otrzymać spersonalizowane rekomendacje.
                 </p>
-                <Button>
-                  Powiadom mnie
-                </Button>
+                <Button>Powiadom mnie</Button>
               </CardContent>
             </Card>
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }

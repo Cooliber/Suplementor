@@ -1,16 +1,25 @@
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from 'react'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts'
 
 interface EffectData {
-  date: string;
-  mood: number;
-  focus: number;
-  energy: number;
-  sleep: number;
+  date: string
+  mood: number
+  focus: number
+  energy: number
+  sleep: number
 }
 
 interface EffectOverTimeChartProps {
-  data: EffectData[];
+  data: EffectData[]
 }
 
 const EffectOverTimeChart: React.FC<EffectOverTimeChartProps> = ({ data }) => (
@@ -21,7 +30,7 @@ const EffectOverTimeChart: React.FC<EffectOverTimeChartProps> = ({ data }) => (
         top: 5,
         right: 30,
         left: 20,
-        bottom: 5,
+        bottom: 5
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
@@ -35,6 +44,6 @@ const EffectOverTimeChart: React.FC<EffectOverTimeChartProps> = ({ data }) => (
       <Line type="monotone" dataKey="sleep" stroke="#ff7300" />
     </LineChart>
   </ResponsiveContainer>
-);
+)
 
-export default EffectOverTimeChart;
+export default EffectOverTimeChart

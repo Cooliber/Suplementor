@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Trophy,
@@ -26,70 +26,75 @@ import {
   Calendar,
   Map,
   Play
-} from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
+} from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface LearningPath {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  totalLessons: number;
-  completedLessons: number;
-  estimatedTime: string;
-  prerequisites: string[];
-  skills: string[];
-  achievements: string[];
-  progress: number;
-  isLocked: boolean;
-  isFeatured: boolean;
-  color: string;
-  icon: React.ReactNode;
+  id: string
+  title: string
+  description: string
+  category: string
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  totalLessons: number
+  completedLessons: number
+  estimatedTime: string
+  prerequisites: string[]
+  skills: string[]
+  achievements: string[]
+  progress: number
+  isLocked: boolean
+  isFeatured: boolean
+  color: string
+  icon: React.ReactNode
 }
 
 interface UserProgress {
-  totalPoints: number;
-  level: number;
-  streak: number;
-  completedPaths: number;
-  totalLessons: number;
-  weeklyGoal: number;
-  weeklyProgress: number;
-  badges: string[];
-  skills: { [key: string]: number };
+  totalPoints: number
+  level: number
+  streak: number
+  completedPaths: number
+  totalLessons: number
+  weeklyGoal: number
+  weeklyProgress: number
+  badges: string[]
+  skills: { [key: string]: number }
 }
 
 interface Lesson {
-  id: string;
-  title: string;
-  duration: string;
-  type: 'article' | 'video' | 'quiz' | 'practical';
-  completed: boolean;
-  locked: boolean;
-  estimatedTime: string;
-  description: string;
-  keyTakeaways: string[];
-  practicalApplications: string[];
+  id: string
+  title: string
+  duration: string
+  type: 'article' | 'video' | 'quiz' | 'practical'
+  completed: boolean
+  locked: boolean
+  estimatedTime: string
+  description: string
+  keyTakeaways: string[]
+  practicalApplications: string[]
 }
 
 interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  unlocked: boolean;
-  unlockedAt?: string;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  id: string
+  title: string
+  description: string
+  icon: React.ReactNode
+  unlocked: boolean
+  unlockedAt?: string
+  rarity: 'common' | 'rare' | 'epic' | 'legendary'
 }
 
 const learningPaths: LearningPath[] = [
@@ -114,7 +119,8 @@ const learningPaths: LearningPath[] = [
   {
     id: 'nootropic-foundations',
     title: 'Fundamenty nootropików',
-    description: 'Poznaj podstawowe suplementy i mechanizmy wspierające funkcje poznawcze',
+    description:
+      'Poznaj podstawowe suplementy i mechanizmy wspierające funkcje poznawcze',
     category: 'Suplementy',
     difficulty: 'Beginner',
     totalLessons: 15,
@@ -165,7 +171,7 @@ const learningPaths: LearningPath[] = [
     color: 'from-orange-500 to-orange-600',
     icon: <Clock className="h-6 w-6" />
   }
-];
+]
 
 const userProgress: UserProgress = {
   totalPoints: 2450,
@@ -177,13 +183,13 @@ const userProgress: UserProgress = {
   weeklyProgress: 3,
   badges: ['Pierwszy krok', 'Neuro-entuzjasta', 'Pierwszy nootrop'],
   skills: {
-    'Neuroanatomia': 75,
-    'Neuroprzekaźniki': 60,
+    Neuroanatomia: 75,
+    Neuroprzekaźniki: 60,
     'Plastyczność mózgu': 45,
     'Klasyfikacja nootropików': 30,
     'Mechanizmy działania': 25
   }
-};
+}
 
 const achievements: Achievement[] = [
   {
@@ -220,7 +226,7 @@ const achievements: Achievement[] = [
     unlocked: false,
     rarity: 'epic'
   }
-];
+]
 
 const currentPathLessons: Lesson[] = [
   {
@@ -271,41 +277,49 @@ const currentPathLessons: Lesson[] = [
     keyTakeaways: ['Pamięć robocza', 'Pamięć długotrwała', 'Konsolidacja'],
     practicalApplications: ['Techniki zapamiętywania', 'Optymalizacja nauki']
   }
-];
+]
 
 export function KnowledgeProgressionTracker() {
-  const [activeTab, setActiveTab] = useState('paths');
-  const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
+  const [activeTab, setActiveTab] = useState('paths')
+  const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null)
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'from-gray-400 to-gray-500';
-      case 'rare': return 'from-blue-400 to-blue-500';
-      case 'epic': return 'from-purple-400 to-purple-500';
-      case 'legendary': return 'from-yellow-400 to-yellow-500';
-      default: return 'from-gray-400 to-gray-500';
+      case 'common':
+        return 'from-gray-400 to-gray-500'
+      case 'rare':
+        return 'from-blue-400 to-blue-500'
+      case 'epic':
+        return 'from-purple-400 to-purple-500'
+      case 'legendary':
+        return 'from-yellow-400 to-yellow-500'
+      default:
+        return 'from-gray-400 to-gray-500'
     }
-  };
+  }
 
   const getLessonIcon = (type: string) => {
     switch (type) {
-      case 'article': return <BookOpen className="h-4 w-4" />;
-      case 'video': return <Play className="h-4 w-4" />;
-      case 'quiz': return <Target className="h-4 w-4" />;
-      case 'practical': return <Activity className="h-4 w-4" />;
-      default: return <BookOpen className="h-4 w-4" />;
+      case 'article':
+        return <BookOpen className="h-4 w-4" />
+      case 'video':
+        return <Play className="h-4 w-4" />
+      case 'quiz':
+        return <Target className="h-4 w-4" />
+      case 'practical':
+        return <Activity className="h-4 w-4" />
+      default:
+        return <BookOpen className="h-4 w-4" />
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Ścieżki Edukacyjne
-          </h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">Ścieżki Edukacyjne</h1>
+          <p className="mb-6 text-xl text-gray-600">
             Śledź swoje postępy i odkryj nowe ścieżki nauki
           </p>
 
@@ -315,39 +329,51 @@ export function KnowledgeProgressionTracker() {
               <CardTitle>Twój postęp</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600">{userProgress.level}</div>
+                  <div className="text-3xl font-bold text-purple-600">
+                    {userProgress.level}
+                  </div>
                   <div className="text-sm text-gray-600">Poziom</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600">{userProgress.totalPoints}</div>
+                  <div className="text-3xl font-bold text-green-600">
+                    {userProgress.totalPoints}
+                  </div>
                   <div className="text-sm text-gray-600">Punkty</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-600">{userProgress.streak}</div>
+                  <div className="text-3xl font-bold text-orange-600">
+                    {userProgress.streak}
+                  </div>
                   <div className="text-sm text-gray-600">Dni z rzędu</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">{userProgress.completedPaths}</div>
+                  <div className="text-3xl font-bold text-blue-600">
+                    {userProgress.completedPaths}
+                  </div>
                   <div className="text-sm text-gray-600">Ukończone ścieżki</div>
                 </div>
               </div>
 
               {/* Weekly Goal */}
               <div className="mt-4">
-                <div className="flex justify-between text-sm mb-2">
+                <div className="mb-2 flex justify-between text-sm">
                   <span>Cel tygodniowy</span>
-                  <span>{userProgress.weeklyProgress}/{userProgress.weeklyGoal} lekcji</span>
+                  <span>
+                    {userProgress.weeklyProgress}/{userProgress.weeklyGoal} lekcji
+                  </span>
                 </div>
-                <Progress value={(userProgress.weeklyProgress / userProgress.weeklyGoal) * 100} />
+                <Progress
+                  value={(userProgress.weeklyProgress / userProgress.weeklyGoal) * 100}
+                />
               </div>
             </CardContent>
           </Card>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 w-full max-w-md">
+          <TabsList className="grid w-full max-w-md grid-cols-4">
             <TabsTrigger value="paths">Ścieżki</TabsTrigger>
             <TabsTrigger value="progress">Postęp</TabsTrigger>
             <TabsTrigger value="achievements">Osiągnięcia</TabsTrigger>
@@ -355,14 +381,19 @@ export function KnowledgeProgressionTracker() {
           </TabsList>
 
           <TabsContent value="paths">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {learningPaths.map(path => (
-                <Card key={path.id} className={`hover:shadow-lg transition-all duration-300 ${
-                  path.isLocked ? 'opacity-75' : ''
-                }`}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {learningPaths.map((path) => (
+                <Card
+                  key={path.id}
+                  className={`transition-all duration-300 hover:shadow-lg ${
+                    path.isLocked ? 'opacity-75' : ''
+                  }`}
+                >
                   <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div className={`p-3 rounded-lg bg-gradient-to-r ${path.color} text-white`}>
+                    <div className="flex items-start justify-between">
+                      <div
+                        className={`rounded-lg bg-gradient-to-r p-3 ${path.color} text-white`}
+                      >
                         {path.icon}
                       </div>
                       {path.isFeatured && (
@@ -377,17 +408,28 @@ export function KnowledgeProgressionTracker() {
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <div className="flex justify-between text-sm mb-2">
+                        <div className="mb-2 flex justify-between text-sm">
                           <span>Postęp</span>
-                          <span>{path.completedLessons}/{path.totalLessons} lekcji</span>
+                          <span>
+                            {path.completedLessons}/{path.totalLessons} lekcji
+                          </span>
                         </div>
-                        <Progress value={(path.completedLessons / path.totalLessons) * 100} />
+                        <Progress
+                          value={(path.completedLessons / path.totalLessons) * 100}
+                        />
                       </div>
 
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Trudność:</span>
-                        <Badge variant={path.difficulty === 'Beginner' ? 'default' : 
-                          path.difficulty === 'Intermediate' ? 'secondary' : 'outline'}>
+                        <Badge
+                          variant={
+                            path.difficulty === 'Beginner'
+                              ? 'default'
+                              : path.difficulty === 'Intermediate'
+                                ? 'secondary'
+                                : 'outline'
+                          }
+                        >
                           {path.difficulty}
                         </Badge>
                       </div>
@@ -398,32 +440,32 @@ export function KnowledgeProgressionTracker() {
                       </div>
 
                       <div className="flex flex-wrap gap-1">
-                        {path.skills.slice(0, 3).map(skill => (
+                        {path.skills.slice(0, 3).map((skill) => (
                           <Badge key={skill} variant="outline" className="text-xs">
                             {skill}
                           </Badge>
                         ))}
                       </div>
 
-                      <Button 
-                        className="w-full" 
+                      <Button
+                        className="w-full"
                         disabled={path.isLocked}
                         onClick={() => setSelectedPath(path)}
                       >
                         {path.isLocked ? (
                           <>
-                            <Lock className="h-4 w-4 mr-2" />
+                            <Lock className="mr-2 h-4 w-4" />
                             Zablokowane
                           </>
                         ) : path.progress === 100 ? (
                           <>
-                            <CheckCircle className="h-4 w-4 mr-2" />
+                            <CheckCircle className="mr-2 h-4 w-4" />
                             Przeglądaj
                           </>
                         ) : (
                           <>
                             Kontynuuj
-                            <ChevronRight className="h-4 w-4 ml-2" />
+                            <ChevronRight className="ml-2 h-4 w-4" />
                           </>
                         )}
                       </Button>
@@ -435,7 +477,7 @@ export function KnowledgeProgressionTracker() {
           </TabsContent>
 
           <TabsContent value="progress">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
                   <CardTitle>Aktualna ścieżka</CardTitle>
@@ -446,11 +488,15 @@ export function KnowledgeProgressionTracker() {
                     <div className="space-y-4">
                       {currentPathLessons.map((lesson, index) => (
                         <div key={lesson.id} className="flex items-start space-x-4">
-                          <div className={`p-2 rounded-full ${
-                            lesson.completed ? 'bg-green-100 text-green-600' :
-                            lesson.locked ? 'bg-gray-100 text-gray-400' :
-                            'bg-blue-100 text-blue-600'
-                          }`}>
+                          <div
+                            className={`rounded-full p-2 ${
+                              lesson.completed
+                                ? 'bg-green-100 text-green-600'
+                                : lesson.locked
+                                  ? 'bg-gray-100 text-gray-400'
+                                  : 'bg-blue-100 text-blue-600'
+                            }`}
+                          >
                             {lesson.completed ? (
                               <CheckCircle className="h-4 w-4" />
                             ) : lesson.locked ? (
@@ -462,7 +508,7 @@ export function KnowledgeProgressionTracker() {
                           <div className="flex-1">
                             <h4 className="font-medium">{lesson.title}</h4>
                             <p className="text-sm text-gray-600">{lesson.description}</p>
-                            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                            <div className="mt-2 flex items-center gap-4 text-sm text-gray-500">
                               <span className="flex items-center gap-1">
                                 {getLessonIcon(lesson.type)}
                                 {lesson.duration}
@@ -485,11 +531,11 @@ export function KnowledgeProgressionTracker() {
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-medium mb-2">Umiejętności</h4>
+                      <h4 className="mb-2 font-medium">Umiejętności</h4>
                       <div className="space-y-2">
                         {Object.entries(userProgress.skills).map(([skill, level]) => (
                           <div key={skill}>
-                            <div className="flex justify-between text-sm mb-1">
+                            <div className="mb-1 flex justify-between text-sm">
                               <span>{skill}</span>
                               <span>{level}%</span>
                             </div>
@@ -502,7 +548,7 @@ export function KnowledgeProgressionTracker() {
                     <hr className="border-gray-200" />
 
                     <div>
-                      <h4 className="font-medium mb-2">Ostatnia aktywność</h4>
+                      <h4 className="mb-2 font-medium">Ostatnia aktywność</h4>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span>Dzisiaj</span>
@@ -525,15 +571,20 @@ export function KnowledgeProgressionTracker() {
           </TabsContent>
 
           <TabsContent value="achievements">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {achievements.map(achievement => (
-                <Card key={achievement.id} className={`transition-all duration-300 ${
-                  achievement.unlocked ? '' : 'opacity-50'
-                }`}>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {achievements.map((achievement) => (
+                <Card
+                  key={achievement.id}
+                  className={`transition-all duration-300 ${
+                    achievement.unlocked ? '' : 'opacity-50'
+                  }`}
+                >
                   <CardHeader>
-                    <div className={`p-3 rounded-full bg-gradient-to-r ${
-                      getRarityColor(achievement.rarity)
-                    } text-white w-fit mx-auto mb-2`}>
+                    <div
+                      className={`rounded-full bg-gradient-to-r p-3 ${getRarityColor(
+                        achievement.rarity
+                      )} mx-auto mb-2 w-fit text-white`}
+                    >
                       {achievement.icon}
                     </div>
                     <CardTitle className="text-center">{achievement.title}</CardTitle>
@@ -543,17 +594,22 @@ export function KnowledgeProgressionTracker() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-center">
-                      <Badge 
-                        variant={achievement.unlocked ? "default" : "outline"}
+                      <Badge
+                        variant={achievement.unlocked ? 'default' : 'outline'}
                         className="mb-2"
                       >
-                        {achievement.rarity === 'common' ? 'Powszechny' :
-                         achievement.rarity === 'rare' ? 'Rzadki' :
-                         achievement.rarity === 'epic' ? 'Epicki' : 'Legendarny'}
+                        {achievement.rarity === 'common'
+                          ? 'Powszechny'
+                          : achievement.rarity === 'rare'
+                            ? 'Rzadki'
+                            : achievement.rarity === 'epic'
+                              ? 'Epicki'
+                              : 'Legendarny'}
                       </Badge>
                       {achievement.unlocked && achievement.unlockedAt && (
                         <p className="text-sm text-gray-600">
-                          Odblokowano: {new Date(achievement.unlockedAt).toLocaleDateString('pl-PL')}
+                          Odblokowano:{' '}
+                          {new Date(achievement.unlockedAt).toLocaleDateString('pl-PL')}
                         </p>
                       )}
                     </div>
@@ -564,24 +620,38 @@ export function KnowledgeProgressionTracker() {
           </TabsContent>
 
           <TabsContent value="skills">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
                   <CardTitle>Mapa umiejętności</CardTitle>
-                  <CardDescription>Twoje kompetencje w poszczególnych dziedzinach</CardDescription>
+                  <CardDescription>
+                    Twoje kompetencje w poszczególnych dziedzinach
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
                     {Object.entries(userProgress.skills).map(([skill, level]) => (
                       <div key={skill}>
-                        <div className="flex justify-between items-center mb-2">
+                        <div className="mb-2 flex items-center justify-between">
                           <h4 className="font-medium">{skill}</h4>
-                          <Badge variant={level >= 75 ? "default" : level >= 50 ? "secondary" : "outline"}>
-                            {level >= 75 ? 'Ekspert' : level >= 50 ? 'Zaawansowany' : 'Początkujący'}
+                          <Badge
+                            variant={
+                              level >= 75
+                                ? 'default'
+                                : level >= 50
+                                  ? 'secondary'
+                                  : 'outline'
+                            }
+                          >
+                            {level >= 75
+                              ? 'Ekspert'
+                              : level >= 50
+                                ? 'Zaawansowany'
+                                : 'Początkujący'}
                           </Badge>
                         </div>
                         <Progress value={level} className="h-3" />
-                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <div className="mt-1 flex justify-between text-xs text-gray-500">
                           <span>Poziom {Math.floor(level / 25) + 1}</span>
                           <span>{level}%</span>
                         </div>
@@ -598,29 +668,31 @@ export function KnowledgeProgressionTracker() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="border rounded-lg p-4">
-                      <h4 className="font-medium mb-2">Następny poziom</h4>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Poziom {userProgress.level + 1}</span>
+                    <div className="rounded-lg border p-4">
+                      <h4 className="mb-2 font-medium">Następny poziom</h4>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">
+                          Poziom {userProgress.level + 1}
+                        </span>
                         <span className="text-sm font-medium">
                           {5000 - userProgress.totalPoints} pkt do następnego poziomu
                         </span>
                       </div>
-                      <Progress 
-                        value={((userProgress.totalPoints % 5000) / 5000) * 100} 
-                        className="h-2 mt-2" 
+                      <Progress
+                        value={((userProgress.totalPoints % 5000) / 5000) * 100}
+                        className="mt-2 h-2"
                       />
                     </div>
 
-                    <div className="border rounded-lg p-4">
-                      <h4 className="font-medium mb-2">Rekomendowane ścieżki</h4>
+                    <div className="rounded-lg border p-4">
+                      <h4 className="mb-2 font-medium">Rekomendowane ścieżki</h4>
                       <div className="space-y-2">
                         <Button variant="outline" className="w-full justify-start">
-                          <Brain className="h-4 w-4 mr-2" />
+                          <Brain className="mr-2 h-4 w-4" />
                           Neuroplastyczność - zaawansowany
                         </Button>
                         <Button variant="outline" className="w-full justify-start">
-                          <Zap className="h-4 w-4 mr-2" />
+                          <Zap className="mr-2 h-4 w-4" />
                           Stacking nootropików
                         </Button>
                       </div>
@@ -633,5 +705,5 @@ export function KnowledgeProgressionTracker() {
         </Tabs>
       </div>
     </div>
-  );
+  )
 }

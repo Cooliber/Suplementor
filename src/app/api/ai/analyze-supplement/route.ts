@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { aiKnowledgeEngine } from '@/lib/ai-knowledge-engine';
-import { advancedDebugger, DebugCategory } from '@/lib/advanced-debugging';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server'
+import { aiKnowledgeEngine } from '@/lib/ai-knowledge-engine'
+import { advancedDebugger, DebugCategory } from '@/lib/advanced-debugging'
+import { z } from 'zod'
 
 // Request validation schema
 const AnalyzeSupplementRequestSchema = z.object({
@@ -14,37 +14,41 @@ const AnalyzeSupplementRequestSchema = z.object({
     targetSystems: z.array(z.string()),
     evidenceLevel: z.enum(['strong', 'moderate', 'weak', 'insufficient'])
   }),
-  userContext: z.object({
-    goals: z.array(z.string()).optional(),
-    healthConditions: z.array(z.string()).optional(),
-    currentSupplements: z.array(z.string()).optional(),
-    age: z.number().optional(),
-    gender: z.string().optional()
-  }).optional()
-});
+  userContext: z
+    .object({
+      goals: z.array(z.object({ goal: z.string() })).optional(),
+      healthConditions: z.array(z.string()).optional(),
+      currentSupplements: z.array(z.string()).optional(),
+      age: z.number().optional(),
+      gender: z.string().optional()
+    })
+    .optional()
+})
 
 export async function POST(request: NextRequest) {
   try {
-    advancedDebugger.info(DebugCategory.API, 'AI supplement analysis request received');
+    advancedDebugger.info(DebugCategory.API, 'AI supplement analysis request received')
 
-    const body = await request.json();
-    const validatedData = AnalyzeSupplementRequestSchema.parse(body);
+    const body = await request.json()
+    const validatedData = AnalyzeSupplementRequestSchema.parse(body)
 
     const result = await aiKnowledgeEngine.analyzeSupplementWithAI(
-      validatedData.supplement as any,
+      validatedData.supplement,
       validatedData.userContext
-    );
+    )
 
-    advancedDebugger.info(DebugCategory.API, 'AI supplement analysis completed successfully');
+    advancedDebugger.info(
+      DebugCategory.API,
+      'AI supplement analysis completed successfully'
+    )
 
     return NextResponse.json({
       success: true,
       data: result,
       timestamp: new Date().toISOString()
-    });
-
+    })
   } catch (error) {
-    advancedDebugger.error(DebugCategory.API, 'AI supplement analysis failed', error);
+    advancedDebugger.error(DebugCategory.API, 'AI supplement analysis failed', error)
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -55,7 +59,7 @@ export async function POST(request: NextRequest) {
           timestamp: new Date().toISOString()
         },
         { status: 400 }
-      );
+      )
     }
 
     return NextResponse.json(
@@ -65,7 +69,7 @@ export async function POST(request: NextRequest) {
         timestamp: new Date().toISOString()
       },
       { status: 500 }
-    );
+    )
   }
 }
 
@@ -75,7 +79,7 @@ export async function OPTIONS(request: NextRequest) {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    }
+  })
 }

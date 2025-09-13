@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Brain,
@@ -31,67 +31,73 @@ import {
   ArrowRight,
   CheckCircle,
   Circle
-} from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+} from 'lucide-react'
+import { useState, useMemo, useEffect } from 'react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface KnowledgeCategory {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  color: string;
-  subcategories: KnowledgeSubcategory[];
-  totalArticles: number;
-  completedArticles: number;
+  id: string
+  name: string
+  description: string
+  icon: React.ReactNode
+  color: string
+  subcategories: KnowledgeSubcategory[]
+  totalArticles: number
+  completedArticles: number
 }
 
 interface KnowledgeSubcategory {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  articleCount: number;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  estimatedTime: string;
-  prerequisites: string[];
+  id: string
+  name: string
+  description: string
+  icon: React.ReactNode
+  articleCount: number
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  estimatedTime: string
+  prerequisites: string[]
 }
 
 interface LearningPath {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  totalTime: string;
-  articles: string[];
-  progress: number;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  tags: string[];
+  id: string
+  title: string
+  description: string
+  icon: React.ReactNode
+  totalTime: string
+  articles: string[]
+  progress: number
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  tags: string[]
 }
 
 interface KnowledgeArticle {
-  id: string;
-  title: string;
-  category: string;
-  subcategory: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  readTime: string;
-  description: string;
-  tags: string[];
-  lastUpdated: string;
-  isCompleted: boolean;
-  isBookmarked: boolean;
-  prerequisites: string[];
-  relatedArticles: string[];
-  keyTakeaways: string[];
-  practicalApplications: string[];
+  id: string
+  title: string
+  category: string
+  subcategory: string
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  readTime: string
+  description: string
+  tags: string[]
+  lastUpdated: string
+  isCompleted: boolean
+  isBookmarked: boolean
+  prerequisites: string[]
+  relatedArticles: string[]
+  keyTakeaways: string[]
+  practicalApplications: string[]
 }
 
 const knowledgeCategories: KnowledgeCategory[] = [
@@ -178,7 +184,7 @@ const knowledgeCategories: KnowledgeCategory[] = [
       {
         id: 'natural-nootropics',
         name: 'Naturalne Nootropiki',
-        description: 'Lion\'s Mane, Bacopa, Ginkgo',
+        description: "Lion's Mane, Bacopa, Ginkgo",
         icon: <Heart className="h-5 w-5" />,
         articleCount: 15,
         difficulty: 'Beginner',
@@ -269,7 +275,7 @@ const knowledgeCategories: KnowledgeCategory[] = [
       }
     ]
   }
-];
+]
 
 const learningPaths: LearningPath[] = [
   {
@@ -305,69 +311,72 @@ const learningPaths: LearningPath[] = [
     difficulty: 'Intermediate',
     tags: ['stres', 'adaptogeny', 'kortyzol']
   }
-];
+]
 
 export function EnhancedKnowledgeNavigation() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'categories' | 'paths' | 'bookmarks'>('categories');
-  const [bookmarkedItems, setBookmarkedItems] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
+  const [viewMode, setViewMode] = useState<'categories' | 'paths' | 'bookmarks'>(
+    'categories'
+  )
+  const [bookmarkedItems, setBookmarkedItems] = useState<string[]>([])
 
   const filteredCategories = useMemo(() => {
-    if (!searchQuery) return knowledgeCategories;
-    
-    return knowledgeCategories.filter(category => 
-      category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.subcategories.some(sub => 
-        sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sub.description.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
-  }, [searchQuery]);
+    if (!searchQuery) return knowledgeCategories
+
+    return knowledgeCategories.filter(
+      (category) =>
+        category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        category.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        category.subcategories.some(
+          (sub) =>
+            sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            sub.description.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+    )
+  }, [searchQuery])
 
   const filteredLearningPaths = useMemo(() => {
-    if (!searchQuery) return learningPaths;
-    
-    return learningPaths.filter(path => 
-      path.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      path.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      path.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  }, [searchQuery]);
+    if (!searchQuery) return learningPaths
+
+    return learningPaths.filter(
+      (path) =>
+        path.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        path.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        path.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+  }, [searchQuery])
 
   const toggleBookmark = (itemId: string) => {
-    setBookmarkedItems(prev => 
-      prev.includes(itemId) 
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
-    );
-  };
+    setBookmarkedItems((prev) =>
+      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">
             Centrum Wiedzy Neurohacking
           </h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <p className="mb-6 text-xl text-gray-600">
             Systematycznie zorganizowana wiedza o optymalizacji funkcji poznawczych
           </p>
 
           {/* Search and Filters */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+          <div className="mb-6 flex flex-col gap-4 lg:flex-row">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
               <Input
                 type="text"
                 placeholder="Szukaj wiedzy..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full"
+                className="w-full py-2 pr-4 pl-10"
               />
             </div>
             <div className="flex gap-2">
@@ -388,7 +397,7 @@ export function EnhancedKnowledgeNavigation() {
                 onClick={() => setViewMode('bookmarks')}
                 className="relative"
               >
-                <Bookmark className="h-4 w-4 mr-2" />
+                <Bookmark className="mr-2 h-4 w-4" />
                 Zakładki
                 {bookmarkedItems.length > 0 && (
                   <Badge className="ml-2" variant="secondary">
@@ -409,15 +418,17 @@ export function EnhancedKnowledgeNavigation() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {knowledgeCategories.map(category => (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+              {knowledgeCategories.map((category) => (
                 <div key={category.id} className="text-center">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${category.color} bg-opacity-10 mb-2`}>
+                  <div
+                    className={`inline-flex h-16 w-16 items-center justify-center rounded-full ${category.color} bg-opacity-10 mb-2`}
+                  >
                     {category.icon}
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{category.name}</h3>
-                  <Progress 
-                    value={(category.completedArticles / category.totalArticles) * 100} 
+                  <h3 className="mb-1 font-semibold text-gray-900">{category.name}</h3>
+                  <Progress
+                    value={(category.completedArticles / category.totalArticles) * 100}
                     className="mb-2"
                   />
                   <p className="text-sm text-gray-600">
@@ -431,68 +442,76 @@ export function EnhancedKnowledgeNavigation() {
 
         {/* Main Content */}
         {viewMode === 'categories' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Categories Sidebar */}
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Kategorie</h2>
+              <h2 className="mb-4 text-2xl font-bold text-gray-900">Kategorie</h2>
               <ScrollArea className="h-[400px] w-full">
-              <div className="space-y-4">
-                {filteredCategories.map((category) => (
-                  <Card key={category.id} className="hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <span className={category.color}>{category.icon}</span>
-                        {category.name}
-                      </CardTitle>
-                      <CardDescription>{category.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-600">Postęp</span>
-                          <span className="text-sm font-medium">
-                            {category.completedArticles}/{category.totalArticles} artykułów
-                          </span>
+                <div className="space-y-4">
+                  {filteredCategories.map((category) => (
+                    <Card key={category.id} className="transition-shadow hover:shadow-md">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg">
+                          <span className={category.color}>{category.icon}</span>
+                          {category.name}
+                        </CardTitle>
+                        <CardDescription>{category.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Postęp</span>
+                            <span className="text-sm font-medium">
+                              {category.completedArticles}/{category.totalArticles}{' '}
+                              artykułów
+                            </span>
+                          </div>
+                          <Progress
+                            value={
+                              (category.completedArticles / category.totalArticles) * 100
+                            }
+                          />
+
+                          <div className="grid grid-cols-2 gap-2">
+                            {category.subcategories.map((sub) => (
+                              <Button
+                                key={sub.id}
+                                variant="outline"
+                                size="sm"
+                                className="justify-start text-xs"
+                                onClick={() => {
+                                  setSelectedCategory(category.id)
+                                  setSelectedSubcategory(sub.id)
+                                }}
+                              >
+                                <span className="mr-1">{sub.icon}</span>
+                                {sub.name}
+                              </Button>
+                            ))}
+                          </div>
                         </div>
-                        <Progress value={(category.completedArticles / category.totalArticles) * 100} />
-                        
-                        <div className="grid grid-cols-2 gap-2">
-                          {category.subcategories.map((sub) => (
-                            <Button
-                              key={sub.id}
-                              variant="outline"
-                              size="sm"
-                              className="text-xs justify-start"
-                              onClick={() => {
-                                setSelectedCategory(category.id);
-                                setSelectedSubcategory(sub.id);
-                              }}
-                            >
-                              <span className="mr-1">{sub.icon}</span>
-                              {sub.name}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </ScrollArea>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
 
             {/* Subcategories */}
             <div className="lg:col-span-2">
               {selectedCategory ? (
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    {knowledgeCategories.find(c => c.id === selectedCategory)?.name}
+                  <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                    {knowledgeCategories.find((c) => c.id === selectedCategory)?.name}
                   </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {knowledgeCategories
-                      .find(c => c.id === selectedCategory)
-                      ?.subcategories.map(subcategory => (
-                        <Card key={subcategory.id} className="hover:shadow-md transition-shadow">
+                      .find((c) => c.id === selectedCategory)
+                      ?.subcategories.map((subcategory) => (
+                        <Card
+                          key={subcategory.id}
+                          className="transition-shadow hover:shadow-md"
+                        >
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-base">
                               {subcategory.icon}
@@ -503,8 +522,15 @@ export function EnhancedKnowledgeNavigation() {
                           <CardContent>
                             <div className="space-y-2">
                               <div className="flex items-center justify-between">
-                                <Badge variant={subcategory.difficulty === 'Beginner' ? 'default' : 
-                                  subcategory.difficulty === 'Intermediate' ? 'secondary' : 'outline'}>
+                                <Badge
+                                  variant={
+                                    subcategory.difficulty === 'Beginner'
+                                      ? 'default'
+                                      : subcategory.difficulty === 'Intermediate'
+                                        ? 'secondary'
+                                        : 'outline'
+                                  }
+                                >
                                   {subcategory.difficulty}
                                 </Badge>
                                 <span className="text-sm text-gray-600">
@@ -515,13 +541,13 @@ export function EnhancedKnowledgeNavigation() {
                                 <span className="text-sm text-gray-600">
                                   {subcategory.articleCount} artykułów
                                 </span>
-                                <Button 
-                                  size="sm" 
+                                <Button
+                                  size="sm"
                                   variant="ghost"
                                   onClick={() => setSelectedSubcategory(subcategory.id)}
                                 >
                                   Rozpocznij
-                                  <ArrowRight className="h-4 w-4 ml-1" />
+                                  <ArrowRight className="ml-1 h-4 w-4" />
                                 </Button>
                               </div>
                             </div>
@@ -531,13 +557,14 @@ export function EnhancedKnowledgeNavigation() {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-12">
-                  <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="py-12 text-center">
+                  <BookOpen className="mx-auto mb-4 h-16 w-16 text-gray-400" />
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
                     Wybierz kategorię
                   </h3>
                   <p className="text-gray-600">
-                    Wybierz kategorię z lewego panelu, aby zobaczyć dostępne podkategorie i artykuły.
+                    Wybierz kategorię z lewego panelu, aby zobaczyć dostępne podkategorie
+                    i artykuły.
                   </p>
                 </div>
               )}
@@ -547,10 +574,10 @@ export function EnhancedKnowledgeNavigation() {
 
         {viewMode === 'paths' && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Ścieżki Nauki</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredLearningPaths.map(path => (
-                <Card key={path.id} className="hover:shadow-md transition-shadow">
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">Ścieżki Nauki</h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredLearningPaths.map((path) => (
+                <Card key={path.id} className="transition-shadow hover:shadow-md">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <span className="text-blue-600">{path.icon}</span>
@@ -561,7 +588,7 @@ export function EnhancedKnowledgeNavigation() {
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <div className="flex justify-between items-center mb-2">
+                        <div className="mb-2 flex items-center justify-between">
                           <span className="text-sm font-medium">Postęp</span>
                           <span className="text-sm text-gray-600">{path.progress}%</span>
                         </div>
@@ -569,13 +596,20 @@ export function EnhancedKnowledgeNavigation() {
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">Czas: {path.totalTime}</span>
-                        <Badge variant={path.difficulty === 'Beginner' ? 'default' : 
-                          path.difficulty === 'Intermediate' ? 'secondary' : 'outline'}>
+                        <Badge
+                          variant={
+                            path.difficulty === 'Beginner'
+                              ? 'default'
+                              : path.difficulty === 'Intermediate'
+                                ? 'secondary'
+                                : 'outline'
+                          }
+                        >
                           {path.difficulty}
                         </Badge>
                       </div>
                       <div className="flex gap-1">
-                        {path.tags.slice(0, 3).map(tag => (
+                        {path.tags.slice(0, 3).map((tag) => (
                           <Badge key={tag} variant="outline" className="text-xs">
                             {tag}
                           </Badge>
@@ -583,7 +617,7 @@ export function EnhancedKnowledgeNavigation() {
                       </div>
                       <Button className="w-full" size="sm">
                         Kontynuuj naukę
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </CardContent>
@@ -595,13 +629,13 @@ export function EnhancedKnowledgeNavigation() {
 
         {viewMode === 'bookmarks' && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Zakładki</h2>
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">Zakładki</h2>
             {bookmarkedItems.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {bookmarkedItems.map(itemId => (
-                  <Card key={itemId} className="hover:shadow-md transition-shadow">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {bookmarkedItems.map((itemId) => (
+                  <Card key={itemId} className="transition-shadow hover:shadow-md">
                     <CardHeader>
-                      <CardTitle className="text-base flex items-center justify-between">
+                      <CardTitle className="flex items-center justify-between text-base">
                         <span>Zakładka: {itemId}</span>
                         <Button
                           variant="ghost"
@@ -618,16 +652,16 @@ export function EnhancedKnowledgeNavigation() {
                       </p>
                       <Button className="mt-2" size="sm" variant="outline">
                         Czytaj dalej
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <Bookmark className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="py-12 text-center">
+                <Bookmark className="mx-auto mb-4 h-16 w-16 text-gray-400" />
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">
                   Brak zakładek
                 </h3>
                 <p className="text-gray-600">
@@ -639,5 +673,5 @@ export function EnhancedKnowledgeNavigation() {
         )}
       </div>
     </div>
-  );
+  )
 }

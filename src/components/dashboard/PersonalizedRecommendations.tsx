@@ -1,48 +1,57 @@
-'use client';
+'use client'
 
-import React, { useState, useMemo } from 'react';
-import { Brain, Lightbulb, TrendingUp, Clock, Target, Star, ChevronRight, Info } from 'lucide-react';
+import React, { useState, useMemo } from 'react'
+import {
+  Brain,
+  Lightbulb,
+  TrendingUp,
+  Clock,
+  Target,
+  Star,
+  ChevronRight,
+  Info
+} from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import  { type DashboardStats, type SupplementItem } from './OptimizedDashboard';
+import { type DashboardStats, type SupplementItem } from './OptimizedDashboard'
 
 interface Recommendation {
-  id: string;
-  type: 'supplement' | 'lifestyle' | 'timing' | 'combination';
-  title: string;
-  description: string;
-  reasoning: string;
-  priority: 'low' | 'medium' | 'high';
-  confidence: number;
-  expectedBenefit: string;
-  timeframe: string;
-  actionSteps: string[];
-  scientificBasis?: string;
+  id: string
+  type: 'supplement' | 'lifestyle' | 'timing' | 'combination'
+  title: string
+  description: string
+  reasoning: string
+  priority: 'low' | 'medium' | 'high'
+  confidence: number
+  expectedBenefit: string
+  timeframe: string
+  actionSteps: string[]
+  scientificBasis?: string
 }
 
 interface PersonalizedRecommendationsProps {
-  stats: DashboardStats;
-  supplements: SupplementItem[];
+  stats: DashboardStats
+  supplements: SupplementItem[]
   userProfile?: {
-    age: number;
-    goals: string[];
-    sleepPattern: 'early' | 'normal' | 'late';
-    stressLevel: number;
-    exerciseFrequency: number;
-  };
+    age: number
+    goals: string[]
+    sleepPattern: 'early' | 'normal' | 'late'
+    stressLevel: number
+    exerciseFrequency: number
+  }
 }
 
 /**
  *
  */
-const PersonalizedRecommendations = ({ 
-  stats, 
-  supplements, 
+const PersonalizedRecommendations = ({
+  stats,
+  supplements,
   userProfile = {
     age: 30,
     goals: ['focus', 'memory', 'energy'],
@@ -51,11 +60,13 @@ const PersonalizedRecommendations = ({
     exerciseFrequency: 3
   }
 }: PersonalizedRecommendationsProps) => {
-  const [selectedRecommendation, setSelectedRecommendation] = useState<string | null>(null);
+  const [selectedRecommendation, setSelectedRecommendation] = useState<string | null>(
+    null
+  )
 
   // AI-driven recommendation engine
   const recommendations = useMemo(() => {
-    const recs: Recommendation[] = [];
+    const recs: Recommendation[] = []
 
     // Analyze current performance gaps
     if (stats.focusScore < 80) {
@@ -63,7 +74,8 @@ const PersonalizedRecommendations = ({
         id: 'focus-enhancement',
         type: 'supplement',
         title: 'Zwiększ koncentrację z Rhodiola Rosea',
-        description: 'Dodanie Rhodiola Rosea może poprawić koncentrację o 15-25% w ciągu 2-4 tygodni',
+        description:
+          'Dodanie Rhodiola Rosea może poprawić koncentrację o 15-25% w ciągu 2-4 tygodni',
         reasoning: `Twój obecny wynik koncentracji (${stats.focusScore}%) wskazuje na potrzebę wsparcia adaptogennego`,
         priority: 'high',
         confidence: 85,
@@ -74,36 +86,39 @@ const PersonalizedRecommendations = ({
           'Monitoruj efekty przez pierwszy tydzień',
           'Zwiększ dawkę do 400mg jeśli potrzeba po 2 tygodniach'
         ],
-        scientificBasis: 'Badania pokazują skuteczność Rhodiola w redukcji zmęczenia umysłowego o 20%'
-      });
+        scientificBasis:
+          'Badania pokazują skuteczność Rhodiola w redukcji zmęczenia umysłowego o 20%'
+      })
     }
 
     // Memory optimization
     if (stats.memoryScore < 85) {
-      const hasLionsMane = supplements.some(s => s.name.includes('Lion\'s Mane'));
+      const hasLionsMane = supplements.some((s) => s.name.includes("Lion's Mane"))
       if (!hasLionsMane) {
         recs.push({
           id: 'memory-boost',
           type: 'supplement',
-          title: 'Dodaj Lion\'s Mane dla pamięci',
-          description: 'Lion\'s Mane stymuluje neurogenezę i może poprawić pamięć długoterminową',
-          reasoning: 'Brak Lion\'s Mane w stosie przy wyniku pamięci poniżej 85%',
+          title: "Dodaj Lion's Mane dla pamięci",
+          description:
+            "Lion's Mane stymuluje neurogenezę i może poprawić pamięć długoterminową",
+          reasoning: "Brak Lion's Mane w stosie przy wyniku pamięci poniżej 85%",
           priority: 'medium',
           confidence: 90,
           expectedBenefit: 'Poprawa pamięci o 10-20%',
           timeframe: '4-8 tygodni',
           actionSteps: [
-            'Rozpocznij od 500mg Lion\'s Mane z posiłkiem',
+            "Rozpocznij od 500mg Lion's Mane z posiłkiem",
             'Zwiększ do 1000mg po tygodniu',
             'Oceniaj postępy co 2 tygodnie'
           ],
-          scientificBasis: 'Hericenony i erinacyny stymulują produkcję NGF (Nerve Growth Factor)'
-        });
+          scientificBasis:
+            'Hericenony i erinacyny stymulują produkcję NGF (Nerve Growth Factor)'
+        })
       }
     }
 
     // Timing optimization
-    const hasLTheanine = supplements.some(s => s.name.includes('L-Theanine'));
+    const hasLTheanine = supplements.some((s) => s.name.includes('L-Theanine'))
     if (hasLTheanine && userProfile.stressLevel > 7) {
       recs.push({
         id: 'timing-optimization',
@@ -120,7 +135,7 @@ const PersonalizedRecommendations = ({
           'Połącz z magnesem dla synergii',
           'Monitoruj jakość snu'
         ]
-      });
+      })
     }
 
     // Lifestyle recommendations
@@ -142,13 +157,13 @@ const PersonalizedRecommendations = ({
           'Unikaj kofeiny po 14:00'
         ],
         scientificBasis: 'Regulacja rytmu circadianowego wpływa na 40% poziomu energii'
-      });
+      })
     }
 
     // Combination synergies
-    const hasOmega3 = supplements.some(s => s.name.includes('Omega-3'));
-    const hasBacopa = supplements.some(s => s.name.includes('Bacopa'));
-    
+    const hasOmega3 = supplements.some((s) => s.name.includes('Omega-3'))
+    const hasBacopa = supplements.some((s) => s.name.includes('Bacopa'))
+
     if (hasOmega3 && hasBacopa) {
       recs.push({
         id: 'synergy-combo',
@@ -166,7 +181,7 @@ const PersonalizedRecommendations = ({
           'Odstęp minimum 4h między dawkami'
         ],
         scientificBasis: 'Omega-3 zwiększa biodostępność bakozyków z Bacopa Monnieri'
-      });
+      })
     }
 
     // Age-specific recommendations
@@ -187,39 +202,48 @@ const PersonalizedRecommendations = ({
           'Monitoruj poziom energii przez 4 tygodnie'
         ],
         scientificBasis: 'CoQ10 jest kluczowy dla produkcji ATP w mitochondriach'
-      });
+      })
     }
 
     return recs.sort((a, b) => {
-      const priorityOrder = { high: 3, medium: 2, low: 1 };
-      return priorityOrder[b.priority] - priorityOrder[a.priority];
-    });
-  }, [stats, supplements, userProfile]);
+      const priorityOrder = { high: 3, medium: 2, low: 1 }
+      return priorityOrder[b.priority] - priorityOrder[a.priority]
+    })
+  }, [stats, supplements, userProfile])
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800 border-red-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-green-100 text-green-800 border-green-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'high':
+        return 'bg-red-100 text-red-800 border-red-200'
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'low':
+        return 'bg-green-100 text-green-800 border-green-200'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200'
     }
-  };
+  }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'supplement': return <Brain className="h-4 w-4" />;
-      case 'lifestyle': return <Target className="h-4 w-4" />;
-      case 'timing': return <Clock className="h-4 w-4" />;
-      case 'combination': return <TrendingUp className="h-4 w-4" />;
-      default: return <Lightbulb className="h-4 w-4" />;
+      case 'supplement':
+        return <Brain className="h-4 w-4" />
+      case 'lifestyle':
+        return <Target className="h-4 w-4" />
+      case 'timing':
+        return <Clock className="h-4 w-4" />
+      case 'combination':
+        return <TrendingUp className="h-4 w-4" />
+      default:
+        return <Lightbulb className="h-4 w-4" />
     }
-  };
+  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center">
-          <Lightbulb className="h-5 w-5 mr-2 text-purple-600" />
+          <Lightbulb className="mr-2 h-5 w-5 text-purple-600" />
           Spersonalizowane rekomendacje AI
         </CardTitle>
       </CardHeader>
@@ -231,22 +255,24 @@ const PersonalizedRecommendations = ({
             <TabsTrigger value="lifestyle">Lifestyle</TabsTrigger>
             <TabsTrigger value="timing">Timing</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="all" className="space-y-4">
             {recommendations.map((rec) => (
               <RecommendationCard
                 key={rec.id}
                 recommendation={rec}
                 isSelected={selectedRecommendation === rec.id}
-                onSelect={() => setSelectedRecommendation(
-                  selectedRecommendation === rec.id ? null : rec.id
-                )}
+                onSelect={() =>
+                  setSelectedRecommendation(
+                    selectedRecommendation === rec.id ? null : rec.id
+                  )
+                }
                 getTypeIcon={getTypeIcon}
                 getPriorityColor={getPriorityColor}
               />
             ))}
           </TabsContent>
-          
+
           {['supplement', 'lifestyle', 'timing'].map((type) => (
             <TabsContent key={type} value={type} className="space-y-4">
               {recommendations
@@ -256,9 +282,11 @@ const PersonalizedRecommendations = ({
                     key={rec.id}
                     recommendation={rec}
                     isSelected={selectedRecommendation === rec.id}
-                    onSelect={() => setSelectedRecommendation(
-                      selectedRecommendation === rec.id ? null : rec.id
-                    )}
+                    onSelect={() =>
+                      setSelectedRecommendation(
+                        selectedRecommendation === rec.id ? null : rec.id
+                      )
+                    }
                     getTypeIcon={getTypeIcon}
                     getPriorityColor={getPriorityColor}
                   />
@@ -268,102 +296,95 @@ const PersonalizedRecommendations = ({
         </Tabs>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
 interface RecommendationCardProps {
-  recommendation: Recommendation;
-  isSelected: boolean;
-  onSelect: () => void;
-  getTypeIcon: (type: string) => React.JSX.Element;
-  getPriorityColor: (priority: string) => string;
+  recommendation: Recommendation
+  isSelected: boolean
+  onSelect: () => void
+  getTypeIcon: (type: string) => React.JSX.Element
+  getPriorityColor: (priority: string) => string
 }
 
 /**
  *
  */
-const RecommendationCard = ({ 
-  recommendation, 
-  isSelected, 
-  onSelect, 
-  getTypeIcon, 
-  getPriorityColor 
-}: RecommendationCardProps) => <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between">
-        <div className="flex items-start space-x-3 flex-1">
-          <div className="mt-1">
-            {getTypeIcon(recommendation.type)}
+const RecommendationCard = ({
+  recommendation,
+  isSelected,
+  onSelect,
+  getTypeIcon,
+  getPriorityColor
+}: RecommendationCardProps) => (
+  <div className="rounded-lg border p-4 transition-shadow hover:shadow-md">
+    <div className="flex items-start justify-between">
+      <div className="flex flex-1 items-start space-x-3">
+        <div className="mt-1">{getTypeIcon(recommendation.type)}</div>
+        <div className="flex-1">
+          <div className="mb-2 flex items-center space-x-2">
+            <h4 className="font-medium text-gray-900">{recommendation.title}</h4>
+            <Badge className={getPriorityColor(recommendation.priority)}>
+              {recommendation.priority}
+            </Badge>
+            <div className="flex items-center space-x-1">
+              <Star className="h-3 w-3 text-yellow-500" />
+              <span className="text-xs text-gray-600">{recommendation.confidence}%</span>
+            </div>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center space-x-2 mb-2">
-              <h4 className="font-medium text-gray-900">{recommendation.title}</h4>
-              <Badge className={getPriorityColor(recommendation.priority)}>
-                {recommendation.priority}
-              </Badge>
-              <div className="flex items-center space-x-1">
-                <Star className="h-3 w-3 text-yellow-500" />
-                <span className="text-xs text-gray-600">
-                  {recommendation.confidence}%
-                </span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mb-2">
-              {recommendation.description}
-            </p>
-            <div className="flex items-center space-x-4 text-xs text-gray-500">
-              <span>⏱️ {recommendation.timeframe}</span>
-              <span>📈 {recommendation.expectedBenefit}</span>
-            </div>
+          <p className="mb-2 text-sm text-gray-600">{recommendation.description}</p>
+          <div className="flex items-center space-x-4 text-xs text-gray-500">
+            <span>⏱️ {recommendation.timeframe}</span>
+            <span>📈 {recommendation.expectedBenefit}</span>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onSelect}
-          className="ml-2"
-        >
-          <ChevronRight className={`h-4 w-4 transition-transform ${
-            isSelected ? 'rotate-90' : ''
-          }`} />
-        </Button>
       </div>
-      
-      {isSelected && (
-        <div className="mt-4 pt-4 border-t space-y-4">
-          <div>
-            <h5 className="font-medium text-sm mb-2 flex items-center">
-              <Info className="h-4 w-4 mr-1" />
-              Uzasadnienie
-            </h5>
-            <p className="text-sm text-gray-600">{recommendation.reasoning}</p>
-          </div>
-          
-          <div>
-            <h5 className="font-medium text-sm mb-2">Plan działania</h5>
-            <ol className="list-decimal list-inside space-y-1">
-              {recommendation.actionSteps.map((step, index) => (
-                <li key={index} className="text-sm text-gray-600">{step}</li>
-              ))}
-            </ol>
-          </div>
-          
-          {recommendation.scientificBasis && (
-            <div>
-              <h5 className="font-medium text-sm mb-2">Podstawa naukowa</h5>
-              <p className="text-sm text-gray-600 italic">
-                {recommendation.scientificBasis}
-              </p>
-            </div>
-          )}
-          
-          <div className="flex items-center justify-between pt-2">
-            <div className="text-xs text-gray-500">
-              Poziom pewności: {recommendation.confidence}%
-            </div>
-            <Progress value={recommendation.confidence} className="w-24 h-2" />
-          </div>
-        </div>
-      )}
-    </div>;
+      <Button variant="ghost" size="sm" onClick={onSelect} className="ml-2">
+        <ChevronRight
+          className={`h-4 w-4 transition-transform ${isSelected ? 'rotate-90' : ''}`}
+        />
+      </Button>
+    </div>
 
-export default PersonalizedRecommendations;
+    {isSelected && (
+      <div className="mt-4 space-y-4 border-t pt-4">
+        <div>
+          <h5 className="mb-2 flex items-center text-sm font-medium">
+            <Info className="mr-1 h-4 w-4" />
+            Uzasadnienie
+          </h5>
+          <p className="text-sm text-gray-600">{recommendation.reasoning}</p>
+        </div>
+
+        <div>
+          <h5 className="mb-2 text-sm font-medium">Plan działania</h5>
+          <ol className="list-inside list-decimal space-y-1">
+            {recommendation.actionSteps.map((step, index) => (
+              <li key={index} className="text-sm text-gray-600">
+                {step}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {recommendation.scientificBasis && (
+          <div>
+            <h5 className="mb-2 text-sm font-medium">Podstawa naukowa</h5>
+            <p className="text-sm text-gray-600 italic">
+              {recommendation.scientificBasis}
+            </p>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between pt-2">
+          <div className="text-xs text-gray-500">
+            Poziom pewności: {recommendation.confidence}%
+          </div>
+          <Progress value={recommendation.confidence} className="h-2 w-24" />
+        </div>
+      </div>
+    )}
+  </div>
+)
+
+export default PersonalizedRecommendations

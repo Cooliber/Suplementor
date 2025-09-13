@@ -1,29 +1,44 @@
-'use client';
+'use client'
 
-import { Search, Book, Brain, Beaker, TrendingUp, ExternalLink, Filter, Star } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import {
+  Search,
+  Book,
+  Brain,
+  Beaker,
+  TrendingUp,
+  ExternalLink,
+  Filter,
+  Star
+} from 'lucide-react'
+import { useState, useMemo } from 'react'
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 interface KnowledgeItem {
-  id: string;
-  title: string;
-  category: 'supplement' | 'mechanism' | 'research' | 'protocol';
-  content: string;
-  tags: string[];
-  evidenceLevel: 'high' | 'medium' | 'low';
-  lastUpdated: string;
+  id: string
+  title: string
+  category: 'supplement' | 'mechanism' | 'research' | 'protocol'
+  content: string
+  tags: string[]
+  evidenceLevel: 'high' | 'medium' | 'low'
+  lastUpdated: string
   sources: {
-    title: string;
-    url: string;
-    type: 'study' | 'review' | 'meta-analysis';
-  }[];
-  relatedItems: string[];
-  rating: number;
+    title: string
+    url: string
+    type: 'study' | 'review' | 'meta-analysis'
+  }[]
+  relatedItems: string[]
+  rating: number
 }
 
 const knowledgeData: KnowledgeItem[] = [
@@ -470,74 +485,84 @@ const knowledgeData: KnowledgeItem[] = [
     relatedItems: ['circadian-optimization', 'melatonin-sleep', 'light-therapy'],
     rating: 4.8
   }
-];
+]
 
 /**
  *
  */
 const KnowledgeBase = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedEvidence, setSelectedEvidence] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('rating');
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [selectedEvidence, setSelectedEvidence] = useState<string>('all')
+  const [sortBy, setSortBy] = useState<string>('rating')
 
   const filteredItems = useMemo(() => {
-    let filtered = knowledgeData;
+    let filtered = knowledgeData
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(item => 
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
+      filtered = filtered.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
     }
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(item => item.category === selectedCategory);
+      filtered = filtered.filter((item) => item.category === selectedCategory)
     }
 
     // Filter by evidence level
     if (selectedEvidence !== 'all') {
-      filtered = filtered.filter(item => item.evidenceLevel === selectedEvidence);
+      filtered = filtered.filter((item) => item.evidenceLevel === selectedEvidence)
     }
 
     // Sort items
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'rating':
-          return b.rating - a.rating;
+          return b.rating - a.rating
         case 'updated':
-          return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+          return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
         case 'title':
-          return a.title.localeCompare(b.title);
+          return a.title.localeCompare(b.title)
         default:
-          return 0;
+          return 0
       }
-    });
+    })
 
-    return filtered;
-  }, [searchTerm, selectedCategory, selectedEvidence, sortBy]);
+    return filtered
+  }, [searchTerm, selectedCategory, selectedEvidence, sortBy])
 
   const getEvidenceColor = (level: string) => {
     switch (level) {
-      case 'high': return 'bg-green-100 text-green-800 border-green-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'high':
+        return 'bg-green-100 text-green-800 border-green-200'
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'low':
+        return 'bg-red-100 text-red-800 border-red-200'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200'
     }
-  };
+  }
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'supplement': return <Beaker className="h-4 w-4" />;
-      case 'mechanism': return <Brain className="h-4 w-4" />;
-      case 'research': return <Book className="h-4 w-4" />;
-      case 'protocol': return <TrendingUp className="h-4 w-4" />;
-      default: return <Book className="h-4 w-4" />;
+      case 'supplement':
+        return <Beaker className="h-4 w-4" />
+      case 'mechanism':
+        return <Brain className="h-4 w-4" />
+      case 'research':
+        return <Book className="h-4 w-4" />
+      case 'protocol':
+        return <TrendingUp className="h-4 w-4" />
+      default:
+        return <Book className="h-4 w-4" />
     }
-  };
+  }
 
   return (
     <div className="space-y-6">
@@ -545,7 +570,7 @@ const KnowledgeBase = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Book className="h-5 w-5 mr-2 text-indigo-600" />
+            <Book className="mr-2 h-5 w-5 text-indigo-600" />
             Baza wiedzy nootropowej
           </CardTitle>
         </CardHeader>
@@ -553,7 +578,7 @@ const KnowledgeBase = () => {
           <div className="space-y-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
               <Input
                 placeholder="Szukaj w bazie wiedzy..."
                 value={searchTerm}
@@ -561,9 +586,9 @@ const KnowledgeBase = () => {
                 className="pl-10"
               />
             </div>
-            
+
             {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger>
                   <SelectValue placeholder="Kategoria" />
@@ -576,7 +601,7 @@ const KnowledgeBase = () => {
                   <SelectItem value="protocol">Protokoły</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={selectedEvidence} onValueChange={setSelectedEvidence}>
                 <SelectTrigger>
                   <SelectValue placeholder="Poziom dowodów" />
@@ -588,7 +613,7 @@ const KnowledgeBase = () => {
                   <SelectItem value="low">Niskie dowody</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger>
                   <SelectValue placeholder="Sortuj według" />
@@ -611,35 +636,37 @@ const KnowledgeBase = () => {
             Znaleziono {filteredItems.length} artykułów
           </h3>
           <Button variant="outline" size="sm">
-            <Filter className="h-4 w-4 mr-2" />
+            <Filter className="mr-2 h-4 w-4" />
             Zaawansowane filtry
           </Button>
         </div>
-        
+
         {filteredItems.map((item) => (
-          <Card key={item.id} className="hover:shadow-md transition-shadow">
+          <Card key={item.id} className="transition-shadow hover:shadow-md">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3">
-                  <div className="mt-1">
-                    {getCategoryIcon(item.category)}
-                  </div>
+                  <div className="mt-1">{getCategoryIcon(item.category)}</div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-lg mb-2">{item.title}</h4>
-                    <div className="flex items-center space-x-2 mb-3">
+                    <h4 className="mb-2 text-lg font-semibold">{item.title}</h4>
+                    <div className="mb-3 flex items-center space-x-2">
                       <Badge className={getEvidenceColor(item.evidenceLevel)}>
-                        {item.evidenceLevel === 'high' ? 'Wysokie dowody' :
-                         item.evidenceLevel === 'medium' ? 'Średnie dowody' : 'Niskie dowody'}
+                        {item.evidenceLevel === 'high'
+                          ? 'Wysokie dowody'
+                          : item.evidenceLevel === 'medium'
+                            ? 'Średnie dowody'
+                            : 'Niskie dowody'}
                       </Badge>
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 text-yellow-500" />
                         <span className="text-sm font-medium">{item.rating}</span>
                       </div>
                       <span className="text-xs text-gray-500">
-                        Aktualizacja: {new Date(item.lastUpdated).toLocaleDateString('pl-PL')}
+                        Aktualizacja:{' '}
+                        {new Date(item.lastUpdated).toLocaleDateString('pl-PL')}
                       </span>
                     </div>
-                    <div className="flex flex-wrap gap-1 mb-3">
+                    <div className="mb-3 flex flex-wrap gap-1">
                       {item.tags.map((tag) => (
                         <Badge key={tag} variant="outline" className="text-xs">
                           {tag}
@@ -651,23 +678,21 @@ const KnowledgeBase = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="prose prose-sm max-w-none mb-4">
-                <div className="whitespace-pre-line text-gray-700">
-                  {item.content}
-                </div>
+              <div className="prose prose-sm mb-4 max-w-none">
+                <div className="whitespace-pre-line text-gray-700">{item.content}</div>
               </div>
-              
+
               {/* Sources */}
               {item.sources.length > 0 && (
                 <div className="border-t pt-4">
-                  <h5 className="font-medium text-sm mb-2">Źródła naukowe:</h5>
+                  <h5 className="mb-2 text-sm font-medium">Źródła naukowe:</h5>
                   <div className="space-y-1">
                     {item.sources.map((source, index) => (
                       <div key={index} className="flex items-center space-x-2 text-sm">
                         <ExternalLink className="h-3 w-3 text-gray-400" />
-                        <a 
-                          href={source.url} 
-                          target="_blank" 
+                        <a
+                          href={source.url}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline"
                         >
@@ -686,7 +711,7 @@ const KnowledgeBase = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default KnowledgeBase;
+export default KnowledgeBase
